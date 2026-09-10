@@ -1,0 +1,299 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Every document in every collection below carries a `uid` field
+    // (string, required, immutable) identifying the Firebase Auth user
+    // that owns it. All reads/writes are owner-scoped.
+    //
+    // Collection: careers
+    // Document ID: client-generated UUID
+    // Fields:
+    //   - id: string (required, immutable, 1-100) - mirrors document ID
+    //   - uid: string (required, immutable) - owner Firebase Auth uid
+    //   - name: string (required, 1-100)
+    //   - description: string (optional, 0-1000)
+    //   - createdAt: string (required, immutable, ISO 8601)
+    //   - updatedAt: string (required, ISO 8601)
+    //
+    // Collection: courses
+    // Document ID: client-generated UUID
+    // Fields:
+    //   - id: string (required, immutable, 1-100)
+    //   - uid: string (required, immutable)
+    //   - careerId: string (required, immutable, 1-100) - parent career ID
+    //   - name: string (required, 1-100)
+    //   - teacher: string (optional, 0-100)
+    //   - description: string (optional, 0-1000)
+    //   - schedule: string (optional, 0-200)
+    //   - startDate: string (optional, YYYY-MM-DD)
+    //   - endDate: string (optional, YYYY-MM-DD)
+    //   - teamName: string (optional, 0-100)
+    //   - tags: array<string> (optional, max 10, each 1-30)
+    //   - createdAt: string (required, immutable, ISO 8601)
+    //   - updatedAt: string (required, ISO 8601)
+    //
+    // Collection: resources
+    // Document ID: client-generated UUID
+    // Fields:
+    //   - id: string (required, immutable, 1-100)
+    //   - uid: string (required, immutable)
+    //   - courseId: string (required, immutable, 1-100)
+    //   - type: string (required, enum: note|link)
+    //   - title: string (required, 1-200)
+    //   - content: string (optional, 0-100000)
+    //   - url: string (optional, http(s) URL, 0-2000)
+    //   - description: string (optional, 0-1000)
+    //   - createdAt: string (required, immutable, ISO 8601)
+    //   - updatedAt: string (required, ISO 8601)
+    //
+    // Collection: tasks
+    // Document ID: client-generated UUID
+    // Fields:
+    //   - id: string (required, immutable, 1-100)
+    //   - uid: string (required, immutable)
+    //   - courseId: string (required, immutable, 1-100)
+    //   - title: string (required, 1-200)
+    //   - dueDate: string (optional, YYYY-MM-DD)
+    //   - status: string (required, enum: pending|complete)
+    //   - createdAt: string (required, immutable, ISO 8601)
+    //   - updatedAt: string (required, ISO 8601)
+    //
+    // Collection: partners
+    // Document ID: client-generated UUID
+    // Fields:
+    //   - id: string (required, immutable, 1-100)
+    //   - uid: string (required, immutable)
+    //   - courseId: string (required, immutable, 1-100)
+    //   - name: string (required, 1-100)
+    //   - createdAt: string (required, immutable, ISO 8601)
+    //
+    // Collection: scheduleEntries
+    // Document ID: client-generated UUID
+    // Fields:
+    //   - id: string (required, immutable, 1-100)
+    //   - uid: string (required, immutable)
+    //   - courseId: string (required, immutable, 1-100)
+    //   - day: string (required, enum: monday|tuesday|wednesday|thursday|friday|saturday|sunday)
+    //   - startTime: string (required, HH:MM)
+    //   - endTime: string (required, HH:MM)
+    //   - location: string (optional, 0-200)
+    //
+    // ===============================================================
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner() {
+      return isAuthenticated() && request.resource.data.uid == request.auth.uid;
+    }
+
+    function isExistingOwner() {
+      return isAuthenticated() && resource.data.uid == request.auth.uid;
+    }
+
+    function uidUnchanged() {
+      return !('uid' in request.resource.data) ||
+        request.resource.data.uid == request.auth.uid;
+    }
+
+    function uidNotModified() {
+      return !('uid' in request.resource.data) ||
+        request.resource.data.uid == resource.data.uid;
+    }
+
+    function hasOnlyAllowedFields(fields) {
+      return request.resource.data.keys().hasOnly(fields);
+    }
+
+    function validStringLength(field, minLen, maxLen) {
+      return request.resource.data[field] is string &&
+        request.resource.data[field].size() >= minLen &&
+        request.resource.data[field].size() <= maxLen;
+    }
+
+    function isValidOptionalString(field, maxLen) {
+      return !(field in request.resource.data) ||
+        request.resource.data[field] == null ||
+        (request.resource.data[field] is string &&
+          request.resource.data[field].size() <= maxLen);
+    }
+
+    function isValidUrl(url) {
+      return url is string &&
+        url.size() <= 2000 &&
+        (url.matches('^https://.*') || url.matches('^http://.*'));
+    }
+
+    function isValidOptionalUrl(field) {
+      return !(field in request.resource.data) ||
+        request.resource.data[field] == null ||
+        isValidUrl(request.resource.data[field]);
+    }
+
+    function isValidDateString(dateStr) {
+      return dateStr is string &&
+        dateStr.matches('^\\d{4}-\\d{2}-\\d{2}.*$');
+    }
+
+    function isValidOptionalDate(field) {
+      return !(field in request.resource.data) ||
+        request.resource.data[field] == null ||
+        isValidDateString(request.resource.data[field]);
+    }
+
+    function areImmutableFieldsUnchanged(fields) {
+      return !request.resource.data.diff(resource.data).affectedKeys().hasAny(fields);
+    }
+
+    // ===============================================================
+    // Domain Validators (used in BOTH create and update)
+    // ===============================================================
+
+    function isValidCareer(data) {
+      return hasOnlyAllowedFields(['id', 'uid', 'name', 'description', 'createdAt', 'updatedAt']) &&
+        validStringLength('id', 1, 100) &&
+        validStringLength('name', 1, 100) &&
+        isValidOptionalString('description', 1000) &&
+        isValidDateString(data.createdAt) &&
+        isValidDateString(data.updatedAt);
+    }
+
+    function isValidTags() {
+      return !('tags' in request.resource.data) ||
+        request.resource.data.tags == null ||
+        (request.resource.data.tags is list &&
+          request.resource.data.tags.size() <= 10 &&
+          request.resource.data.tags.toSet().size() == request.resource.data.tags.size());
+    }
+
+    function isValidCourse(data) {
+      return hasOnlyAllowedFields(['id', 'uid', 'careerId', 'name', 'teacher', 'description', 'schedule', 'startDate', 'endDate', 'teamName', 'tags', 'createdAt', 'updatedAt']) &&
+        validStringLength('id', 1, 100) &&
+        validStringLength('careerId', 1, 100) &&
+        validStringLength('name', 1, 100) &&
+        isValidOptionalString('teacher', 100) &&
+        isValidOptionalString('description', 1000) &&
+        isValidOptionalString('schedule', 200) &&
+        isValidOptionalDate('startDate') &&
+        isValidOptionalDate('endDate') &&
+        isValidOptionalString('teamName', 100) &&
+        isValidTags() &&
+        isValidDateString(data.createdAt) &&
+        isValidDateString(data.updatedAt);
+    }
+
+    function isValidResource(data) {
+      return hasOnlyAllowedFields(['id', 'uid', 'courseId', 'type', 'title', 'content', 'url', 'description', 'createdAt', 'updatedAt']) &&
+        validStringLength('id', 1, 100) &&
+        validStringLength('courseId', 1, 100) &&
+        request.resource.data.type in ['note', 'link'] &&
+        validStringLength('title', 1, 200) &&
+        isValidOptionalString('content', 100000) &&
+        isValidOptionalUrl('url') &&
+        isValidOptionalString('description', 1000) &&
+        isValidDateString(data.createdAt) &&
+        isValidDateString(data.updatedAt);
+    }
+
+    function isValidTask(data) {
+      return hasOnlyAllowedFields(['id', 'uid', 'courseId', 'title', 'dueDate', 'status', 'createdAt', 'updatedAt']) &&
+        validStringLength('id', 1, 100) &&
+        validStringLength('courseId', 1, 100) &&
+        validStringLength('title', 1, 200) &&
+        isValidOptionalDate('dueDate') &&
+        request.resource.data.status in ['pending', 'complete'] &&
+        isValidDateString(data.createdAt) &&
+        isValidDateString(data.updatedAt);
+    }
+
+    function isValidPartner(data) {
+      return hasOnlyAllowedFields(['id', 'uid', 'courseId', 'name', 'createdAt']) &&
+        validStringLength('id', 1, 100) &&
+        validStringLength('courseId', 1, 100) &&
+        validStringLength('name', 1, 100) &&
+        isValidDateString(data.createdAt);
+    }
+
+    function isValidScheduleEntry() {
+      return hasOnlyAllowedFields(['id', 'uid', 'courseId', 'day', 'startTime', 'endTime', 'location']) &&
+        validStringLength('id', 1, 100) &&
+        validStringLength('courseId', 1, 100) &&
+        request.resource.data.day in ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] &&
+        request.resource.data.startTime.matches('^\\d{2}:\\d{2}$') &&
+        request.resource.data.endTime.matches('^\\d{2}:\\d{2}$') &&
+        isValidOptionalString('location', 200);
+    }
+
+    // ===============================================================
+    // Collection Rules (owner-scoped, default deny)
+    // ===============================================================
+
+    match /careers/{careerId} {
+      allow get, list: if isAuthenticated() && resource.data.uid == request.auth.uid;
+      allow create: if isOwner() && uidUnchanged() && isValidCareer(request.resource.data);
+      allow update: if isExistingOwner() && uidNotModified() &&
+        areImmutableFieldsUnchanged(['id', 'uid', 'createdAt']) &&
+        isValidCareer(request.resource.data);
+      allow delete: if isExistingOwner();
+    }
+
+    match /courses/{courseId} {
+      allow get, list: if isAuthenticated() && resource.data.uid == request.auth.uid;
+      allow create: if isOwner() && uidUnchanged() && isValidCourse(request.resource.data);
+      allow update: if isExistingOwner() && uidNotModified() &&
+        areImmutableFieldsUnchanged(['id', 'uid', 'careerId', 'createdAt']) &&
+        isValidCourse(request.resource.data);
+      allow delete: if isExistingOwner();
+    }
+
+    match /resources/{resourceId} {
+      allow get, list: if isAuthenticated() && resource.data.uid == request.auth.uid;
+      allow create: if isOwner() && uidUnchanged() && isValidResource(request.resource.data);
+      allow update: if isExistingOwner() && uidNotModified() &&
+        areImmutableFieldsUnchanged(['id', 'uid', 'courseId', 'createdAt']) &&
+        isValidResource(request.resource.data);
+      allow delete: if isExistingOwner();
+    }
+
+    match /tasks/{taskId} {
+      allow get, list: if isAuthenticated() && resource.data.uid == request.auth.uid;
+      allow create: if isOwner() && uidUnchanged() && isValidTask(request.resource.data);
+      allow update: if isExistingOwner() && uidNotModified() &&
+        areImmutableFieldsUnchanged(['id', 'uid', 'courseId', 'createdAt']) &&
+        isValidTask(request.resource.data);
+      allow delete: if isExistingOwner();
+    }
+
+    match /partners/{partnerId} {
+      allow get, list: if isAuthenticated() && resource.data.uid == request.auth.uid;
+      allow create: if isOwner() && uidUnchanged() && isValidPartner(request.resource.data);
+      allow update: if isExistingOwner() && uidNotModified() &&
+        areImmutableFieldsUnchanged(['id', 'uid', 'courseId', 'createdAt']) &&
+        isValidPartner(request.resource.data);
+      allow delete: if isExistingOwner();
+    }
+
+    match /scheduleEntries/{entryId} {
+      allow get, list: if isAuthenticated() && resource.data.uid == request.auth.uid;
+      allow create: if isOwner() && uidUnchanged() && isValidScheduleEntry();
+      allow update: if isExistingOwner() && uidNotModified() &&
+        areImmutableFieldsUnchanged(['id', 'uid', 'courseId']) &&
+        isValidScheduleEntry();
+      allow delete: if isExistingOwner();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
