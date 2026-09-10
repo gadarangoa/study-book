@@ -92,6 +92,7 @@ service cloud.firestore {
     //   - title: string (required, 1-200)
     //   - sections: map (required) - cover/introduction/development/conclusions/bibliography
     //   - status: string (required, enum: draft|in_review|finalized)
+    //   - pageSize: string (required, enum: letter|a4)
     //   - templateVersion: string (required, 1-50)
     //   - migratedFrom: string (optional, 0-50)
     //   - createdAt: string (required, immutable, ISO 8601)
@@ -249,12 +250,13 @@ service cloud.firestore {
     }
 
     function isValidApaDocument(data) {
-      return hasOnlyAllowedFields(['id', 'uid', 'courseId', 'title', 'sections', 'status', 'templateVersion', 'migratedFrom', 'createdAt', 'updatedAt']) &&
+      return hasOnlyAllowedFields(['id', 'uid', 'courseId', 'title', 'sections', 'status', 'pageSize', 'templateVersion', 'migratedFrom', 'createdAt', 'updatedAt']) &&
         validStringLength('id', 1, 100) &&
         validStringLength('courseId', 1, 100) &&
         validStringLength('title', 1, 200) &&
         request.resource.data.sections is map &&
         request.resource.data.status in ['draft', 'in_review', 'finalized'] &&
+        request.resource.data.pageSize in ['letter', 'a4'] &&
         validStringLength('templateVersion', 1, 50) &&
         isValidOptionalString('migratedFrom', 50) &&
         isValidDateString(data.createdAt) &&

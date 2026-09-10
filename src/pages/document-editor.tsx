@@ -7,6 +7,7 @@ import { getById } from "@/lib/db"
 import type { Course } from "@/features/courses/types"
 import { useApaFormDocument } from "@/features/documents/hooks/useApaFormDocument"
 import { usePartners } from "@/features/partners/hooks/use-partners"
+import { ApaPageStyle } from "@/features/documents/components/apa-pdf-preview"
 import { ApaFormEditor } from "@/features/documents/components/apa-form-editor"
 import { APA_STATUS_LABELS_ES } from "@/features/documents/types"
 
@@ -17,7 +18,7 @@ export function DocumentEditorPage() {
   }>()
   const [course, setCourse] = useState<Course | null>(null)
   const [exportError, setExportError] = useState<string | null>(null)
-  const { document, isLoading, saveState, updateSections, retrySave } =
+  const { document, isLoading, saveState, updateSections, updateFields, retrySave } =
     useApaFormDocument(documentId ?? "")
   const { partners } = usePartners(courseId ?? "")
 
@@ -113,9 +114,11 @@ export function DocumentEditorPage() {
             saveState={saveState}
             teamMembers={partners}
             onSectionChange={updateSections}
+            onPageSizeChange={(pageSize) => updateFields({ pageSize })}
             onRetrySave={() => void retrySave()}
             onExportPdf={handleExportPdf}
           />
+          <ApaPageStyle pageSize={document.pageSize} />
         </>
       )}
     </div>

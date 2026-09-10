@@ -1,7 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import { getById, update as dbUpdate } from "@/lib/db"
 import { createApaFormTemplate } from "../apa-template"
-import { APA_FORM_TEMPLATE_VERSION, normalizeCoverData } from "../types"
+import {
+  APA_DEFAULT_PAGE_SIZE,
+  APA_FORM_TEMPLATE_VERSION,
+  normalizeCoverData,
+  normalizePageSize,
+} from "../types"
 import type { JSONContent } from "@tiptap/react"
 import type {
   ApaFormDocument,
@@ -54,6 +59,7 @@ export function migrateLegacyDocument(
       development,
     },
     status: record.status ?? "draft",
+    pageSize: APA_DEFAULT_PAGE_SIZE,
     templateVersion: APA_FORM_TEMPLATE_VERSION,
     migratedFrom: "002-tiptap",
     createdAt: typeof record.createdAt === "string" ? record.createdAt : now,
@@ -77,7 +83,16 @@ export function useApaFormDocument(documentId: string) {
         if (!found) {
           setDocument(undefined)
         } else if (isFormDocument(found)) {
-          setDocument({ ...found, sections: { ...found.sections, cover: normalizeCoverData(found.sections.cover) } })
+          setDocument({
+            ...found,
+            sections: {
+              ...found.sections,
+              cover: normalizeCoverData(found.sections.cover),
+            },
+            pageSize: normalizePageSize(
+              (found as Partial<ApaFormDocument>).pageSize
+            ),
+          })
         } else {
           const migrated = migrateLegacyDocument(found)
           setDocument(migrated ?? undefined)
@@ -170,5 +185,25 @@ export function useApaFormDocument(documentId: string) {
     if (document) await persist(document)
   }, [document, persist])
 
-  return { document, isLoading, saveState, updateSections, retrySave }
+  /** Persists top-level document fields (page size, title, status). */
+  const updateFields = useCallback(
+    (patch: Partial<Pick<ApaFormDocument, "pageSize" | "title" | "status">>) => {
+      setDocument((current) => {
+        if (!current) return current
+        const next: ApaFormDocument = { ...current, ...patch }
+        pendingRef.current = next
+        setSaveState("saving")
+        if (timerRef.current) clearTimeout(timerRef.current)
+        timerRef.current = setTimeout(() => {
+          const toSave = pendingRef.current
+          pendingRef.current = null
+          if (toSave) void persist(toSave)
+        }, AUTOSAVE_DELAY_MS)
+        return next
+      })
+    },
+    [persist]
+  )
+
+  return { document, isLoading, saveState, updateSections, updateFields, retrySave }
 }

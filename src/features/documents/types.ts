@@ -2,6 +2,22 @@ import type { JSONContent } from "@tiptap/react"
 
 export type ApaDocumentStatus = "draft" | "in_review" | "finalized"
 
+export type ApaPageSize = "letter" | "a4"
+
+export const APA_PAGE_SIZES: ApaPageSize[] = ["letter", "a4"]
+
+export const APA_PAGE_SIZE_LABELS_ES: Record<ApaPageSize, string> = {
+  letter: "Carta",
+  a4: "A4",
+}
+
+/** APA default paper size (Letter = Carta, 8.5 × 11 in). */
+export const APA_DEFAULT_PAGE_SIZE: ApaPageSize = "letter"
+
+export function normalizePageSize(value: unknown): ApaPageSize {
+  return value === "a4" ? "a4" : APA_DEFAULT_PAGE_SIZE
+}
+
 export const APA_DOCUMENT_STATUSES: ApaDocumentStatus[] = [
   "draft",
   "in_review",
@@ -88,6 +104,8 @@ export interface ApaFormDocument {
   title: string
   sections: ApaFormSections
   status: ApaDocumentStatus
+  /** Paper size used by preview and PDF export. */
+  pageSize: ApaPageSize
   templateVersion: string
   /** Set when migrated from the 002 free-form model */
   migratedFrom?: string

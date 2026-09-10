@@ -63,6 +63,12 @@
   .apa-guide {
     color: #737373;
   }
+  /* Visual page boundary between sections (print uses real page breaks). */
+  .apa-section-break {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px dashed #d4d4d4;
+  }
   .apa-zoom-75 {
     font-size: 9pt;
   }
@@ -75,7 +81,9 @@
 }
 
 @page {
-  size: A4;
+  /* APA default: Letter (Carta) with 1-inch margins. The per-document size
+   * is injected at print time and overrides this fallback. */
+  size: Letter;
   margin: 2.54cm;
 }
 
@@ -83,6 +91,13 @@
   .apa-document {
     font-size: 12pt !important;
   }
+
+  /* Every section starts on a new page (adjoining breaks collapse, so the
+   * cover's break-after plus the next section's break-before is one break). */
+  .apa-section-break {
+    break-before: page;
+  }
+
   .apa-document h1,
   .apa-document h2,
   .apa-document h3 {

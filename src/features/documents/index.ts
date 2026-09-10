@@ -3,17 +3,20 @@ export type {
   ApaDocumentContent,
   ApaDocumentFormData,
   ApaDocumentStatus,
-  ApaDocumentWithMeta,
   ApaFormDocument,
   ApaFormSections,
+  ApaPageSize,
   BibEntry,
   BibEntryFormData,
   CoverData,
   SaveState,
 } from "./types"
 export {
+  APA_DEFAULT_PAGE_SIZE,
   APA_DOCUMENT_STATUSES,
   APA_FORM_TEMPLATE_VERSION,
+  APA_PAGE_SIZE_LABELS_ES,
+  APA_PAGE_SIZES,
   APA_STATUS_LABELS,
   APA_STATUS_LABELS_ES,
   APA_TEMPLATE_VERSION,
@@ -21,6 +24,7 @@ export {
   countWords,
   isApaDocumentStatus,
   normalizeCoverData,
+  normalizePageSize,
 } from "./types"
 export { createApaFormTemplate, createApaTemplateContent } from "./apa-template"
 export { formatBibEntry, isBibEntryComplete, isValidBibYear } from "./lib/apa-format"

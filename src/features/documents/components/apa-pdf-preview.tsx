@@ -2,9 +2,25 @@ import { Fragment } from "react"
 import "../lib/apa-styles.css"
 import { formatBibEntry, isBibEntryComplete } from "../lib/apa-format"
 import type { JSONContent } from "@tiptap/react"
-import type { ApaFormDocument } from "../types"
+import type { ApaFormDocument, ApaPageSize } from "../types"
 
 export type ApaZoomLevel = 75 | 100 | 125 | 150
+
+const PAGE_SIZE_DIMENSIONS: Record<ApaPageSize, string> = {
+  letter: "Letter",
+  a4: "A4",
+}
+
+/**
+ * Injects the per-document `@page` rule (paper size + 2.54 cm APA margins)
+ * so preview and printed PDF share the same page geometry. Rendered once per
+ * editor page; the stylesheet fallback covers printing from any other view.
+ */
+export function ApaPageStyle({ pageSize }: { pageSize: ApaPageSize }) {
+  return (
+    <style>{`@page { size: ${PAGE_SIZE_DIMENSIONS[pageSize]}; margin: 2.54cm; }`}</style>
+  )
+}
 
 export interface ApaPdfPreviewProps {
   document: ApaFormDocument
@@ -158,24 +174,24 @@ export function ApaPdfPreview({ document, zoom = 100 }: ApaPdfPreviewProps) {
         <p className="apa-cover">{formatCoverDate(cover.date)}</p>
       </section>
 
-      <section id="apa-introduction" aria-label="Introducción">
+      <section id="apa-introduction" aria-label="Introducción" className="apa-section-break">
         <h2>Introducción</h2>
         {renderPlainText(introduction, "intro")}
       </section>
 
-      <section id="apa-development" aria-label="Desarrollo">
+      <section id="apa-development" aria-label="Desarrollo" className="apa-section-break">
         <h2>Desarrollo</h2>
         {(development.content ?? []).map((node, index) =>
           renderBlock(node, `dev-${index}`)
         )}
       </section>
 
-      <section id="apa-conclusions" aria-label="Conclusiones">
+      <section id="apa-conclusions" aria-label="Conclusiones" className="apa-section-break">
         <h2>Conclusiones</h2>
         {renderPlainText(conclusions, "concl")}
       </section>
 
-      <section id="apa-references" aria-label="Referencias">
+      <section id="apa-references" aria-label="Referencias" className="apa-section-break">
         <h2>Referencias</h2>
         <div className="apa-references">
           {orderedRefs.length === 0 && (

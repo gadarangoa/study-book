@@ -4,6 +4,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ChevronDownIcon, ChevronUpIcon, DownloadIcon } from "lucide-react"
 import { ApaPdfPreview } from "./apa-pdf-preview"
 import type { ApaZoomLevel } from "./apa-pdf-preview"
+import { APA_PAGE_SIZE_LABELS_ES, APA_PAGE_SIZES } from "../types"
+import type { ApaPageSize } from "../types"
 import { BibliographyField } from "./bibliography-field"
 import { CoverFields } from "./cover-fields"
 import { DevelopmentField } from "./development-field"
@@ -17,18 +19,27 @@ interface ApaFormEditorProps {
   saveState: SaveState
   teamMembers: Partner[]
   onSectionChange: (patch: Partial<ApaFormSections>) => void
+  onPageSizeChange: (pageSize: ApaPageSize) => void
   onRetrySave: () => void
   onExportPdf: () => void
 }
 
 const ZOOM_LEVELS: ApaZoomLevel[] = [75, 100, 125, 150]
 
+/** Paper width in cm, so the on-screen sheet matches the real page size. */
+const PAPER_MAX_WIDTH_CM: Record<ApaPageSize, string> = {
+  letter: "21.59cm",
+  a4: "21cm",
+}
+
 function PreviewPane({
   document,
   onExportPdf,
+  onPageSizeChange,
 }: {
   document: ApaFormDocument
   onExportPdf: () => void
+  onPageSizeChange: (pageSize: ApaPageSize) => void
 }) {
   const [zoom, setZoom] = useState<ApaZoomLevel>(100)
   const [page, setPage] = useState({ current: 1, total: 1 })
@@ -102,6 +113,20 @@ function PreviewPane({
           </Button>
         </div>
         <div className="flex-1" />
+        <div className="flex items-center gap-1" role="group" aria-label="Tamaño de papel">
+          {APA_PAGE_SIZES.map((size) => (
+            <Button
+              key={size}
+              type="button"
+              variant={document.pageSize === size ? "secondary" : "ghost"}
+              size="sm"
+              aria-pressed={document.pageSize === size}
+              onClick={() => onPageSizeChange(size)}
+            >
+              {APA_PAGE_SIZE_LABELS_ES[size]}
+            </Button>
+          ))}
+        </div>
         <Button variant="outline" size="sm" onClick={onExportPdf}>
           <DownloadIcon aria-hidden />
           Exportar PDF
@@ -110,7 +135,8 @@ function PreviewPane({
       <div
         ref={scrollRef}
         onScroll={updatePage}
-        className="rounded-lg border bg-white p-6 shadow-sm print:max-h-none print:overflow-visible print:border-0 print:p-0 print:shadow-none sm:p-10 lg:max-h-[calc(100vh-14rem)] lg:overflow-y-auto"
+        style={{ maxWidth: PAPER_MAX_WIDTH_CM[document.pageSize] }}
+        className="mx-auto w-full rounded-lg border bg-white p-6 shadow-sm print:max-h-none print:max-w-none print:overflow-visible print:border-0 print:p-0 print:shadow-none sm:p-10 lg:max-h-[calc(100vh-14rem)] lg:overflow-y-auto"
       >
         <ApaPdfPreview document={document} zoom={zoom} />
       </div>
@@ -123,6 +149,7 @@ export function ApaFormEditor({
   saveState,
   teamMembers,
   onSectionChange,
+  onPageSizeChange,
   onRetrySave,
   onExportPdf,
 }: ApaFormEditorProps) {
@@ -188,7 +215,13 @@ export function ApaFormEditor({
     </div>
   )
 
-  const preview = <PreviewPane document={document} onExportPdf={onExportPdf} />
+  const preview = (
+    <PreviewPane
+      document={document}
+      onExportPdf={onExportPdf}
+      onPageSizeChange={onPageSizeChange}
+    />
+  )
 
   return (
     <div className="flex flex-col gap-4">
