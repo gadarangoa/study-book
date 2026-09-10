@@ -103,7 +103,12 @@ export function ScheduleEntryList({
               <Label htmlFor="sched-day" className="text-xs">
                 Day
               </Label>
-              <Select value={day} onValueChange={setDay}>
+              <Select
+                value={day}
+                onValueChange={(value) => {
+                  if (value !== null) setDay(value)
+                }}
+              >
                 <SelectTrigger id="sched-day" className="h-8 text-xs">
                   <SelectValue placeholder="Day" />
                 </SelectTrigger>

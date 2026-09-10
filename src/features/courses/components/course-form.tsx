@@ -24,7 +24,6 @@ interface CourseFormProps {
 }
 
 export function CourseForm({
-  careerId,
   course,
   open,
   onOpenChange,

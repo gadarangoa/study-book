@@ -1,0 +1,104 @@
+/* Shared APA 7th ed. (Spanish) styles for the live preview AND the printed
+ * PDF. Both surfaces render the same DOM, so preview and export match by
+ * construction. Screen-only tweaks (zoom) live under `@media screen`. */
+
+.apa-document {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 12pt;
+  line-height: 2;
+  color: #000;
+  background: #fff;
+}
+
+.apa-document p {
+  margin: 0 0 0 0;
+  text-align: justify;
+  text-indent: 1.27cm;
+}
+
+.apa-document .apa-cover {
+  text-align: center;
+  text-indent: 0;
+}
+
+.apa-document .apa-cover-title {
+  text-align: center;
+  font-weight: bold;
+  margin-top: 4cm;
+  margin-bottom: 2cm;
+  line-height: 2;
+}
+
+.apa-document h1,
+.apa-document h2,
+.apa-document h3 {
+  font-size: 12pt;
+  font-weight: bold;
+  text-align: center;
+  margin: 0.6cm 0 0.3cm 0;
+  line-height: 2;
+}
+
+.apa-document ul,
+.apa-document ol {
+  margin: 0 0 0 1.27cm;
+  padding: 0;
+}
+
+.apa-document li {
+  text-align: justify;
+}
+
+.apa-document .apa-references p {
+  padding-left: 1.27cm;
+  text-indent: -1.27cm;
+  margin-bottom: 0.3cm;
+}
+
+.apa-document .apa-page-break {
+  break-after: page;
+}
+
+@media screen {
+  .apa-guide {
+    color: #737373;
+  }
+  .apa-zoom-75 {
+    font-size: 9pt;
+  }
+  .apa-zoom-125 {
+    font-size: 15pt;
+  }
+  .apa-zoom-150 {
+    font-size: 18pt;
+  }
+}
+
+@page {
+  size: A4;
+  margin: 2.54cm;
+}
+
+@media print {
+  .apa-document {
+    font-size: 12pt !important;
+  }
+  .apa-document h1,
+  .apa-document h2,
+  .apa-document h3 {
+    break-after: avoid;
+  }
+
+  .apa-document p,
+  .apa-document li {
+    break-inside: avoid;
+  }
+
+  .apa-document table {
+    break-inside: avoid;
+  }
+
+  .apa-guide {
+    display: none !important;
+  }
+}

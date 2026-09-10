@@ -5,6 +5,8 @@ import { DashboardPage } from "@/pages/dashboard"
 import { LoginPage } from "@/pages/login"
 import { CareerDetailPage } from "@/pages/career-detail"
 import { CourseDetailPage } from "@/pages/course-detail"
+import { DocumentEditorPage } from "@/pages/document-editor"
+import { DocumentsPage } from "@/pages/documents"
 import { TeamPage } from "@/pages/team"
 
 export function App() {
@@ -23,6 +25,11 @@ export function App() {
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/careers/:careerId" element={<CareerDetailPage />} />
             <Route path="/courses/:courseId" element={<CourseDetailPage />} />
+            <Route path="/courses/:courseId/documents" element={<DocumentsPage />} />
+            <Route
+              path="/courses/:courseId/documents/:documentId"
+              element={<DocumentEditorPage />}
+            />
             <Route path="/courses/:courseId/team" element={<TeamPage />} />
             <Route index element={<Navigate to="/dashboard" replace />} />
           </Route>

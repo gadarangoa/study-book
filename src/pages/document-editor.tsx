@@ -1,0 +1,123 @@
+import { Link, useParams } from "react-router"
+import { useEffect, useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { ArrowLeftIcon } from "lucide-react"
+import { getById } from "@/lib/db"
+import type { Course } from "@/features/courses/types"
+import { useApaFormDocument } from "@/features/documents/hooks/useApaFormDocument"
+import { usePartners } from "@/features/partners/hooks/use-partners"
+import { ApaFormEditor } from "@/features/documents/components/apa-form-editor"
+import { APA_STATUS_LABELS_ES } from "@/features/documents/types"
+
+export function DocumentEditorPage() {
+  const { courseId, documentId } = useParams<{
+    courseId: string
+    documentId: string
+  }>()
+  const [course, setCourse] = useState<Course | null>(null)
+  const [exportError, setExportError] = useState<string | null>(null)
+  const { document, isLoading, saveState, updateSections, retrySave } =
+    useApaFormDocument(documentId ?? "")
+  const { partners } = usePartners(courseId ?? "")
+
+  useEffect(() => {
+    if (!courseId) return
+    getById("courses", courseId).then((c) => {
+      setCourse(c ?? null)
+    })
+  }, [courseId])
+
+  const handleExportPdf = () => {
+    setExportError(null)
+    // Flush any pending autosave so the PDF matches the latest edits.
+    void retrySave()
+      .then(() => {
+        try {
+          window.print()
+        } catch {
+          setExportError(
+            "No se pudo abrir el diálogo de impresión. Revisa el bloqueador de ventanas emergentes e inténtalo de nuevo."
+          )
+        }
+      })
+      .catch(() => {
+        setExportError(
+          "No se pudo guardar el documento antes de exportar. Reintenta el guardado y vuelve a exportar."
+        )
+      })
+  }
+
+  const wrongCourse =
+    document !== undefined && courseId !== undefined && document.courseId !== courseId
+
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="no-print flex flex-wrap items-center gap-3">
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          render={<Link to={courseId ? `/courses/${courseId}` : "/dashboard"} />}
+        >
+          <ArrowLeftIcon />
+          <span className="sr-only">Volver al curso</span>
+        </Button>
+        <div className="flex min-w-0 flex-1 flex-col gap-1">
+          <div className="flex flex-wrap items-center gap-2">
+            <h1 className="truncate text-xl font-semibold">
+              {document?.title ?? (isLoading ? "Cargando…" : "Documento no encontrado")}
+            </h1>
+            {document && (
+              <Badge variant="secondary">{APA_STATUS_LABELS_ES[document.status]}</Badge>
+            )}
+          </div>
+          {course && (
+            <p className="text-sm text-muted-foreground">{course.name}</p>
+          )}
+        </div>
+      </div>
+
+      {isLoading ? (
+        <p className="no-print text-muted-foreground">Cargando documento…</p>
+      ) : !document || wrongCourse ? (
+        <div className="no-print flex flex-col gap-2">
+          <p className="text-sm text-muted-foreground">
+            Este documento no existe o no pertenece a este curso.
+          </p>
+          <Button
+            variant="outline"
+            className="w-fit"
+            render={<Link to={courseId ? `/courses/${courseId}` : "/dashboard"} />}
+          >
+            Volver al curso
+          </Button>
+        </div>
+      ) : (
+        <>
+          <p className="no-print text-xs text-muted-foreground">
+            Basado en la plantilla APA 7.ª ed. (español), versión{" "}
+            {document.templateVersion}.
+          </p>
+          {exportError && (
+            <div className="no-print flex flex-wrap items-center gap-2">
+              <p role="alert" className="text-sm text-destructive">
+                {exportError}
+              </p>
+              <Button variant="outline" size="sm" onClick={handleExportPdf}>
+                Reintentar exportación
+              </Button>
+            </div>
+          )}
+          <ApaFormEditor
+            document={document}
+            saveState={saveState}
+            teamMembers={partners}
+            onSectionChange={updateSections}
+            onRetrySave={() => void retrySave()}
+            onExportPdf={handleExportPdf}
+          />
+        </>
+      )}
+    </div>
+  )
+}

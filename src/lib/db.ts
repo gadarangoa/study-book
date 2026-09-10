@@ -16,6 +16,7 @@ import type { Resource } from "@/features/resources/types"
 import type { Task } from "@/features/tasks/types"
 import type { Partner } from "@/features/partners/types"
 import type { ScheduleEntry } from "@/features/courses/types"
+import type { ApaFormDocument } from "@/features/documents/types"
 
 export interface StoreMap {
   careers: Career
@@ -24,6 +25,7 @@ export interface StoreMap {
   tasks: Task
   partners: Partner
   scheduleEntries: ScheduleEntry
+  apaDocuments: ApaFormDocument
 }
 
 export type StoreName = keyof StoreMap
@@ -121,7 +123,7 @@ export async function clearStore<K extends StoreName>(
 }
 
 async function deleteByCourseId(
-  storeName: "resources" | "tasks" | "partners" | "scheduleEntries",
+  storeName: "resources" | "tasks" | "partners" | "scheduleEntries" | "apaDocuments",
   courseId: string,
   uid: string
 ): Promise<void> {
@@ -144,6 +146,7 @@ export async function deleteCourseCascade(courseId: string): Promise<void> {
   await deleteByCourseId("tasks", courseId, uid)
   await deleteByCourseId("partners", courseId, uid)
   await deleteByCourseId("scheduleEntries", courseId, uid)
+  await deleteByCourseId("apaDocuments", courseId, uid)
   await deleteDoc(doc(db, "courses", courseId))
 }
 

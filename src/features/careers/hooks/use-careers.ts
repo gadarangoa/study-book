@@ -6,8 +6,6 @@ import {
   deleteCareerCascade,
 } from "@/lib/db"
 import type { Career, CareerFormData, CareerWithStats } from "../types"
-import type { Course } from "@/features/courses/types"
-import type { Task } from "@/features/tasks/types"
 
 export function useCareers() {
   const [careers, setCareers] = useState<CareerWithStats[]>([])

@@ -1,7 +1,49 @@
 import type { ApaDocumentContent } from "./types"
-import { APA_TEMPLATE_VERSION } from "./types"
+import type { ApaFormSections } from "./types"
+import { APA_TEMPLATE_VERSION, APA_FORM_TEMPLATE_VERSION } from "./types"
 
-export { APA_TEMPLATE_VERSION }
+export { APA_TEMPLATE_VERSION, APA_FORM_TEMPLATE_VERSION }
+
+function todayInputValue(): string {
+  const now = new Date()
+  const month = String(now.getMonth() + 1).padStart(2, "0")
+  const day = String(now.getDate()).padStart(2, "0")
+  return `${now.getFullYear()}-${month}-${day}`
+}
+
+/**
+ * Default APA 7th ed. (Spanish) form template: empty cover fields plus
+ * guide text for each section. Every new form document starts as a copy
+ * of these sections. User changes live only in their document.
+ */
+export function createApaFormTemplate(courseName = ""): ApaFormSections {
+  return {
+    cover: {
+      workTitle: "",
+      authors: [],
+      institution: "",
+      courseName,
+      teacherName: "",
+      date: todayInputValue(),
+    },
+    introduction:
+      "Presenta el tema, el problema y los objetivos del trabajo.",
+    development: {
+      type: "doc",
+      content: [
+        {
+          type: "paragraph",
+          content: [
+            { type: "text", text: "Desarrolla aquí los argumentos, evidencias y análisis." },
+          ],
+        },
+      ],
+    },
+    conclusions:
+      "Resume los hallazgos principales y las líneas futuras.",
+    bibliography: [],
+  }
+}
 
 /**
  * Default APA 7th ed. (Spanish) document: cover page fields plus the base

@@ -7,9 +7,11 @@ export function AppLayout() {
   return (
     <TooltipProvider>
       <SidebarProvider>
-        <AppSidebar />
+        <div className="no-print contents">
+          <AppSidebar />
+        </div>
         <SidebarInset>
-          <header className="flex h-12 items-center border-b px-4">
+          <header className="no-print flex h-12 items-center border-b px-4">
             <SidebarTrigger />
           </header>
           <div className="flex-1 p-4">

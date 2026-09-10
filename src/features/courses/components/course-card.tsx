@@ -108,7 +108,7 @@ export function CourseCard({ course, onUpdate, onDelete }: CourseCardProps) {
             <AlertDialogTitle>Delete "{course.name}"?</AlertDialogTitle>
             <AlertDialogDescription>
               This will permanently delete this course and all its resources,
-              tasks, partners, and schedule entries. This action cannot be undone.
+              tasks, partners, schedule entries, and APA documents. This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

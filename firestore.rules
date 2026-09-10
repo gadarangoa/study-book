@@ -83,6 +83,20 @@ service cloud.firestore {
     //   - endTime: string (required, HH:MM)
     //   - location: string (optional, 0-200)
     //
+    // Collection: apaDocuments
+    // Document ID: client-generated UUID
+    // Fields:
+    //   - id: string (required, immutable, 1-100) - mirrors document ID
+    //   - uid: string (required, immutable) - owner Firebase Auth uid
+    //   - courseId: string (required, immutable, 1-100)
+    //   - title: string (required, 1-200)
+    //   - sections: map (required) - cover/introduction/development/conclusions/bibliography
+    //   - status: string (required, enum: draft|in_review|finalized)
+    //   - templateVersion: string (required, 1-50)
+    //   - migratedFrom: string (optional, 0-50)
+    //   - createdAt: string (required, immutable, ISO 8601)
+    //   - updatedAt: string (required, ISO 8601)
+    //
     // ===============================================================
 
     // ===============================================================
@@ -234,6 +248,19 @@ service cloud.firestore {
         isValidOptionalString('location', 200);
     }
 
+    function isValidApaDocument(data) {
+      return hasOnlyAllowedFields(['id', 'uid', 'courseId', 'title', 'sections', 'status', 'templateVersion', 'migratedFrom', 'createdAt', 'updatedAt']) &&
+        validStringLength('id', 1, 100) &&
+        validStringLength('courseId', 1, 100) &&
+        validStringLength('title', 1, 200) &&
+        request.resource.data.sections is map &&
+        request.resource.data.status in ['draft', 'in_review', 'finalized'] &&
+        validStringLength('templateVersion', 1, 50) &&
+        isValidOptionalString('migratedFrom', 50) &&
+        isValidDateString(data.createdAt) &&
+        isValidDateString(data.updatedAt);
+    }
+
     // ===============================================================
     // Collection Rules (owner-scoped, default deny)
     // ===============================================================
@@ -289,6 +316,15 @@ service cloud.firestore {
       allow update: if isExistingOwner() && uidNotModified() &&
         areImmutableFieldsUnchanged(['id', 'uid', 'courseId']) &&
         isValidScheduleEntry();
+      allow delete: if isExistingOwner();
+    }
+
+    match /apaDocuments/{documentId} {
+      allow get, list: if isAuthenticated() && resource.data.uid == request.auth.uid;
+      allow create: if isOwner() && uidUnchanged() && isValidApaDocument(request.resource.data);
+      allow update: if isExistingOwner() && uidNotModified() &&
+        areImmutableFieldsUnchanged(['id', 'uid', 'courseId', 'createdAt']) &&
+        isValidApaDocument(request.resource.data);
       allow delete: if isExistingOwner();
     }
 
