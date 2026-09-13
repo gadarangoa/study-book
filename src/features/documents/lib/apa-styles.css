@@ -2,6 +2,12 @@
  * PDF. Both surfaces render the same DOM, so preview and export match by
  * construction. Screen-only tweaks (zoom) live under `@media screen`. */
 
+:root {
+  /* Printable content height (page height minus 2.54 cm APA margins).
+   * Overridden per document size; Letter fallback. */
+  --apa-content-height: 22.86cm;
+}
+
 .apa-document {
   font-family: "Times New Roman", Times, serif;
   font-size: 12pt;
@@ -24,9 +30,28 @@
 .apa-document .apa-cover-title {
   text-align: center;
   font-weight: bold;
-  margin-top: 4cm;
-  margin-bottom: 2cm;
+  margin-top: 2cm;
+  margin-bottom: 0;
   line-height: 2;
+}
+
+/* Cover distribution: title near the top, middle block centered, date at
+ * the bottom of the page. Same rules on screen and print for fidelity. */
+#apa-cover {
+  display: flex;
+  flex-direction: column;
+  /* 1 cm of breathing room below the exact content height so rounding and
+   * trailing half-leading never spill the cover onto a second page. */
+  min-height: calc(var(--apa-content-height) - 1cm);
+}
+
+#apa-cover .apa-cover-spacer {
+  flex: 1 0 auto;
+}
+
+/* Double-weight spacer above the authors so they land near the page center. */
+#apa-cover .apa-cover-spacer-lg {
+  flex: 2 0 auto;
 }
 
 .apa-document h1,

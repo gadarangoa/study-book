@@ -11,6 +11,12 @@ const PAGE_SIZE_DIMENSIONS: Record<ApaPageSize, string> = {
   a4: "A4",
 }
 
+/** Printable content height per size (page height minus APA 2.54 cm margins). */
+const PAGE_CONTENT_HEIGHT: Record<ApaPageSize, string> = {
+  letter: "22.86cm",
+  a4: "24.62cm",
+}
+
 /**
  * Injects the per-document `@page` rule (paper size + 2.54 cm APA margins)
  * so preview and printed PDF share the same page geometry. Rendered once per
@@ -18,7 +24,7 @@ const PAGE_SIZE_DIMENSIONS: Record<ApaPageSize, string> = {
  */
 export function ApaPageStyle({ pageSize }: { pageSize: ApaPageSize }) {
   return (
-    <style>{`@page { size: ${PAGE_SIZE_DIMENSIONS[pageSize]}; margin: 2.54cm; }`}</style>
+    <style>{`:root { --apa-content-height: ${PAGE_CONTENT_HEIGHT[pageSize]}; } @page { size: ${PAGE_SIZE_DIMENSIONS[pageSize]}; margin: 2.54cm; }`}</style>
   )
 }
 
@@ -146,8 +152,16 @@ function formatCoverDate(isoDate: string): string {
  * printed on export, so preview and PDF match by construction.
  */
 export function ApaPdfPreview({ document, zoom = 100 }: ApaPdfPreviewProps) {
-  const { cover, introduction, development, conclusions, bibliography } =
-    document.sections
+  const {
+    cover,
+    introduction,
+    justification,
+    generalObjective,
+    specificObjectives,
+    development,
+    conclusions,
+    bibliography,
+  } = document.sections
   const orderedRefs = [...bibliography].sort((a, b) => a.order - b.order)
   const zoomClass = zoom === 100 ? "" : `apa-zoom-${zoom}`
 
@@ -159,18 +173,25 @@ export function ApaPdfPreview({ document, zoom = 100 }: ApaPdfPreviewProps) {
         ) : (
           <h1 className="apa-cover-title apa-guide">[Título del trabajo]</h1>
         )}
-        {cover.authors.length > 0 ? (
-          cover.authors.map((author) => (
-            <p key={author} className="apa-cover">
-              {author}
-            </p>
-          ))
-        ) : (
-          <p className="apa-cover apa-guide">[Integrantes]</p>
-        )}
-        <CoverLine value={cover.institution} guide="Institución" />
-        <CoverLine value={cover.courseName} guide="Curso" />
-        <CoverLine value={cover.teacherName} guide="Docente" />
+        <div className="apa-cover-spacer-lg" aria-hidden="true" />
+        <div>
+          {cover.authors.length > 0 ? (
+            cover.authors.map((author) => (
+              <p key={author} className="apa-cover">
+                {author}
+              </p>
+            ))
+          ) : (
+            <p className="apa-cover apa-guide">[Integrantes]</p>
+          )}
+        </div>
+        <div className="apa-cover-spacer" aria-hidden="true" />
+        <div>
+          <CoverLine value={cover.institution} guide="Institución" />
+          <CoverLine value={cover.courseName} guide="Curso" />
+          <CoverLine value={cover.teacherName} guide="Docente" />
+        </div>
+        <div className="apa-cover-spacer" aria-hidden="true" />
         <p className="apa-cover">{formatCoverDate(cover.date)}</p>
       </section>
 
@@ -178,6 +199,38 @@ export function ApaPdfPreview({ document, zoom = 100 }: ApaPdfPreviewProps) {
         <h2>Introducción</h2>
         {renderPlainText(introduction, "intro")}
       </section>
+
+      {justification.trim().length > 0 && (
+        <section id="apa-justification" aria-label="Justificación" className="apa-section-break">
+          <h2>Justificación</h2>
+          {renderPlainText(justification, "just")}
+        </section>
+      )}
+
+      {(generalObjective.trim().length > 0 ||
+        specificObjectives.some((item) => item.text.trim().length > 0)) && (
+        <section id="apa-objectives" aria-label="Objetivos" className="apa-section-break">
+          <h2>Objetivos</h2>
+          {generalObjective.trim().length > 0 && (
+            <>
+              <h3>Objetivo general</h3>
+              {renderPlainText(generalObjective, "genobj")}
+            </>
+          )}
+          {specificObjectives.some((item) => item.text.trim().length > 0) && (
+            <>
+              <h3>Objetivos específicos</h3>
+              <ul>
+                {specificObjectives
+                  .filter((item) => item.text.trim().length > 0)
+                  .map((item) => (
+                    <li key={item.id}>{item.text.trim()}</li>
+                  ))}
+              </ul>
+            </>
+          )}
+        </section>
+      )}
 
       <section id="apa-development" aria-label="Desarrollo" className="apa-section-break">
         <h2>Desarrollo</h2>

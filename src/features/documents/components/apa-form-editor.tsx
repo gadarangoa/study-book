@@ -9,7 +9,8 @@ import type { ApaPageSize } from "../types"
 import { BibliographyField } from "./bibliography-field"
 import { CoverFields } from "./cover-fields"
 import { DevelopmentField } from "./development-field"
-import { SectionFields } from "./section-fields"
+import { ObjectivesFields } from "./objectives-fields"
+import { ConclusionsFields, IntroductionFields } from "./section-fields"
 import { SAVE_STATE_LABELS } from "../types"
 import type { Partner } from "@/features/partners/types"
 import type { ApaFormDocument, ApaFormSections, SaveState } from "../types"
@@ -164,15 +165,24 @@ export function ApaFormEditor({
           onSectionChange({ cover: { ...sections.cover, ...patch } })
         }
       />
-      <SectionFields
+      <IntroductionFields
         introduction={sections.introduction}
-        conclusions={sections.conclusions}
+        justification={sections.justification}
+        onChange={(patch) => onSectionChange(patch)}
+      />
+      <ObjectivesFields
+        generalObjective={sections.generalObjective}
+        specificObjectives={sections.specificObjectives}
         onChange={(patch) => onSectionChange(patch)}
       />
       <DevelopmentField
         key={document.id}
         value={sections.development}
         onChange={(development) => onSectionChange({ development })}
+      />
+      <ConclusionsFields
+        conclusions={sections.conclusions}
+        onChange={(patch) => onSectionChange(patch)}
       />
       <BibliographyField
         entries={sections.bibliography}

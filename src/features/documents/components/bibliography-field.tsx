@@ -181,7 +181,7 @@ export function BibliographyField({
   return (
     <section aria-labelledby="biblio-heading" className="flex flex-col gap-4">
       <h2 id="biblio-heading" className="text-base font-semibold">
-        5. Bibliografía
+        7. Bibliografía
       </h2>
 
       {ordered.length === 0 ? (

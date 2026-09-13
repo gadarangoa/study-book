@@ -12,6 +12,7 @@ import type {
   ApaFormDocument,
   ApaFormSections,
   SaveState,
+  SpecificObjective,
 } from "../types"
 
 const AUTOSAVE_DELAY_MS = 800
@@ -83,11 +84,31 @@ export function useApaFormDocument(documentId: string) {
         if (!found) {
           setDocument(undefined)
         } else if (isFormDocument(found)) {
+          const sections = found.sections as Partial<ApaFormSections> & {
+            cover?: unknown
+          }
           setDocument({
             ...found,
             sections: {
               ...found.sections,
-              cover: normalizeCoverData(found.sections.cover),
+              cover: normalizeCoverData(sections.cover),
+              justification:
+                typeof sections.justification === "string"
+                  ? sections.justification
+                  : "",
+              generalObjective:
+                typeof sections.generalObjective === "string"
+                  ? sections.generalObjective
+                  : "",
+              specificObjectives: Array.isArray(sections.specificObjectives)
+                ? sections.specificObjectives.filter(
+                    (item): item is SpecificObjective =>
+                      typeof item === "object" &&
+                      item !== null &&
+                      typeof (item as SpecificObjective).id === "string" &&
+                      typeof (item as SpecificObjective).text === "string"
+                  )
+                : [],
             },
             pageSize: normalizePageSize(
               (found as Partial<ApaFormDocument>).pageSize

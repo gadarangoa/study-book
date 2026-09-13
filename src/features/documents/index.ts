@@ -10,6 +10,7 @@ export type {
   BibEntryFormData,
   CoverData,
   SaveState,
+  SpecificObjective,
 } from "./types"
 export {
   APA_DEFAULT_PAGE_SIZE,

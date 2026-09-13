@@ -154,7 +154,7 @@ export function CourseDetailPage() {
         onSubmit={(title) => {
           if (!courseId || !course) return
           setIsCreating(true)
-          createDocument(course.name, title)
+          createDocument(course.name, title, course.teacher ?? "")
             .then((created) => {
               setIsCreateOpen(false)
               navigate(`/courses/${courseId}/documents/${created.id}`)

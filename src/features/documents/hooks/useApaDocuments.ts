@@ -36,13 +36,17 @@ export function useApaDocuments(courseId: string) {
   }, [load])
 
   const createDocument = useCallback(
-    async (courseName: string, title = "Nuevo entregable"): Promise<ApaFormDocument> => {
+    async (
+      courseName: string,
+      title = "Nuevo entregable",
+      teacherName = ""
+    ): Promise<ApaFormDocument> => {
       const now = new Date().toISOString()
       const document: ApaFormDocument = {
         id: crypto.randomUUID(),
         courseId,
         title,
-        sections: createApaFormTemplate(courseName),
+        sections: createApaFormTemplate(courseName, teacherName),
         status: "draft",
         pageSize: APA_DEFAULT_PAGE_SIZE,
         templateVersion: APA_FORM_TEMPLATE_VERSION,

@@ -41,6 +41,11 @@ export function DevelopmentField({ value, onChange }: DevelopmentFieldProps) {
       TextAlign.configure({ types: ["heading", "paragraph"] }),
     ],
     content: value,
+    editorProps: {
+      // Classes land directly on the ProseMirror element so the text matches
+      // the shadcn Input/Textarea scale (text-xs) exactly.
+      attributes: { class: "min-h-[10rem] p-3 text-xs leading-5 focus:outline-none" },
+    },
     onUpdate: ({ editor: updated }) => {
       const json = updated.getJSON()
       lastEmitted.current = json
@@ -62,7 +67,7 @@ export function DevelopmentField({ value, onChange }: DevelopmentFieldProps) {
     return (
       <section aria-labelledby="dev-heading" className="flex flex-col gap-4">
         <h2 id="dev-heading" className="text-base font-semibold">
-          3. Desarrollo de la actividad
+          5. Desarrollo de la actividad
         </h2>
         <p className="text-sm text-muted-foreground">Cargando editor…</p>
       </section>
@@ -100,7 +105,7 @@ export function DevelopmentField({ value, onChange }: DevelopmentFieldProps) {
         <div
           role="toolbar"
           aria-label="Herramientas de formato del desarrollo"
-          className="flex flex-wrap gap-1 rounded-md border p-1"
+          className="flex flex-wrap gap-1 border p-1"
         >
           {tool("Negrita", editor.isActive("bold"), () => editor.chain().focus().toggleBold().run(), BoldIcon)}
           {tool("Cursiva", editor.isActive("italic"), () => editor.chain().focus().toggleItalic().run(), ItalicIcon)}
@@ -117,7 +122,7 @@ export function DevelopmentField({ value, onChange }: DevelopmentFieldProps) {
         <EditorContent
           editor={editor}
           aria-label="Contenido del desarrollo"
-          className="rounded-md border focus-within:ring-2 focus-within:ring-ring [&_.tiptap]:min-h-[10rem] [&_.tiptap]:p-3 [&_.tiptap:focus]:outline-none"
+          className="border focus-within:ring-2 focus-within:ring-ring"
         />
       </div>
     </section>

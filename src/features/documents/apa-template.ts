@@ -16,18 +16,21 @@ function todayInputValue(): string {
  * guide text for each section. Every new form document starts as a copy
  * of these sections. User changes live only in their document.
  */
-export function createApaFormTemplate(courseName = ""): ApaFormSections {
+export function createApaFormTemplate(courseName = "", teacherName = ""): ApaFormSections {
   return {
     cover: {
       workTitle: "",
       authors: [],
       institution: "",
       courseName,
-      teacherName: "",
+      teacherName,
       date: todayInputValue(),
     },
     introduction:
       "Presenta el tema, el problema y los objetivos del trabajo.",
+    justification: "",
+    generalObjective: "",
+    specificObjectives: [],
     development: {
       type: "doc",
       content: [

@@ -84,12 +84,24 @@ export interface BibEntry {
   order: number
 }
 
+/** A specific objective item (dynamic list). */
+export interface SpecificObjective {
+  id: string
+  text: string
+}
+
 /** Structured form model — the single source of truth for the form editor,
  *  the live preview and the printed PDF. */
 export interface ApaFormSections {
   cover: CoverData
   /** Plain text */
   introduction: string
+  /** Plain text, optional: omitted from preview/PDF when empty */
+  justification: string
+  /** Plain text */
+  generalObjective: string
+  /** Ordered dynamic list */
+  specificObjectives: SpecificObjective[]
   /** TipTap fragment (bounded academic formatting) */
   development: ApaDocumentContent
   /** Plain text */

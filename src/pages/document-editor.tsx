@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ArrowLeftIcon } from "lucide-react"
@@ -18,6 +18,7 @@ export function DocumentEditorPage() {
   }>()
   const [course, setCourse] = useState<Course | null>(null)
   const [exportError, setExportError] = useState<string | null>(null)
+  const prefilledTeacherRef = useRef<string | null>(null)
   const { document, isLoading, saveState, updateSections, updateFields, retrySave } =
     useApaFormDocument(documentId ?? "")
   const { partners } = usePartners(courseId ?? "")
@@ -28,6 +29,23 @@ export function DocumentEditorPage() {
       setCourse(c ?? null)
     })
   }, [courseId])
+
+  // Pre-fill the cover teacher from the course when the document has none.
+  useEffect(() => {
+    if (!document || !course || prefilledTeacherRef.current === document.id) {
+      return
+    }
+    prefilledTeacherRef.current = document.id
+    const courseTeacher = course.teacher?.trim() ?? ""
+    if (
+      courseTeacher.length > 0 &&
+      document.sections.cover.teacherName.trim().length === 0
+    ) {
+      updateSections({
+        cover: { ...document.sections.cover, teacherName: courseTeacher },
+      })
+    }
+  }, [document, course, updateSections])
 
   const handleExportPdf = () => {
     setExportError(null)
