@@ -86,9 +86,9 @@ export function DevelopmentField({ value, onChange }: DevelopmentFieldProps) {
   // reload); keystrokes flow through onUpdate instead.
   useEffect(() => {
     if (!editor) return
-    if (value !== lastEmitted.current) {
+    if (!isSameContent(editor.getJSON(), value)) {
       lastEmitted.current = value
-      editor.commands.setContent(value)
+      editor.commands.setContent(value, { emitUpdate: false })
     }
   }, [editor, value])
 
@@ -256,4 +256,8 @@ export function DevelopmentField({ value, onChange }: DevelopmentFieldProps) {
       />
     </section>
   )
+}
+
+function isSameContent(left: JSONContent, right: JSONContent): boolean {
+  return JSON.stringify(left) === JSON.stringify(right)
 }

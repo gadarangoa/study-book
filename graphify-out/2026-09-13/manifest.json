@@ -1,0 +1,322 @@
+{
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/.opencode/package.json": {
+    "mtime": 1788323471.3208048,
+    "ast_hash": "2990ea735b50f36f716d5fde806f683c",
+    "semantic_hash": "2990ea735b50f36f716d5fde806f683c"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/.specify/feature.json": {
+    "mtime": 1788326247.8520432,
+    "ast_hash": "4b1172ef3bcf7f50574a59629a4028ac",
+    "semantic_hash": "4b1172ef3bcf7f50574a59629a4028ac"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/.specify/init-options.json": {
+    "mtime": 1788323336.416281,
+    "ast_hash": "11f780977ce0612925db8f3cb3001821",
+    "semantic_hash": "11f780977ce0612925db8f3cb3001821"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/.specify/integration.json": {
+    "mtime": 1788323336.220676,
+    "ast_hash": "6f247bfd3f7bfa8bc98cd8be0afa7c91",
+    "semantic_hash": "6f247bfd3f7bfa8bc98cd8be0afa7c91"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/.specify/integrations/opencode.manifest.json": {
+    "mtime": 1788323336.2130065,
+    "ast_hash": "04b656e1b52b7bc635cc808ced6f6c03",
+    "semantic_hash": "04b656e1b52b7bc635cc808ced6f6c03"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/.specify/integrations/speckit.manifest.json": {
+    "mtime": 1788323336.3406608,
+    "ast_hash": "4a291b0ecde0a78fa0c7b2ee90d32b55",
+    "semantic_hash": "4a291b0ecde0a78fa0c7b2ee90d32b55"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/.specify/memory/.constitution-template.json": {
+    "mtime": 1788323336.4244077,
+    "ast_hash": "7e3332a78cec1722b4351c6bf52dfc51",
+    "semantic_hash": "7e3332a78cec1722b4351c6bf52dfc51"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/.specify/scripts/bash/check-prerequisites.sh": {
+    "mtime": 1788323336.3007574,
+    "ast_hash": "c8f2184159c794e5d4c208c86a82ab77",
+    "semantic_hash": "c8f2184159c794e5d4c208c86a82ab77"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/.specify/scripts/bash/common.sh": {
+    "mtime": 1788323336.2792714,
+    "ast_hash": "047f4eb5725671079d617c3b2935a4f6",
+    "semantic_hash": "047f4eb5725671079d617c3b2935a4f6"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/.specify/scripts/bash/create-new-feature.sh": {
+    "mtime": 1788323336.3107066,
+    "ast_hash": "bd3d0b837199f0f6f9f5b33a0693a6e9",
+    "semantic_hash": "bd3d0b837199f0f6f9f5b33a0693a6e9"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/.specify/scripts/bash/resolve-template.sh": {
+    "mtime": 1788323336.3064828,
+    "ast_hash": "8e3dfe574895c76bb9cd555fea0ce54d",
+    "semantic_hash": "8e3dfe574895c76bb9cd555fea0ce54d"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/.specify/scripts/bash/setup-plan.sh": {
+    "mtime": 1788323336.2897701,
+    "ast_hash": "0c2e9d8fe02fd97fd5972b3edf75b310",
+    "semantic_hash": "0c2e9d8fe02fd97fd5972b3edf75b310"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/.specify/scripts/bash/setup-tasks.sh": {
+    "mtime": 1788323336.2957544,
+    "ast_hash": "ec21edc2c92f2381ef72efb69d26320a",
+    "semantic_hash": "ec21edc2c92f2381ef72efb69d26320a"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/.specify/workflows/workflow-registry.json": {
+    "mtime": 1788323336.4052997,
+    "ast_hash": "189cb55b9bba97ba0e129621ace9e12a",
+    "semantic_hash": "189cb55b9bba97ba0e129621ace9e12a"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/components.json": {
+    "mtime": 1788306591.019368,
+    "ast_hash": "8478529e0a02e970cafd31f0b353d36b",
+    "semantic_hash": "8478529e0a02e970cafd31f0b353d36b"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/eslint.config.js": {
+    "mtime": 1788306569.7495017,
+    "ast_hash": "0355276bc79439afe3c53e3a2470ca1e",
+    "semantic_hash": "0355276bc79439afe3c53e3a2470ca1e"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/package.json": {
+    "mtime": 1788324067.0971014,
+    "ast_hash": "e125d263de35f8cac797e29f478a1d3a",
+    "semantic_hash": "e125d263de35f8cac797e29f478a1d3a"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/src/App.tsx": {
+    "mtime": 1788324139.2803848,
+    "ast_hash": "f8d751fe23bb10ebd1f0efc93d3448cb",
+    "semantic_hash": "f8d751fe23bb10ebd1f0efc93d3448cb"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/src/components/app-sidebar.tsx": {
+    "mtime": 1788324125.2576547,
+    "ast_hash": "6c5e0564e2bc3eb0d7bede3092fa00cc",
+    "semantic_hash": "6c5e0564e2bc3eb0d7bede3092fa00cc"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/src/components/theme-provider.tsx": {
+    "mtime": 1788306569.7521806,
+    "ast_hash": "7acb1d3d5f4e7cc8d9b87e04f197c094",
+    "semantic_hash": "7acb1d3d5f4e7cc8d9b87e04f197c094"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/src/components/ui/button.tsx": {
+    "mtime": 1788306612.2000809,
+    "ast_hash": "83518c62063f68f05d0a776cf3bd2281",
+    "semantic_hash": "83518c62063f68f05d0a776cf3bd2281"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/src/components/ui/card.tsx": {
+    "mtime": 1788324095.038347,
+    "ast_hash": "b571212dff63902d7a856722661f923c",
+    "semantic_hash": "b571212dff63902d7a856722661f923c"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/src/components/ui/input.tsx": {
+    "mtime": 1788324095.355736,
+    "ast_hash": "0290d0e61edc351d75928443cf0a2278",
+    "semantic_hash": "0290d0e61edc351d75928443cf0a2278"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/src/components/ui/label.tsx": {
+    "mtime": 1788324095.668298,
+    "ast_hash": "d6ccf9ea2b9b2f14107de73d3113a54f",
+    "semantic_hash": "d6ccf9ea2b9b2f14107de73d3113a54f"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/src/components/ui/separator.tsx": {
+    "mtime": 1788324096.108879,
+    "ast_hash": "3de2dca3e47ab29c4b1f632671545628",
+    "semantic_hash": "3de2dca3e47ab29c4b1f632671545628"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/src/components/ui/sheet.tsx": {
+    "mtime": 1788324097.2390027,
+    "ast_hash": "8f808aade478920e80f45729e1fb4c3c",
+    "semantic_hash": "8f808aade478920e80f45729e1fb4c3c"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/src/components/ui/sidebar.tsx": {
+    "mtime": 1788324098.115787,
+    "ast_hash": "f58f1b7f543815451a8a076c563c5ff5",
+    "semantic_hash": "f58f1b7f543815451a8a076c563c5ff5"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/src/components/ui/skeleton.tsx": {
+    "mtime": 1788324096.342486,
+    "ast_hash": "6c50fa0d8b1ee2bdf2af524a1ad86da5",
+    "semantic_hash": "6c50fa0d8b1ee2bdf2af524a1ad86da5"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/src/components/ui/tooltip.tsx": {
+    "mtime": 1788324096.5729172,
+    "ast_hash": "e3b4957606775257844259f94515b65a",
+    "semantic_hash": "e3b4957606775257844259f94515b65a"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/src/hooks/use-mobile.ts": {
+    "mtime": 1788324096.831664,
+    "ast_hash": "209b5193af16624cdd89d3591480dd48",
+    "semantic_hash": "209b5193af16624cdd89d3591480dd48"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/src/layouts/app-layout.tsx": {
+    "mtime": 1788324127.607531,
+    "ast_hash": "4ec8ca428a310ae54e712bfd4fa39949",
+    "semantic_hash": "4ec8ca428a310ae54e712bfd4fa39949"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/src/lib/utils.ts": {
+    "mtime": 1788306612.349585,
+    "ast_hash": "5a6fd53fdcf2be529e9cc0b718fde352",
+    "semantic_hash": "5a6fd53fdcf2be529e9cc0b718fde352"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/src/main.tsx": {
+    "mtime": 1788306569.7527614,
+    "ast_hash": "68fcea94ded41bb9dce463843d2f6f4e",
+    "semantic_hash": "68fcea94ded41bb9dce463843d2f6f4e"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/src/pages/dashboard.tsx": {
+    "mtime": 1788324128.7058768,
+    "ast_hash": "686f94d3b3ec15d55705959417ce0fb4",
+    "semantic_hash": "686f94d3b3ec15d55705959417ce0fb4"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/src/pages/login.tsx": {
+    "mtime": 1788325003.2609181,
+    "ast_hash": "eb587d4fecd9e64e782e013ed1b7caac",
+    "semantic_hash": "eb587d4fecd9e64e782e013ed1b7caac"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/tsconfig.app.json": {
+    "mtime": 1788306569.7534046,
+    "ast_hash": "0a945f88dfc05a308359ccfc7c9210b5",
+    "semantic_hash": "0a945f88dfc05a308359ccfc7c9210b5"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/tsconfig.json": {
+    "mtime": 1788306569.7536528,
+    "ast_hash": "597111e0871da06310089fd23d923ad7",
+    "semantic_hash": "597111e0871da06310089fd23d923ad7"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/tsconfig.node.json": {
+    "mtime": 1788306569.7541144,
+    "ast_hash": "70bdd0a673bcfc0e828080b306e7c680",
+    "semantic_hash": "70bdd0a673bcfc0e828080b306e7c680"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/vite.config.ts": {
+    "mtime": 1788306569.754413,
+    "ast_hash": "4ce8d6fbcc678c76900e4b5d5d3c340f",
+    "semantic_hash": "4ce8d6fbcc678c76900e4b5d5d3c340f"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/.opencode/commands/speckit.analyze.md": {
+    "mtime": 1788323336.1210341,
+    "ast_hash": "b89acead2682a55d248480122ea96d53",
+    "semantic_hash": "b89acead2682a55d248480122ea96d53"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/.opencode/commands/speckit.checklist.md": {
+    "mtime": 1788323336.1895294,
+    "ast_hash": "1fdc67ec67f5c85fb7800428dbaaf125",
+    "semantic_hash": "1fdc67ec67f5c85fb7800428dbaaf125"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/.opencode/commands/speckit.clarify.md": {
+    "mtime": 1788323336.1455932,
+    "ast_hash": "61f5f250f5bf6d487a848d394e6c082b",
+    "semantic_hash": "61f5f250f5bf6d487a848d394e6c082b"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/.opencode/commands/speckit.constitution.md": {
+    "mtime": 1788323336.1532047,
+    "ast_hash": "9c831aa07a988b1b3af0c51a0ee75b91",
+    "semantic_hash": "9c831aa07a988b1b3af0c51a0ee75b91"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/.opencode/commands/speckit.converge.md": {
+    "mtime": 1788323336.1738875,
+    "ast_hash": "e4e4d9594caeb09f3c5b413c3a5da692",
+    "semantic_hash": "e4e4d9594caeb09f3c5b413c3a5da692"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/.opencode/commands/speckit.implement.md": {
+    "mtime": 1788323336.159274,
+    "ast_hash": "5e34b4ad79223f9dfe9fa90e6e5850e3",
+    "semantic_hash": "5e34b4ad79223f9dfe9fa90e6e5850e3"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/.opencode/commands/speckit.plan.md": {
+    "mtime": 1788323336.178762,
+    "ast_hash": "66ef30a961c0502e95c229dbd9c50a45",
+    "semantic_hash": "66ef30a961c0502e95c229dbd9c50a45"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/.opencode/commands/speckit.specify.md": {
+    "mtime": 1788323336.2004569,
+    "ast_hash": "816a556a9cc557d13d7b36f022b7ab9f",
+    "semantic_hash": "816a556a9cc557d13d7b36f022b7ab9f"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/.opencode/commands/speckit.tasks.md": {
+    "mtime": 1788323336.2051322,
+    "ast_hash": "5de752feab311a84e9438df1d9cfdf45",
+    "semantic_hash": "5de752feab311a84e9438df1d9cfdf45"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/.opencode/commands/speckit.taskstoissues.md": {
+    "mtime": 1788323336.2088242,
+    "ast_hash": "aeb6c709a91dba142e04d07d2a9353ff",
+    "semantic_hash": "aeb6c709a91dba142e04d07d2a9353ff"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/.opencode/plan.md": {
+    "mtime": 1788323918.5883641,
+    "ast_hash": "12a6f2092ecf74f2502f1d8193c6a1db",
+    "semantic_hash": "12a6f2092ecf74f2502f1d8193c6a1db"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/.specify/memory/constitution.md": {
+    "mtime": 1788325620.1096196,
+    "ast_hash": "09532c37bb695460f499c817dd0d4fae",
+    "semantic_hash": "09532c37bb695460f499c817dd0d4fae"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/.specify/templates/checklist-template.md": {
+    "mtime": 1788323336.3219564,
+    "ast_hash": "06e9d0aeae85766596a07ce8ae8d7744",
+    "semantic_hash": "06e9d0aeae85766596a07ce8ae8d7744"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/.specify/templates/constitution-template.md": {
+    "mtime": 1788323336.3176882,
+    "ast_hash": "dcefb6b60e7cb3db2e966977b6f02f18",
+    "semantic_hash": "dcefb6b60e7cb3db2e966977b6f02f18"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/.specify/templates/plan-template.md": {
+    "mtime": 1788323336.334941,
+    "ast_hash": "d96fabb858b0e6d4fdb4b93e905f8205",
+    "semantic_hash": "d96fabb858b0e6d4fdb4b93e905f8205"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/.specify/templates/spec-template.md": {
+    "mtime": 1788323336.3323214,
+    "ast_hash": "45ac8538bc1220324c9f0d610145b53f",
+    "semantic_hash": "45ac8538bc1220324c9f0d610145b53f"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/.specify/templates/tasks-template.md": {
+    "mtime": 1788323336.3281083,
+    "ast_hash": "b8ed482dd2103953e4f871e0ed12d4bd",
+    "semantic_hash": "b8ed482dd2103953e4f871e0ed12d4bd"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/.specify/workflows/speckit/workflow.yml": {
+    "mtime": 1788322741.663276,
+    "ast_hash": "06fd89e478bb8e0e668917a5f02f9055",
+    "semantic_hash": "06fd89e478bb8e0e668917a5f02f9055"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/README.md": {
+    "mtime": 1788306569.7493284,
+    "ast_hash": "ac62a74ff455692432b00e882d1ab32a",
+    "semantic_hash": "ac62a74ff455692432b00e882d1ab32a"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/index.html": {
+    "mtime": 1788306569.749665,
+    "ast_hash": "ff288a4a670b4f3ff23d143dc0d669e5",
+    "semantic_hash": "ff288a4a670b4f3ff23d143dc0d669e5"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/pnpm-workspace.yaml": {
+    "mtime": 1788306569.750253,
+    "ast_hash": "c5937256942f25b52c80276c9ae6f2fe",
+    "semantic_hash": "c5937256942f25b52c80276c9ae6f2fe"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/specs/001-course-modules/checklists/requirements.md": {
+    "mtime": 1788326242.786331,
+    "ast_hash": "1fa2a1ff5b4fe1b03680b7a2762eca74",
+    "semantic_hash": "1fa2a1ff5b4fe1b03680b7a2762eca74"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/specs/001-course-modules/spec.md": {
+    "mtime": 1788326238.6453247,
+    "ast_hash": "8d52a1fdff60e92851a6ad75e45e420b",
+    "semantic_hash": "8d52a1fdff60e92851a6ad75e45e420b"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/public/vite.svg": {
+    "mtime": 1788306569.750577,
+    "ast_hash": "8e3a10e157f75ada21ab742c022d5430",
+    "semantic_hash": "8e3a10e157f75ada21ab742c022d5430"
+  },
+  "/Users/mirxtrem/Documents/proyectos/personales/study-book/src/assets/react.svg": {
+    "mtime": 1788306569.7516508,
+    "ast_hash": "f0402b67b6ce880f65666bb49e841696",
+    "semantic_hash": "f0402b67b6ce880f65666bb49e841696"
+  }
+}
