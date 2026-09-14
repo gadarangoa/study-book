@@ -121,6 +121,10 @@ export interface ApaFormDocument {
   templateVersion: string
   /** Set when migrated from the 002 free-form model */
   migratedFrom?: string
+  /** UID of the user who last updated the document */
+  updatedByUid?: string
+  /** Email of the user who last updated the document */
+  updatedByEmail?: string
   createdAt: string
   updatedAt: string
 }

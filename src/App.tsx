@@ -8,6 +8,7 @@ import { CourseDetailPage } from "@/pages/course-detail"
 import { DocumentEditorPage } from "@/pages/document-editor"
 import { DocumentsPage } from "@/pages/documents"
 import { TeamPage } from "@/pages/team"
+import { InviteAcceptPage } from "@/pages/invite-accept"
 
 export function App() {
   return (
@@ -15,6 +16,7 @@ export function App() {
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/invite/:token" element={<InviteAcceptPage />} />
           <Route
             element={
               <ProtectedRoute>

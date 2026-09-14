@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import { getById, update as dbUpdate } from "@/lib/db"
 import { createApaFormTemplate } from "../apa-template"
+import { useAuth } from "@/features/auth"
 import {
   APA_DEFAULT_PAGE_SIZE,
   APA_FORM_TEMPLATE_VERSION,
@@ -69,6 +70,7 @@ export function migrateLegacyDocument(
 }
 
 export function useApaFormDocument(documentId: string) {
+  const { user } = useAuth()
   const [document, setDocument] = useState<ApaFormDocument | undefined>(undefined)
   const [isLoading, setIsLoading] = useState(true)
   const [saveState, setSaveState] = useState<SaveState>("saved")
@@ -147,17 +149,19 @@ export function useApaFormDocument(documentId: string) {
       await dbUpdate("apaDocuments", {
         ...doc,
         updatedAt: new Date().toISOString(),
+        updatedByUid: user?.uid,
+        updatedByEmail: user?.email,
       })
       setDocument((current) =>
         current && current.id === doc.id
-          ? { ...doc, updatedAt: new Date().toISOString() }
+          ? { ...doc, updatedAt: new Date().toISOString(), updatedByUid: user?.uid, updatedByEmail: user?.email }
           : current
       )
       setSaveState("saved")
     } catch {
       setSaveState("error")
     }
-  }, [])
+  }, [user])
 
   // Flush pending saves on unmount (covers closing the editor view).
   useEffect(() => {
