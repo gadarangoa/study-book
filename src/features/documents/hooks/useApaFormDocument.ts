@@ -8,6 +8,7 @@ import {
   normalizeCoverData,
   normalizePageSize,
 } from "../types"
+import { normalizeDevelopmentContent as normalizeContent } from "../lib/development-content"
 import type { JSONContent } from "@tiptap/react"
 import type {
   ApaFormDocument,
@@ -50,7 +51,7 @@ export function migrateLegacyDocument(
   const now = new Date().toISOString()
   const development: JSONContent =
     typeof record.content === "object" && record.content !== null
-      ? (record.content as JSONContent)
+      ? normalizeContent(record.content)
       : createApaFormTemplate(courseName).development
   return {
     id: record.id,
@@ -79,7 +80,9 @@ export function useApaFormDocument(documentId: string) {
 
   useEffect(() => {
     let cancelled = false
-    setIsLoading(true)
+    queueMicrotask(() => {
+      if (!cancelled) setIsLoading(true)
+    })
     getById("apaDocuments", documentId)
       .then((found) => {
         if (cancelled) return
@@ -102,6 +105,7 @@ export function useApaFormDocument(documentId: string) {
                 typeof sections.generalObjective === "string"
                   ? sections.generalObjective
                   : "",
+                development: normalizeContent(sections.development),
               specificObjectives: Array.isArray(sections.specificObjectives)
                 ? sections.specificObjectives.filter(
                     (item): item is SpecificObjective =>
@@ -150,11 +154,16 @@ export function useApaFormDocument(documentId: string) {
         ...doc,
         updatedAt: new Date().toISOString(),
         updatedByUid: user?.uid,
-        updatedByEmail: user?.email,
+        updatedByEmail: user?.email ?? undefined,
       })
       setDocument((current) =>
         current && current.id === doc.id
-          ? { ...doc, updatedAt: new Date().toISOString(), updatedByUid: user?.uid, updatedByEmail: user?.email }
+          ? {
+              ...doc,
+              updatedAt: new Date().toISOString(),
+              updatedByUid: user?.uid,
+              updatedByEmail: user?.email ?? undefined,
+            }
           : current
       )
       setSaveState("saved")

@@ -106,11 +106,57 @@ function renderBlock(node: JSONContent, key: string): React.ReactNode {
       )
     case "blockquote":
       return <blockquote key={key}>{children}</blockquote>
+    case "image": {
+      const attrs = node.attrs as Record<string, unknown> | undefined
+      const src = typeof attrs?.src === "string" ? attrs.src : ""
+      const alt = typeof attrs?.alt === "string" ? attrs.alt : ""
+      const title = typeof attrs?.title === "string" ? attrs.title : undefined
+      if (!src) return <p key={key} className="apa-guide">[Imagen no disponible]</p>
+      return (
+        <figure key={key}>
+          <img src={src} alt={alt} title={title} />
+          {title && <figcaption>{title}</figcaption>}
+          {!alt && <span className="apa-guide">[Descripción pendiente]</span>}
+        </figure>
+      )
+    }
+    case "table":
+      return (
+        <table key={key}>
+          <tbody>
+            {(node.content ?? []).map((row, rowIndex) => {
+              const isHeader = row.type === "tableHeader"
+              return (
+                <tr key={`${key}-row-${rowIndex}`}>
+                  {(row.content ?? []).map((cell, cellIndex) => {
+                    const Cell = isHeader ? "th" : "td"
+                    return (
+                      <Cell key={`${key}-cell-${rowIndex}-${cellIndex}`}>
+                        {(cell.content ?? []).map((paragraph, paragraphIndex) =>
+                          renderBlock(
+                            paragraph,
+                            `${key}-cell-${rowIndex}-${cellIndex}-${paragraphIndex}`
+                          )
+                        )}
+                      </Cell>
+                    )
+                  })}
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      )
     case "paragraph":
-    default:
       return (
         <p key={key} style={style}>
           {children}
+        </p>
+      )
+    default:
+      return (
+        <p key={key} className="apa-guide">
+          [Contenido no compatible]
         </p>
       )
   }

@@ -142,3 +142,67 @@
     display: none !important;
   }
 }
+.apa-document img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0.5cm auto;
+  object-fit: contain;
+}
+
+.apa-document figure {
+  margin: 0.5cm 0;
+  break-inside: avoid;
+}
+
+.apa-document figcaption {
+  text-align: center;
+  font-size: 0.9em;
+  line-height: 1.5;
+}
+
+.apa-document table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.5cm 0;
+  font-size: 0.9em;
+  line-height: 1.5;
+  break-inside: avoid;
+}
+
+.apa-document th,
+.apa-document td {
+  border: 1px solid #737373;
+  padding: 0.12cm 0.2cm;
+  text-align: left;
+  vertical-align: top;
+}
+
+.apa-document th {
+  font-weight: bold;
+}
+
+.ProseMirror img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0.5rem auto;
+}
+
+.ProseMirror table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.ProseMirror th,
+.ProseMirror td {
+  border: 1px solid hsl(var(--border));
+  min-width: 5rem;
+  padding: 0.35rem;
+  vertical-align: top;
+}
+
+.ProseMirror .selectedCell {
+  background: hsl(var(--accent));
+}

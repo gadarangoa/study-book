@@ -39,6 +39,37 @@ export const APA_STATUS_LABELS_ES: Record<ApaDocumentStatus, string> = {
 /** TipTap document JSON — the single source of truth for editor, preview and print. */
 export type ApaDocumentContent = JSONContent
 
+export const DEVELOPMENT_IMAGE_MIME_TYPES = [
+  "image/png",
+  "image/jpeg",
+  "image/webp",
+] as const
+
+export const DEVELOPMENT_IMAGE_MAX_BYTES = 5_000_000
+export const DEVELOPMENT_IMAGE_MAX_DIMENSION_PX = 2_400
+
+export type DevelopmentImageMimeType =
+  (typeof DEVELOPMENT_IMAGE_MIME_TYPES)[number]
+
+export interface DevelopmentImageAttrs {
+  src: string
+  alt: string
+  title?: string
+  mimeType: DevelopmentImageMimeType
+  fileSize: number
+  width: number
+  height: number
+}
+
+export interface DevelopmentImageNode extends JSONContent {
+  type: "image"
+  attrs: DevelopmentImageAttrs
+}
+
+export interface DevelopmentTableNode extends JSONContent {
+  type: "table"
+}
+
 export interface ApaDocument {
   id: string
   courseId: string
@@ -164,6 +195,39 @@ export function isApaDocumentStatus(value: unknown): value is ApaDocumentStatus 
     typeof value === "string" &&
     (APA_DOCUMENT_STATUSES as string[]).includes(value)
   )
+}
+
+export function isDevelopmentImageMimeType(
+  value: unknown
+): value is DevelopmentImageMimeType {
+  return (
+    typeof value === "string" &&
+    (DEVELOPMENT_IMAGE_MIME_TYPES as readonly string[]).includes(value)
+  )
+}
+
+export function isDevelopmentImageNode(
+  value: JSONContent
+): value is DevelopmentImageNode {
+  const attrs = value.attrs
+  if (value.type !== "image" || typeof attrs !== "object" || attrs === null) {
+    return false
+  }
+  const record = attrs as Record<string, unknown>
+  return (
+    typeof record.src === "string" &&
+    typeof record.alt === "string" &&
+    isDevelopmentImageMimeType(record.mimeType) &&
+    typeof record.fileSize === "number" &&
+    typeof record.width === "number" &&
+    typeof record.height === "number"
+  )
+}
+
+export function isDevelopmentTableNode(
+  value: JSONContent
+): value is DevelopmentTableNode {
+  return value.type === "table"
 }
 
 function asStringArray(value: unknown): string[] {
