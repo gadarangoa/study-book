@@ -1,0 +1,90 @@
+- generic [ref=f6e5]:
+  - generic [ref=f6e9]:
+    - generic [ref=f6e10]: StudyBook
+    - generic [ref=f6e12]:
+      - generic [ref=f6e13]:
+        - generic [ref=f6e14]: Navigation
+        - list [ref=f6e16]:
+          - listitem [ref=f6e17]:
+            - link "Dashboard" [ref=f6e18] [cursor=pointer]:
+              - /url: /dashboard
+      - generic [ref=f6e23]:
+        - generic [ref=f6e24]: Careers
+        - list [ref=f6e26]:
+          - listitem [ref=f6e27]:
+            - link "Maestria en Arquitectura de Software" [ref=f6e28] [cursor=pointer]:
+              - /url: /careers/377a1952-b915-496d-ad8d-d0197100b96f
+          - listitem [ref=f6e33]:
+            - link "Ingeniería de Software" [ref=f6e34] [cursor=pointer]:
+              - /url: /careers/8aa34dd0-ac0b-45ca-90be-3975958f132f
+      - generic [ref=f6e39]:
+        - generic [ref=f6e40]: Courses
+        - list [ref=f6e42]:
+          - listitem [ref=f6e43]:
+            - link "Arquitectura de Datos" [active] [ref=f6e44] [cursor=pointer]:
+              - /url: /courses/276951c1-757f-4725-8127-69c34588e7b1
+          - listitem [ref=f6e48]:
+            - link "Gerencia de Proyectos 1" [ref=f6e49] [cursor=pointer]:
+              - /url: /courses/c0996dbd-8a00-42fd-b374-613ec087c240
+          - listitem [ref=f6e53]:
+            - link "Diseño Arquitectónico de Software" [ref=f6e54] [cursor=pointer]:
+              - /url: /courses/ce8ae403-ca07-4bf9-a894-bc737648f9c4
+          - listitem [ref=f6e58]:
+            - link "Fundamentos de la tecnología Cloud" [ref=f6e59] [cursor=pointer]:
+              - /url: /courses/cedbbbbe-2767-45d8-a43b-101884705382
+          - listitem [ref=f6e63]:
+            - link "Frontend" [ref=f6e64] [cursor=pointer]:
+              - /url: /courses/e66d9679-5897-41c6-aca3-c00fbac23f45
+          - listitem [ref=f6e68]:
+            - link "Gerencia de Proyectos Informáticos" [ref=f6e69] [cursor=pointer]:
+              - /url: /courses/ee7552a9-145a-4f3e-acb0-56072b6c80c1
+          - listitem [ref=f6e73]:
+            - link "Sistemas Distribuidos" [ref=f6e74] [cursor=pointer]:
+              - /url: /courses/fbdc57ea-aa29-477b-b9f3-ff1f48546ddb
+    - generic [ref=f6e79]:
+      - generic [ref=f6e80]: gadarangoa@gmail.com
+      - button "Sign out" [ref=f6e81] [cursor=pointer]
+  - main [ref=f6e83]:
+    - button "Toggle Sidebar" [ref=f6e85] [cursor=pointer]
+    - generic [ref=f6e179]:
+      - generic [ref=f6e180]:
+        - link "Back to career" [ref=f6e181] [cursor=pointer]:
+          - /url: /careers/377a1952-b915-496d-ad8d-d0197100b96f
+        - generic [ref=f6e183]:
+          - heading "Arquitectura de Datos" [level=1] [ref=f6e184]
+          - generic [ref=f6e185]:
+            - generic [ref=f6e186]: MAHECHA NIETO ISABEL ANDREA
+            - generic [ref=f6e187]: •
+            - generic [ref=f6e188]: Jueves 6 - 7 PM
+          - paragraph [ref=f6e189]: Aug 24, 2026 — Oct 19, 2026
+          - generic [ref=f6e190]: bloque-1
+      - generic [ref=f6e193]:
+        - link "Team 3 Grupo de trabajo 3 • 3 members" [ref=f6e194] [cursor=pointer]:
+          - /url: /courses/276951c1-757f-4725-8127-69c34588e7b1/team
+          - generic [ref=f6e195]:
+            - generic [ref=f6e196]:
+              - generic [ref=f6e203]: Team
+              - generic [ref=f6e205]: "3"
+            - paragraph [ref=f6e207]: Grupo de trabajo 3 • 3 members
+        - link "Deliverables All caught up!" [ref=f6e208] [cursor=pointer]:
+          - /url: /courses/276951c1-757f-4725-8127-69c34588e7b1#tasks
+          - generic [ref=f6e209]:
+            - generic [ref=f6e210]: Deliverables
+            - paragraph [ref=f6e218]: All caught up!
+        - link "Resources No resources yet" [ref=f6e219] [cursor=pointer]:
+          - /url: /courses/276951c1-757f-4725-8127-69c34588e7b1#resources
+          - generic [ref=f6e220]:
+            - generic [ref=f6e221]: Resources
+            - paragraph [ref=f6e228]: No resources yet
+        - link "Schedule Jueves 6 - 7 PM" [ref=f6e229] [cursor=pointer]:
+          - /url: /courses/276951c1-757f-4725-8127-69c34588e7b1#schedule
+          - generic [ref=f6e230]:
+            - generic [ref=f6e231]: Schedule
+            - paragraph [ref=f6e238]: Jueves 6 - 7 PM
+      - region [ref=f6e239]:
+        - heading "Documentos APA" [level=2] [ref=f6e244]
+        - paragraph [ref=f6e245]: Crea tu primer entregable con la plantilla APA por defecto.
+        - generic [ref=f6e246]:
+          - button "Nuevo entregable" [ref=f6e247] [cursor=pointer]
+          - link "Ir a documentos" [ref=f6e248] [cursor=pointer]:
+            - /url: /courses/276951c1-757f-4725-8127-69c34588e7b1/documents

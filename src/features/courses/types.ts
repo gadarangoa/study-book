@@ -1,5 +1,6 @@
 export interface Course {
   id: string
+  uid: string
   careerId: string
   name: string
   teacher?: string

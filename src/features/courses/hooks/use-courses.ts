@@ -16,7 +16,7 @@ export function useCourses(careerId: string) {
   const load = useCallback(async () => {
     setIsLoading(true)
     const allCourses = await getByIndex("courses", "careerId", careerId)
-    const allTasks = await getAll("tasks")
+    const allTasks = await getAll("tasks", false)
 
     const withStats: CourseWithStats[] = allCourses.map((course) => {
       const pendingTasks = allTasks.filter(

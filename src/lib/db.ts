@@ -49,11 +49,14 @@ function stripUndefined<T extends Record<string, unknown>>(data: T): T {
 }
 
 export async function getAll<K extends StoreName>(
-  storeName: K
+  storeName: K,
+  filterByUid: boolean = true
 ): Promise<StoreMap[K][]> {
   const uid = getUid()
   const snapshot = await getDocs(
-    query(collection(db, storeName), where("uid", "==", uid))
+    filterByUid
+      ? query(collection(db, storeName), where("uid", "==", uid))
+      : collection(db, storeName)
   )
   return snapshot.docs.map((d) => d.data() as StoreMap[K])
 }
@@ -62,12 +65,9 @@ export async function getById<K extends StoreName>(
   storeName: K,
   id: string
 ): Promise<StoreMap[K] | undefined> {
-  const uid = getUid()
   const snapshot = await getDoc(doc(db, storeName, id))
   if (!snapshot.exists()) return undefined
-  const data = snapshot.data() as StoreMap[K] & { uid?: string }
-  if (data.uid !== uid) return undefined
-  return data as StoreMap[K]
+  return snapshot.data() as StoreMap[K]
 }
 
 export async function getByIndex<K extends StoreName>(
@@ -75,11 +75,9 @@ export async function getByIndex<K extends StoreName>(
   indexName: string,
   value: string
 ): Promise<StoreMap[K][]> {
-  const uid = getUid()
   const snapshot = await getDocs(
     query(
       collection(db, storeName),
-      where("uid", "==", uid),
       where(indexName, "==", value)
     )
   )

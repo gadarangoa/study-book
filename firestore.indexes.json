@@ -1,10 +1,11 @@
 {
   "indexes": [
     {
-      "collectionGroup": "courseMembers",
+      "collectionGroup": "courses",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "courseId", "order": "ASCENDING" }
+        { "fieldPath": "uid", "order": "ASCENDING" },
+        { "fieldPath": "careerId", "order": "ASCENDING" }
       ]
     },
     {

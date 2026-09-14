@@ -1,0 +1,95 @@
+- generic [ref=f6e5]:
+  - generic [ref=f6e9]:
+    - generic [ref=f6e10]: StudyBook
+    - generic [ref=f6e12]:
+      - generic [ref=f6e13]:
+        - generic [ref=f6e14]: Navigation
+        - list [ref=f6e16]:
+          - listitem [ref=f6e17]:
+            - link "Dashboard" [ref=f6e18] [cursor=pointer]:
+              - /url: /dashboard
+      - generic [ref=f6e23]:
+        - generic [ref=f6e24]: Careers
+        - list [ref=f6e26]:
+          - listitem [ref=f6e27]:
+            - link "Maestria en Arquitectura de Software" [ref=f6e28] [cursor=pointer]:
+              - /url: /careers/377a1952-b915-496d-ad8d-d0197100b96f
+          - listitem [ref=f6e33]:
+            - link "Ingeniería de Software" [ref=f6e34] [cursor=pointer]:
+              - /url: /careers/8aa34dd0-ac0b-45ca-90be-3975958f132f
+      - generic [ref=f6e39]:
+        - generic [ref=f6e40]: Courses
+        - list [ref=f6e42]:
+          - listitem [ref=f6e43]:
+            - link "Arquitectura de Datos" [ref=f6e44] [cursor=pointer]:
+              - /url: /courses/276951c1-757f-4725-8127-69c34588e7b1
+          - listitem [ref=f6e48]:
+            - link "Gerencia de Proyectos 1" [ref=f6e49] [cursor=pointer]:
+              - /url: /courses/c0996dbd-8a00-42fd-b374-613ec087c240
+          - listitem [ref=f6e53]:
+            - link "Diseño Arquitectónico de Software" [ref=f6e54] [cursor=pointer]:
+              - /url: /courses/ce8ae403-ca07-4bf9-a894-bc737648f9c4
+          - listitem [ref=f6e58]:
+            - link "Fundamentos de la tecnología Cloud" [ref=f6e59] [cursor=pointer]:
+              - /url: /courses/cedbbbbe-2767-45d8-a43b-101884705382
+          - listitem [ref=f6e63]:
+            - link "Frontend" [ref=f6e64] [cursor=pointer]:
+              - /url: /courses/e66d9679-5897-41c6-aca3-c00fbac23f45
+          - listitem [ref=f6e68]:
+            - link "Gerencia de Proyectos Informáticos" [ref=f6e69] [cursor=pointer]:
+              - /url: /courses/ee7552a9-145a-4f3e-acb0-56072b6c80c1
+          - listitem [ref=f6e73]:
+            - link "Sistemas Distribuidos" [ref=f6e74] [cursor=pointer]:
+              - /url: /courses/fbdc57ea-aa29-477b-b9f3-ff1f48546ddb
+    - generic [ref=f6e79]:
+      - generic [ref=f6e80]: gadarangoa@gmail.com
+      - button "Sign out" [ref=f6e81] [cursor=pointer]
+  - main [ref=f6e83]:
+    - button "Toggle Sidebar" [ref=f6e85] [cursor=pointer]
+    - generic [ref=f6e249]:
+      - generic [ref=f6e250]:
+        - link "Back to course" [ref=f6e251] [cursor=pointer]:
+          - /url: /courses/276951c1-757f-4725-8127-69c34588e7b1
+        - generic [ref=f6e253]:
+          - heading "Grupo de trabajo 3" [level=1] [ref=f6e254]
+          - paragraph [ref=f6e255]: Arquitectura de Datos • 3 members (local)
+      - generic [ref=f6e256]:
+        - generic [ref=f6e257]:
+          - heading "Colaboradores con acceso (Firebase)" [level=2] [ref=f6e258]
+          - button [ref=f6e259] [cursor=pointer]:
+            - button "Invitar colaborador" [ref=f6e260]
+          - paragraph [ref=f6e265]: No hay invitaciones pendientes
+          - heading "Miembros (0)" [level=3] [ref=f6e267]
+        - generic [ref=f6e269]:
+          - heading "Equipo local (para portadas APA)" [level=2] [ref=f6e270]
+          - generic [ref=f6e271]:
+            - generic [ref=f6e272]:
+              - generic [ref=f6e273]: Group name
+              - generic [ref=f6e276]:
+                - generic [ref=f6e277]:
+                  - generic [ref=f6e278]: Group name
+                  - textbox "Group name" [ref=f6e279]:
+                    - /placeholder: e.g. Los Algoritmos
+                    - text: Grupo de trabajo 3
+                - button "Save" [disabled]
+            - generic [ref=f6e280]:
+              - generic [ref=f6e281]:
+                - generic [ref=f6e282]: Members
+                - generic [ref=f6e284]: "3"
+              - generic [ref=f6e285]:
+                - generic [ref=f6e286]:
+                  - generic [ref=f6e287]:
+                    - generic [ref=f6e288]: LA
+                    - generic [ref=f6e289]: LUIS ALBERTO POLO ARANGO
+                    - button "Remove LUIS ALBERTO POLO ARANGO" [ref=f6e290] [cursor=pointer]
+                  - generic [ref=f6e292]:
+                    - generic [ref=f6e293]: GR
+                    - generic [ref=f6e294]: Garzon Rodriguez Leidy Mariana
+                    - button "Remove Garzon Rodriguez Leidy Mariana" [ref=f6e295] [cursor=pointer]
+                  - generic [ref=f6e297]:
+                    - generic [ref=f6e298]: GA
+                    - generic [ref=f6e299]: GUSTAVO ARANGO ANGULO
+                    - button "Remove GUSTAVO ARANGO ANGULO" [ref=f6e300] [cursor=pointer]
+                - generic [ref=f6e302]:
+                  - textbox "Member name — press Enter to add" [ref=f6e303]
+                  - button "Add" [ref=f6e304] [cursor=pointer]
