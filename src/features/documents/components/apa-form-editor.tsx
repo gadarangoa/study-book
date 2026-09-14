@@ -1,7 +1,13 @@
 import { useCallback, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ChevronDownIcon, ChevronUpIcon, DownloadIcon } from "lucide-react"
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  DownloadIcon,
+  EyeIcon,
+  EyeOffIcon,
+} from "lucide-react"
 import { ApaPdfPreview } from "./apa-pdf-preview"
 import type { ApaZoomLevel } from "./apa-pdf-preview"
 import { APA_PAGE_SIZE_LABELS_ES, APA_PAGE_SIZES } from "../types"
@@ -14,6 +20,7 @@ import { ConclusionsFields, IntroductionFields } from "./section-fields"
 import { SAVE_STATE_LABELS } from "../types"
 import type { Partner } from "@/features/partners/types"
 import type { ApaFormDocument, ApaFormSections, SaveState } from "../types"
+import { cn } from "@/lib/utils"
 
 interface ApaFormEditorProps {
   document: ApaFormDocument
@@ -155,6 +162,7 @@ export function ApaFormEditor({
   onExportPdf,
 }: ApaFormEditorProps) {
   const { sections } = document
+  const [showPreview, setShowPreview] = useState(true)
 
   const form = (
     <div className="flex flex-col gap-8">
@@ -244,17 +252,34 @@ export function ApaFormEditor({
             Reintentar guardado
           </Button>
         )}
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          className="hidden lg:inline-flex"
+          aria-pressed={showPreview}
+          aria-label={showPreview ? "Ocultar vista previa" : "Mostrar vista previa"}
+          onClick={() => setShowPreview((visible) => !visible)}
+        >
+          {showPreview ? <EyeOffIcon aria-hidden /> : <EyeIcon aria-hidden />}
+          {showPreview ? "Ocultar vista previa" : "Mostrar vista previa"}
+        </Button>
       </div>
 
-      {/* Wide screens: side-by-side (print always uses this path) */}
-      <div className="hidden gap-6 print:grid print:grid-cols-1 lg:grid lg:grid-cols-2">
+      <div
+        className={cn(
+          "hidden gap-6 print:grid print:grid-cols-1 lg:grid",
+          showPreview ? "lg:grid-cols-2" : "lg:grid-cols-1"
+        )}
+      >
         <div className="no-print min-w-0">{form}</div>
-        <div className="min-w-0 lg:sticky lg:top-4 lg:self-start print:static">
-          {preview}
-        </div>
+        {showPreview && (
+          <div className="min-w-0 lg:sticky lg:top-4 lg:self-start print:static">
+            {preview}
+          </div>
+        )}
       </div>
 
-      {/* Narrow screens: tabs (screen only, never printed) */}
       <Tabs defaultValue="form" className="print:hidden lg:hidden">
         <TabsList className="no-print">
           <TabsTrigger value="form">Formulario</TabsTrigger>
@@ -263,10 +288,12 @@ export function ApaFormEditor({
         <TabsContent value="form" className="no-print mt-4">
           {form}
         </TabsContent>
-        <TabsContent value="preview" className="mt-4 print:hidden">
+        <TabsContent value="preview" className="no-print mt-4">
           {preview}
         </TabsContent>
       </Tabs>
+
+      <div className="hidden print:block">{preview}</div>
     </div>
   )
 }
