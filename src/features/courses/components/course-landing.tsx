@@ -24,6 +24,7 @@ export function CourseLanding({
   const pendingTasks = tasks.filter((t) => t.status === "pending")
   const notes = resources.filter((r) => r.type === "note")
   const links = resources.filter((r) => r.type === "link")
+  const pdfs = resources.filter((r) => r.type === "pdf")
 
   const getScheduleDisplay = () => {
     if (course.schedule) return course.schedule
@@ -62,10 +63,10 @@ export function CourseLanding({
         />
         <FeatureCard
           title="Resources"
-          description={resources.length === 0 ? "No resources yet" : `${notes.length} notes • ${links.length} links`}
+          description={resources.length === 0 ? "No resources yet" : `${notes.length} notes • ${links.length} links • ${pdfs.length} PDFs`}
           icon={BookOpenIcon}
           stats={resources.length > 0 ? `${resources.length}` : undefined}
-          href="#resources"
+          href={`/courses/${course.id}/resources`}
           color="green"
         />
         <FeatureCard
