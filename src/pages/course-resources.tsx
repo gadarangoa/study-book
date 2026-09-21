@@ -10,6 +10,7 @@ import { ResourceList } from "@/features/resources/components/resource-list"
 export function CourseResourcesPage() {
   const { courseId } = useParams<{ courseId: string }>()
   const [course, setCourse] = useState<Course | null>(null)
+  const [courseLoading, setCourseLoading] = useState(true)
 
   const {
     resources,
@@ -24,16 +25,24 @@ export function CourseResourcesPage() {
   } = useResources(courseId ?? "")
 
   useEffect(() => {
-    if (!courseId) return
-    getById("courses", courseId).then((c) => {
-      setCourse(c ?? null)
-    })
+    if (!courseId) {
+      setCourseLoading(false)
+      return
+    }
+    setCourseLoading(true)
+    getById("courses", courseId)
+      .then((c) => {
+        setCourse(c ?? null)
+      })
+      .finally(() => {
+        setCourseLoading(false)
+      })
   }, [courseId])
 
-  if (!course) {
+  if (courseLoading || !course) {
     return (
       <div className="flex items-center justify-center py-12">
-        <p className="text-muted-foreground">Loading...</p>
+        <p className="text-muted-foreground">Cargando...</p>
       </div>
     )
   }

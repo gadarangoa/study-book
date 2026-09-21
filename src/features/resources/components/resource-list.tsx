@@ -257,17 +257,19 @@ export function ResourceList({
           setEditingResource(undefined)
         }}
       />
-      <PDFViewer
-        resource={viewingPdf!}
-        open={pdfViewerOpen}
-        onOpenChange={setPdfViewerOpen}
-        onProgressChange={(progress) => {
-          onUpdateProgress?.(viewingPdf!.id, progress)
-        }}
-        onToggleCompletion={() => {
-          onToggleCompletion?.(viewingPdf!.id)
-        }}
-      />
+      {viewingPdf && (
+        <PDFViewer
+          resource={viewingPdf}
+          open={pdfViewerOpen}
+          onOpenChange={setPdfViewerOpen}
+          onProgressChange={(progress) => {
+            onUpdateProgress?.(viewingPdf.id, progress)
+          }}
+          onToggleCompletion={() => {
+            onToggleCompletion?.(viewingPdf.id)
+          }}
+        />
+      )}
     </div>
   )
 }
