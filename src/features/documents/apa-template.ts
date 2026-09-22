@@ -1,8 +1,23 @@
 import type { ApaDocumentContent } from "./types"
 import type { ApaFormSections } from "./types"
-import { APA_TEMPLATE_VERSION, APA_FORM_TEMPLATE_VERSION } from "./types"
+import {
+  APA_TEMPLATE_VERSION,
+  APA_FORM_TEMPLATE_VERSION,
+  APA_DEFAULT_FONT_FAMILY,
+  APA_DEFAULT_TOC_SETTINGS,
+  APA_DEFAULT_LIST_SETTINGS,
+} from "./types"
 
 export { APA_TEMPLATE_VERSION, APA_FORM_TEMPLATE_VERSION }
+
+/** Default document-level format settings for new APA form documents. */
+export function createApaFormatDefaults() {
+  return {
+    fontFamily: APA_DEFAULT_FONT_FAMILY,
+    toc: { ...APA_DEFAULT_TOC_SETTINGS },
+    lists: { ...APA_DEFAULT_LIST_SETTINGS },
+  }
+}
 
 function todayInputValue(): string {
   const now = new Date()

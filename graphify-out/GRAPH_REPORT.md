@@ -1,16 +1,16 @@
-# Graph Report - study-book  (2026-09-14)
+# Graph Report - study-book  (2026-09-21)
 
 ## Corpus Check
-- 125 files · ~48,837 words
+- 228 files · ~139,045 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 779 nodes · 1850 edges · 51 communities (49 shown, 2 thin omitted)
+- 1704 nodes · 2892 edges · 123 communities (117 shown, 6 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 24 edges (avg confidence: 0.84)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `a7bb09ec`
+- Built from commit: `cab673ec`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -61,18 +61,90 @@
 - [[_COMMUNITY_Community 48|Community 48]]
 - [[_COMMUNITY_Community 49|Community 49]]
 - [[_COMMUNITY_Community 50|Community 50]]
+- [[_COMMUNITY_Community 51|Community 51]]
+- [[_COMMUNITY_Community 52|Community 52]]
+- [[_COMMUNITY_Community 53|Community 53]]
+- [[_COMMUNITY_Community 54|Community 54]]
+- [[_COMMUNITY_Community 55|Community 55]]
+- [[_COMMUNITY_Community 56|Community 56]]
+- [[_COMMUNITY_Community 57|Community 57]]
+- [[_COMMUNITY_Community 58|Community 58]]
+- [[_COMMUNITY_Community 59|Community 59]]
+- [[_COMMUNITY_Community 60|Community 60]]
+- [[_COMMUNITY_Community 61|Community 61]]
+- [[_COMMUNITY_Community 62|Community 62]]
+- [[_COMMUNITY_Community 63|Community 63]]
+- [[_COMMUNITY_Community 64|Community 64]]
+- [[_COMMUNITY_Community 65|Community 65]]
+- [[_COMMUNITY_Community 66|Community 66]]
+- [[_COMMUNITY_Community 67|Community 67]]
+- [[_COMMUNITY_Community 68|Community 68]]
+- [[_COMMUNITY_Community 69|Community 69]]
+- [[_COMMUNITY_Community 70|Community 70]]
+- [[_COMMUNITY_Community 71|Community 71]]
+- [[_COMMUNITY_Community 72|Community 72]]
+- [[_COMMUNITY_Community 73|Community 73]]
+- [[_COMMUNITY_Community 74|Community 74]]
+- [[_COMMUNITY_Community 75|Community 75]]
+- [[_COMMUNITY_Community 76|Community 76]]
+- [[_COMMUNITY_Community 77|Community 77]]
+- [[_COMMUNITY_Community 78|Community 78]]
+- [[_COMMUNITY_Community 79|Community 79]]
+- [[_COMMUNITY_Community 80|Community 80]]
+- [[_COMMUNITY_Community 81|Community 81]]
+- [[_COMMUNITY_Community 82|Community 82]]
+- [[_COMMUNITY_Community 83|Community 83]]
+- [[_COMMUNITY_Community 84|Community 84]]
+- [[_COMMUNITY_Community 85|Community 85]]
+- [[_COMMUNITY_Community 86|Community 86]]
+- [[_COMMUNITY_Community 87|Community 87]]
+- [[_COMMUNITY_Community 88|Community 88]]
+- [[_COMMUNITY_Community 89|Community 89]]
+- [[_COMMUNITY_Community 90|Community 90]]
+- [[_COMMUNITY_Community 91|Community 91]]
+- [[_COMMUNITY_Community 92|Community 92]]
+- [[_COMMUNITY_Community 93|Community 93]]
+- [[_COMMUNITY_Community 94|Community 94]]
+- [[_COMMUNITY_Community 95|Community 95]]
+- [[_COMMUNITY_Community 96|Community 96]]
+- [[_COMMUNITY_Community 97|Community 97]]
+- [[_COMMUNITY_Community 98|Community 98]]
+- [[_COMMUNITY_Community 99|Community 99]]
+- [[_COMMUNITY_Community 100|Community 100]]
+- [[_COMMUNITY_Community 101|Community 101]]
+- [[_COMMUNITY_Community 102|Community 102]]
+- [[_COMMUNITY_Community 103|Community 103]]
+- [[_COMMUNITY_Community 104|Community 104]]
+- [[_COMMUNITY_Community 105|Community 105]]
+- [[_COMMUNITY_Community 106|Community 106]]
+- [[_COMMUNITY_Community 107|Community 107]]
+- [[_COMMUNITY_Community 108|Community 108]]
+- [[_COMMUNITY_Community 109|Community 109]]
+- [[_COMMUNITY_Community 110|Community 110]]
+- [[_COMMUNITY_Community 111|Community 111]]
+- [[_COMMUNITY_Community 112|Community 112]]
+- [[_COMMUNITY_Community 113|Community 113]]
+- [[_COMMUNITY_Community 114|Community 114]]
+- [[_COMMUNITY_Community 115|Community 115]]
+- [[_COMMUNITY_Community 116|Community 116]]
+- [[_COMMUNITY_Community 117|Community 117]]
+- [[_COMMUNITY_Community 118|Community 118]]
+- [[_COMMUNITY_Community 119|Community 119]]
+- [[_COMMUNITY_Community 120|Community 120]]
+- [[_COMMUNITY_Community 121|Community 121]]
+- [[_COMMUNITY_Community 122|Community 122]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `cn()` - 104 edges
-2. `Button()` - 43 edges
-3. `Input()` - 20 edges
-4. `Label()` - 20 edges
-5. `compilerOptions` - 19 edges
-6. `Course` - 18 edges
+1. `cn()` - 106 edges
+2. `Button()` - 47 edges
+3. `Label()` - 22 edges
+4. `Input()` - 21 edges
+5. `Course` - 19 edges
+6. `compilerOptions` - 19 edges
 7. `Badge()` - 17 edges
-8. `useAuth()` - 16 edges
-9. `compilerOptions` - 16 edges
-10. `Partner` - 15 edges
+8. `Resource` - 17 edges
+9. `useAuth()` - 16 edges
+10. `compilerOptions` - 16 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `Acceptance Criteria` --semantically_similar_to--> `Specification Quality Checklist`  [INFERRED] [semantically similar]
@@ -97,19 +169,19 @@
 - **Specification Quality Framework** — templates_spec_template, checklists_requirements, checklists_requirements_content_quality, checklists_requirements_requirement_completeness, checklists_requirements_feature_readiness [INFERRED 0.85]
 - **Course Domain Model** — specs_spec_course_entity, specs_spec_resource_entity, specs_spec_task_entity, specs_spec_partner_entity, specs_spec_schedule_entry_entity [EXTRACTED 1.00]
 
-## Communities (51 total, 2 thin omitted)
+## Communities (123 total, 6 thin omitted)
 
 ### Community 0 - "React UI Components"
-Cohesion: 0.09
-Nodes (33): AppSidebar(), useIsMobile(), Sidebar(), SidebarContent(), SidebarContext, SidebarContextProps, SidebarFooter(), SidebarGroup() (+25 more)
+Cohesion: 0.12
+Nodes (25): Sidebar(), SidebarContent(), SidebarContext, SidebarContextProps, SidebarFooter(), SidebarGroup(), SidebarGroupAction(), SidebarGroupContent() (+17 more)
 
 ### Community 1 - "Dev Toolchain"
 Cohesion: 0.13
 Nodes (15): devDependencies, eslint, @eslint/js, eslint-plugin-react-hooks, eslint-plugin-react-refresh, globals, prettier, prettier-plugin-tailwindcss (+7 more)
 
 ### Community 2 - "Speckit Commands"
-Cohesion: 0.08
-Nodes (36): Speckit Analyze Command, Speckit Checklist Command, Speckit Clarify Command, Speckit Constitution Command, Speckit Converge Command, Speckit Implement Command, Speckit Plan Command, Speckit Specify Command (+28 more)
+Cohesion: 0.05
+Nodes (48): Speckit Analyze Command, Speckit Checklist Command, Speckit Clarify Command, Speckit Constitution Command, Speckit Converge Command, Speckit Implement Command, Speckit Plan Command, Speckit Specify Command (+40 more)
 
 ### Community 3 - "UI Component Config"
 Cohesion: 0.09
@@ -120,40 +192,40 @@ Cohesion: 0.09
 Nodes (21): compilerOptions, allowImportingTsExtensions, erasableSyntaxOnly, jsx, lib, module, moduleDetection, moduleResolution (+13 more)
 
 ### Community 5 - "Theme System"
-Cohesion: 0.08
-Nodes (28): AuthProvider(), AuthContext, AuthContextValue, ProtectedRoute(), useAuth(), InvitationList(), InvitationListProps, InviteDialog() (+20 more)
+Cohesion: 0.14
+Nodes (8): ResolvedTheme, Theme, THEME_VALUES, ThemeProvider(), ThemeProviderContext, ThemeProviderProps, ThemeProviderState, App()
 
 ### Community 6 - "Shell Utilities"
 Cohesion: 0.14
-Nodes (21): BibliographyFieldProps, CoverFieldsProps, ObjectivesFieldsProps, APA_DOCUMENT_STATUSES, APA_STATUS_LABELS, ApaDocument, ApaDocumentFormData, ApaDocumentWithMeta (+13 more)
+Nodes (28): baseRunProps(), buildApaDocxBlob(), buildCoverParagraphs(), buildInlineRuns(), buildListingSection(), buildObjectivesSection(), buildReferencesSection(), buildTocSection() (+20 more)
 
 ### Community 7 - "Spec-Driven Development"
-Cohesion: 0.08
-Nodes (33): Specification Quality Checklist, Content Quality, Feature Readiness, Requirement Completeness, Course as Foundational Data Structure, Specification-Driven Development, Course Modules Spec, Authentication Scoping (+25 more)
+Cohesion: 0.22
+Nodes (10): Core Principles, Governance, [PRINCIPLE_1_NAME], [PRINCIPLE_2_NAME], [PRINCIPLE_3_NAME], [PRINCIPLE_4_NAME], [PRINCIPLE_5_NAME], [PROJECT_NAME] Constitution (+2 more)
 
 ### Community 8 - "Node TypeScript Config"
 Cohesion: 0.11
 Nodes (17): compilerOptions, allowImportingTsExtensions, erasableSyntaxOnly, lib, module, moduleDetection, moduleResolution, noEmit (+9 more)
 
 ### Community 9 - "Spec Quality & Domain"
-Cohesion: 0.09
-Nodes (21): ContributionAttribution, CourseAccess, CourseMember, Invitation, InvitationStatus, InvitationWithCourse, MemberRole, SharedCourseView (+13 more)
+Cohesion: 0.20
+Nodes (11): ContributionAttribution, CourseAccess, CourseMember, Invitation, InvitationStatus, InvitationWithCourse, MemberRole, SharedCourseView (+3 more)
 
 ### Community 10 - "NPM Dependencies"
 Cohesion: 0.07
-Nodes (27): dependencies, @base-ui/react, class-variance-authority, clsx, date-fns, firebase, @fontsource-variable/inter, katex (+19 more)
+Nodes (29): dependencies, @base-ui/react, class-variance-authority, clsx, cn, date-fns, docx, firebase (+21 more)
 
 ### Community 11 - "Auth & Card UI"
-Cohesion: 0.14
-Nodes (28): EMPTY_FORM, EntryErrors, EntryForm(), CareerForm(), CourseTagFilter(), CourseTagFilterProps, Field(), colorStyles (+20 more)
+Cohesion: 0.08
+Nodes (25): 1. Initialize Analysis Context, 2. Load Artifacts (Progressive Disclosure), 3. Build Semantic Models, 4. Detection Passes (Token-Efficient Analysis), 5. Severity Assignment, 6. Produce Compact Analysis Report, 7. Provide Next Actions, 8. Offer Remediation (+17 more)
 
 ### Community 12 - "Speckit Planning"
-Cohesion: 0.13
-Nodes (31): DevelopmentField(), DevelopmentFieldProps, DevelopmentImage, DevelopmentImageDialog(), DevelopmentImageDialogProps, DevelopmentTableControls(), DevelopmentTableControlsProps, DocumentCreateDialogProps (+23 more)
+Cohesion: 0.08
+Nodes (44): AuthProvider(), AuthContext, AuthContextValue, ProtectedRoute(), useAuth(), EMPTY_FORM, EntryErrors, EntryForm() (+36 more)
 
 ### Community 13 - "Branch Management"
-Cohesion: 0.16
-Nodes (19): CourseCard(), CourseCardProps, CourseDetailProps, CourseForm(), CourseFormProps, CourseList(), CourseListProps, ScheduleEntryListProps (+11 more)
+Cohesion: 0.08
+Nodes (25): 1. Initialize Analysis Context, 2. Load Artifacts (Progressive Disclosure), 3. Build Semantic Models, 4. Detection Passes (Token-Efficient Analysis), 5. Severity Assignment, 6. Produce Compact Analysis Report, 7. Provide Next Actions, 8. Offer Remediation (+17 more)
 
 ### Community 14 - "Root TypeScript Config"
 Cohesion: 0.33
@@ -164,32 +236,32 @@ Cohesion: 0.50
 Nodes (4): React Logo, Vite Logo, React TypeScript Vite shadcn/ui Stack, README
 
 ### Community 16 - "OpenCode Plugin"
-Cohesion: 0.35
-Nodes (6): TaskFormProps, TaskItem(), TaskItemProps, TaskListProps, Task, TaskFormData
+Cohesion: 0.32
+Nodes (7): TaskFormProps, TaskItem(), TaskItemProps, TaskListProps, useTasks(), Task, TaskFormData
 
 ### Community 17 - "Prerequisites Check"
-Cohesion: 0.12
-Nodes (18): cn(), AlertDialogMedia(), AlertDialogOverlay(), CardAction(), CardFooter(), Checkbox(), DialogOverlay(), DropdownMenuCheckboxItem() (+10 more)
+Cohesion: 0.14
+Nodes (20): cn(), AlertDialogMedia(), AlertDialogOverlay(), CardAction(), CardFooter(), Checkbox(), DialogOverlay(), ScrollArea() (+12 more)
 
 ### Community 18 - "Template Resolver"
-Cohesion: 0.32
-Nodes (9): Career, CareerFormData, CareerWithStats, CareerCard(), CareerCardProps, CareerFormProps, CareerList(), CareerListProps (+1 more)
+Cohesion: 0.13
+Nodes (23): Career, CareerFormData, CareerWithStats, CareerCard(), CareerCardProps, CareerForm(), CareerFormProps, CareerList() (+15 more)
 
 ### Community 19 - "Plan Setup"
-Cohesion: 0.23
-Nodes (10): DAYS, SelectContent(), SelectGroup(), SelectItem(), SelectLabel(), SelectScrollDownButton(), SelectScrollUpButton(), SelectSeparator() (+2 more)
+Cohesion: 0.09
+Nodes (22): Dependencies & Execution Order, Implementation for User Story 1, Implementation for User Story 2, Implementation for User Story 3, Implementation for User Story 4, Implementation Strategy, Incremental Delivery, MVP First (User Story 1 Only) (+14 more)
 
 ### Community 20 - "Tasks Setup"
 Cohesion: 0.18
 Nodes (7): Sheet(), SheetContent(), SheetDescription(), SheetFooter(), SheetHeader(), SheetOverlay(), SheetTitle()
 
 ### Community 25 - "Community 25"
-Cohesion: 0.08
-Nodes (25): 1. Initialize Analysis Context, 2. Load Artifacts (Progressive Disclosure), 3. Build Semantic Models, 4. Detection Passes (Token-Efficient Analysis), 5. Severity Assignment, 6. Produce Compact Analysis Report, 7. Provide Next Actions, 8. Offer Remediation (+17 more)
+Cohesion: 0.18
+Nodes (15): ApaFormEditor(), ApaPageStyle(), DocumentCreateDialog(), DocumentList(), ResourceList(), useResources(), useScheduleEntries(), useApaDocuments() (+7 more)
 
 ### Community 26 - "Community 26"
-Cohesion: 0.13
-Nodes (16): ApaFormEditorProps, PAPER_MAX_WIDTH_CM, ZOOM_LEVELS, BibliographyField(), CoverFields(), ObjectivesFields(), ConclusionsFields(), ConclusionsFieldsProps (+8 more)
+Cohesion: 0.10
+Nodes (23): PAPER_MAX_WIDTH_CM, ZOOM_LEVELS, ApaZoomLevel, BibliographyField(), CoverFields(), CoverFieldsProps, DevelopmentField(), DocumentFormatControls() (+15 more)
 
 ### Community 27 - "Community 27"
 Cohesion: 0.29
@@ -204,96 +276,368 @@ Cohesion: 0.50
 Nodes (3): Adding components, React + TypeScript + Vite + shadcn/ui, Using components
 
 ### Community 33 - "Community 33"
-Cohesion: 0.23
-Nodes (16): clearStore(), create(), createInvitation(), deleteByCourseId(), deleteCareerCascade(), deleteCourseCascade(), deleteInvitationsByCourseId(), deleteMembersByCourseId() (+8 more)
+Cohesion: 0.11
+Nodes (26): clearStore(), create(), createCourseMember(), createInvitation(), deleteByCourseId(), deleteCareerCascade(), deleteCourseCascade(), deleteInvitationsByCourseId() (+18 more)
 
 ### Community 34 - "Community 34"
 Cohesion: 0.12
 Nodes (15): 1. Initialize Convergence Context, 2. Load Artifacts (Progressive Disclosure), 3. Build the Intent Inventory, 4. Assess the Codebase and Classify Findings, 5. Assign Severity, 6. Present the In-Session Findings Summary, 7. Append Convergence Tasks (or report converged), 8. Provide Next Actions (Handoff) (+7 more)
 
 ### Community 35 - "Community 35"
-Cohesion: 0.18
-Nodes (10): ApaPdfPreview(), ApaZoomLevel, formatCoverDate(), PAGE_CONTENT_HEIGHT, PAGE_SIZE_DIMENSIONS, renderPlainText(), validateEntry(), formatBibEntry() (+2 more)
+Cohesion: 0.13
+Nodes (19): ApaPdfPreview(), formatCoverDate(), NodeCounters, PAGE_CONTENT_HEIGHT, PAGE_SIZE_DIMENSIONS, renderPlainText(), validateEntry(), ApaTocDepth (+11 more)
 
 ### Community 36 - "Community 36"
 Cohesion: 0.27
 Nodes (11): DEVELOPMENT_IMAGE_MIME_TYPES, DevelopmentImageAttrs, DevelopmentImageMimeType, embedDevelopmentImage(), ImageValidationResult, isRecord(), normalizeDevelopmentContent(), normalizeNode() (+3 more)
 
 ### Community 37 - "Community 37"
-Cohesion: 0.29
-Nodes (7): CourseLanding(), CourseLandingProps, FeatureCard(), PartnerListProps, TeamManagerProps, ScheduleEntry, Partner
+Cohesion: 0.39
+Nodes (4): PartnerListProps, TeamManagerProps, usePartners(), Partner
 
 ### Community 38 - "Community 38"
-Cohesion: 0.31
-Nodes (9): DocumentCreateDialog(), DocumentList(), useResources(), useScheduleEntries(), useTasks(), useApaDocuments(), getById(), CourseDetailPage() (+1 more)
+Cohesion: 0.23
+Nodes (14): CourseCard(), CourseCardProps, CourseDetailProps, CourseFormProps, CourseLanding(), CourseLandingProps, CourseListProps, FeatureCard() (+6 more)
 
 ### Community 39 - "Community 39"
-Cohesion: 0.18
-Nodes (10): Completion Report, Done When, Key rules, Mandatory Post-Execution Hooks, Outline, Phase 0: Outline & Research, Phase 1: Design & Contracts, Phases (+2 more)
+Cohesion: 0.12
+Nodes (15): 1. Initialize Convergence Context, 2. Load Artifacts (Progressive Disclosure), 3. Build the Intent Inventory, 4. Assess the Codebase and Classify Findings, 5. Assign Severity, 6. Present the In-Session Findings Summary, 7. Append Convergence Tasks (or report converged), 8. Provide Next Actions (Handoff) (+7 more)
 
 ### Community 40 - "Community 40"
-Cohesion: 0.18
-Nodes (10): Completion Report, Done When, For AI Generation, Mandatory Post-Execution Hooks, Outline, Pre-Execution Checks, Quick Guidelines, Section Requirements (+2 more)
+Cohesion: 0.13
+Nodes (14): ApaFormEditor (props extendidas), ApaPdfPreview (props extendidas), Bibliography, BibliographyField (validación actualizada, misma interfaz de props), Data layer, Development: table captions, DevelopmentTableControls (props extendidas), Document format controls (+6 more)
 
 ### Community 41 - "Community 41"
-Cohesion: 0.18
-Nodes (10): Checklist Format (REQUIRED), Completion Report, Done When, Mandatory Post-Execution Hooks, Outline, Phase Structure, Pre-Execution Checks, Task Generation Rules (+2 more)
+Cohesion: 0.14
+Nodes (13): ApaFontFamily, ApaFormDocument (extendido), BibEntry (sin cambios de forma, semántica ajustada), Data Model: Mejoras de Formato APA y Navegación en el Editor de PDF, DevelopmentTableAttrs (nuevo, análogo a DevelopmentImageAttrs), Entidades derivadas (no persistidas), Extensión de tipos existentes, ListEntry (+5 more)
 
 ### Community 42 - "Community 42"
 Cohesion: 0.36
 Nodes (6): ScheduleEntryList(), Tabs(), TabsContent(), TabsList(), tabsListVariants, TabsTrigger()
 
 ### Community 43 - "Community 43"
-Cohesion: 0.33
-Nodes (7): createApaFormTemplate(), createApaTemplateContent(), todayInputValue(), ApaDocumentContent, normalizePageSize(), isFormDocument(), migrateLegacyDocument()
+Cohesion: 0.09
+Nodes (46): ApaFormEditorProps, ApaPdfPreviewProps, BibliographyFieldProps, DocumentListProps, ObjectivesFieldsProps, createApaFormatDefaults(), createApaFormTemplate(), createApaTemplateContent() (+38 more)
 
 ### Community 44 - "Community 44"
+Cohesion: 0.14
+Nodes (13): Assumptions, Edge Cases, Feature Specification: Mejoras de Formato APA y Navegación en el Editor de PDF, Functional Requirements, Key Entities, Measurable Outcomes, Requirements *(mandatory)*, Success Criteria *(mandatory)* (+5 more)
+
+### Community 45 - "Community 45"
+Cohesion: 0.08
+Nodes (26): Specification Quality Checklist, Specification Quality Checklist: Course Modules, Specification Quality Checklist: Editor APA por Formulario con Vista Previa PDF, Specification Quality Checklist: Editor de Documentos APA, Course as Foundational Data Structure, Content Quality, Feature Readiness, Notes (+18 more)
+
+### Community 46 - "Community 46"
+Cohesion: 0.15
+Nodes (12): Assumptions, Edge Cases, Feature Specification: Números de Página Reales en Índice y Listados del Editor APA, Functional Requirements, Key Entities, Measurable Outcomes, Requirements *(mandatory)*, Success Criteria *(mandatory)* (+4 more)
+
+### Community 47 - "Community 47"
+Cohesion: 0.17
+Nodes (7): DropdownMenuCheckboxItem(), DropdownMenuLabel(), DropdownMenuRadioItem(), DropdownMenuSeparator(), DropdownMenuShortcut(), DropdownMenuSubContent(), DropdownMenuSubTrigger()
+
+### Community 48 - "Community 48"
+Cohesion: 0.18
+Nodes (10): Completion Report, Done When, Key rules, Mandatory Post-Execution Hooks, Outline, Phase 0: Outline & Research, Phase 1: Design & Contracts, Phases (+2 more)
+
+### Community 49 - "Community 49"
+Cohesion: 0.18
+Nodes (10): Completion Report, Done When, For AI Generation, Mandatory Post-Execution Hooks, Outline, Pre-Execution Checks, Quick Guidelines, Section Requirements (+2 more)
+
+### Community 50 - "Community 50"
+Cohesion: 0.07
+Nodes (27): Dependencies & Execution Order, Format: `[ID] [P?] [Story] Description`, Implementation for User Story 1, Implementation for User Story 2, Implementation for User Story 3, Implementation for User Story 4, Implementation for User Story 5, Implementation for User Story 6 (+19 more)
+
+### Community 51 - "Community 51"
+Cohesion: 0.07
+Nodes (27): Career Components, CareerCard, CareerForm, Course Components, CourseCard, CourseDetail, CourseForm, LinkForm (+19 more)
+
+### Community 52 - "Community 52"
+Cohesion: 0.08
+Nodes (25): Dependencies & Execution Order, Format: `[ID] [P?] [Story] Description`, Implementation for User Story 1, Implementation for User Story 2, Implementation for User Story 3, Implementation for User Story 4, Implementation Strategy, Incremental Delivery (+17 more)
+
+### Community 53 - "Community 53"
+Cohesion: 0.11
+Nodes (18): Format: `[ID] [P?] [Story] Description`, Implementation for User Story 1, Implementation for User Story 2, Implementation Strategy, Incremental Delivery, MVP First (User Story 1 Only), Notes, Parallel Example: User Story 1 (+10 more)
+
+### Community 54 - "Community 54"
+Cohesion: 0.08
+Nodes (23): Dependencies & Execution Order, Format: `[ID] [P?] [Story] Description`, Implementation for User Story 1, Implementation for User Story 2, Implementation for User Story 3, Implementation Strategy, Incremental Delivery, MVP First (User Story 1 Only) (+15 more)
+
+### Community 55 - "Community 55"
+Cohesion: 0.09
+Nodes (22): Assumptions, Clarifications, Constraints, Dependencies, Edge Cases, Feature Specification: Course Modules, Functional Requirements, Key Entities (+14 more)
+
+### Community 56 - "Community 56"
+Cohesion: 0.09
+Nodes (22): Dependencies & Execution Order, Implementation for User Story 1, Implementation for User Story 2, Implementation for User Story 3, Implementation for User Story 4, Implementation Strategy, Incremental Delivery, MVP First (User Story 1 Only) (+14 more)
+
+### Community 57 - "Community 57"
+Cohesion: 0.10
+Nodes (20): Dependencies & Execution Order, Format: `[ID] [P?] [Story] Description`, Implementation Strategy, Incremental Delivery, MVP First (US1 + US2), Notes, Parallel Example: Phase 4 (User Story 2), Parallel Opportunities (+12 more)
+
+### Community 58 - "Community 58"
+Cohesion: 0.12
+Nodes (5): get_feature_paths(), get_repo_root(), _persist_feature_json(), resolve_specify_init_dir(), common.sh script
+
+### Community 59 - "Community 59"
+Cohesion: 0.12
+Nodes (15): Prerequisites, Quickstart Validation Guide: Course Modules, Setup, V10: Responsive Layout (covers NFR-003), V11: Keyboard Navigation (covers NFR-004), V1: Career CRUD (covers FR-001 to FR-004, FR-017, FR-018), V2: Course CRUD within Career (covers FR-005 to FR-009), V3: Course Metadata (covers FR-006, FR-014) (+7 more)
+
+### Community 60 - "Community 60"
+Cohesion: 0.13
+Nodes (14): Assumptions, Edge Cases, Feature Specification: Editor APA por Formulario con Vista Previa PDF, Functional Requirements, Key Entities, Measurable Outcomes, Requirements *(mandatory)*, Success Criteria *(mandatory)* (+6 more)
+
+### Community 61 - "Community 61"
+Cohesion: 0.13
+Nodes (14): ApaFormEditor (vista dividida), ApaPdfPreview (+ controles), BibliographyField (sección 5), CoverFields (sección 1), DevelopmentField (sección 3), Form Components, Formatter Contract, SectionFields (secciones 2 y 4) (+6 more)
+
+### Community 62 - "Community 62"
+Cohesion: 0.14
+Nodes (13): Assumptions, Edge Cases, Feature Specification: Editor de Documentos APA, Functional Requirements, Key Entities, Measurable Outcomes, Requirements *(mandatory)*, Success Criteria *(mandatory)* (+5 more)
+
+### Community 63 - "Community 63"
+Cohesion: 0.14
+Nodes (13): Assumptions, Edge Cases, Feature Specification: Desarrollo con Imágenes y Tablas en Editor APA, Functional Requirements, Key Entities *(include if feature involves data)*, Measurable Outcomes, Requirements *(mandatory)*, Success Criteria *(mandatory)* (+5 more)
+
+### Community 64 - "Community 64"
+Cohesion: 0.15
+Nodes (12): Assumptions, Edge Cases, Feature Specification: Trabajo Colaborativo por Invitación, Functional Requirements, Key Entities, Measurable Outcomes, Requirements *(mandatory)*, Success Criteria *(mandatory)* (+4 more)
+
+### Community 65 - "Community 65"
+Cohesion: 0.18
+Nodes (10): Checklist Format (REQUIRED), Completion Report, Done When, Mandatory Post-Execution Hooks, Outline, Phase Structure, Pre-Execution Checks, Task Generation Rules (+2 more)
+
+### Community 66 - "Community 66"
+Cohesion: 0.15
+Nodes (12): ApaTemplateNotice, Document Components, DocumentEditor, DocumentForm (crear / renombrar), DocumentList, DocumentPreview, UI Contracts: Editor de Documentos APA, useApaDocument (detalle + autoguardado) (+4 more)
+
+### Community 67 - "Community 67"
+Cohesion: 0.17
+Nodes (11): Career, Cascade Delete Rules, Course, Data Model: Course Modules, Entities, Entity Relationship Diagram, IndexedDB Schema, Partner (+3 more)
+
+### Community 68 - "Community 68"
+Cohesion: 0.20
+Nodes (8): AppSidebar(), useIsMobile(), SidebarInset(), SidebarProvider(), Tooltip(), TooltipContent(), TooltipProvider(), TooltipTrigger()
+
+### Community 69 - "Community 69"
+Cohesion: 0.20
+Nodes (9): 1. Crear un entregable desde el curso (US-1, SC-001), 2. Rellenar el formulario con preview en vivo (US-2, SC-002), 3. Bibliografía dinámica (US-4), 4. Varios documentos por curso (US-3, SC-005), 5. Exportar a PDF (US-5, SC-004), Gates, Prerequisites, Quickstart: Editor APA por Formulario con Vista Previa PDF (+1 more)
+
+### Community 70 - "Community 70"
+Cohesion: 0.20
+Nodes (9): Complexity Tracking, Constitution Check, Documentation (this feature), Implementation Plan: Trabajo Colaborativo por Invitación, Post-Design Constitution Re-check (Phase 1), Project Structure, Source Code (repository root), Summary (+1 more)
+
+### Community 71 - "Community 71"
+Cohesion: 0.20
+Nodes (9): Arranque local, Criterios de salida, E1 — Invitar (US1; FR-001/002/003/005; SC-001), E2 — Aceptar con aislamiento (US2; FR-006/007/008/009; SC-002/003/004), E3 — Gestionar y revocar (US3; FR-011/012/013; SC-005), E4 — Accesibilidad y teclado (Constitución V), Escenarios de validación, Prerrequisitos (+1 more)
+
+### Community 72 - "Community 72"
+Cohesion: 0.20
+Nodes (9): Complexity Tracking, Constitution Check, Documentation (this feature), Implementation Plan: Desarrollo con Imágenes y Tablas en Editor APA, Project Structure, Re-check post-Phase 1, Source Code (repository root), Summary (+1 more)
+
+### Community 73 - "Community 73"
+Cohesion: 0.08
+Nodes (50): DevelopmentFieldProps, DevelopmentImage, DevelopmentTable, DevelopmentImageDialog(), DevelopmentImageDialogProps, DevelopmentTableControls(), DevelopmentTableControlsProps, DocumentCreateDialogProps (+42 more)
+
+### Community 74 - "Community 74"
+Cohesion: 0.22
+Nodes (8): Complexity Tracking, Constitution Check, Documentation (this feature), Implementation Plan: Course Modules, Project Structure, Source Code (repository root), Summary, Technical Context
+
+### Community 75 - "Community 75"
+Cohesion: 0.22
+Nodes (8): R1: Storage — IndexedDB vs localStorage, R2: State Management — Hooks vs Context vs External Library, R3: Data Relationships — Embedding vs Referencing, R4: ID Generation, R5: Form Handling, R6: Navigation Structure, R7: shadcn Components Needed (Additional), Research: Course Modules
+
+### Community 76 - "Community 76"
+Cohesion: 0.22
+Nodes (8): Complexity Tracking, Constitution Check, Documentation (this feature), Implementation Plan: Editor de Documentos APA, Project Structure, Source Code (repository root), Summary, Technical Context
+
+### Community 77 - "Community 77"
+Cohesion: 0.22
+Nodes (8): Prerequisites, Quickstart Validation Guide: Editor de Documentos APA, Setup, V1: Crear desde plantilla APA (cubre FR-001, FR-002, SC-001), V2: Editar con vista previa (cubre FR-003 a FR-007, FR-014, SC-002), V3: Varios documentos por curso + autoguardado (cubre FR-008 a FR-010, FR-012, SC-005, SC-006), V4: Exportar a PDF (cubre FR-011, FR-013, SC-003, SC-004), Validation Scenarios
+
+### Community 78 - "Community 78"
+Cohesion: 0.22
+Nodes (8): ApaFormDocument (nueva, evoluciona `ApaDocument` de 002), ApaTemplate (constante, no persistida), Course (existente — sin cambios de esquema), Data Model: Editor APA por Formulario con Vista Previa PDF, Entities, Entity Relationship Diagram, Migración desde 002, Storage
+
+### Community 79 - "Community 79"
+Cohesion: 0.22
+Nodes (8): Complexity Tracking, Constitution Check, Documentation (this feature), Implementation Plan: Editor APA por Formulario con Vista Previa PDF, Project Structure, Source Code (repository root), Summary, Technical Context
+
+### Community 80 - "Community 80"
+Cohesion: 0.22
+Nodes (8): ApaFormDocument, Compatibility, Content Validation, Data Model: Desarrollo con Imágenes y Tablas en Editor APA, ImageNode, Relationship, State and Error Handling, TableNode
+
+### Community 81 - "Community 81"
+Cohesion: 0.22
+Nodes (8): Prerequisites, Quickstart: Desarrollo con Imágenes y Tablas en Editor APA, Scenario 1: Insert and validate an image, Scenario 2: Create and edit a table, Scenario 3: Preview and PDF fidelity, Scenario 4: Existing-document compatibility, Scenario 5: Accessibility and failure recovery, Validation commands
+
+### Community 82 - "Community 82"
+Cohesion: 0.31
+Nodes (4): get_highest_from_specs(), is_feature_number_in_range(), spec_prefix_exists(), create-new-feature.sh script
+
+### Community 83 - "Community 83"
+Cohesion: 0.22
+Nodes (8): Accessibility contract, DevelopmentField, Image insertion contract, Persistence contract, Preview and print contract, Table controls contract, UI Contracts: Desarrollo con Imágenes y Tablas en Editor APA, Contract Type
+
+### Community 84 - "Community 84"
+Cohesion: 0.25
+Nodes (7): ApaDocument (nueva), ApaTemplate (constante, no persistida), Course (existente, 001 — sin cambios de esquema), Data Model: Editor de Documentos APA, Entities, Entity Relationship Diagram, Storage
+
+### Community 85 - "Community 85"
+Cohesion: 0.25
+Nodes (7): R1: Editor de texto enriquecido — TipTap, R2: Símbolos y fórmulas simples — KaTeX, R3: Exportación a PDF — impresión del navegador con CSS @page, R4: Estilos APA compartidos — una sola hoja print/preview, R5: Autoguardado y persistencia — IndexedDB + debounce (patrón 001), R6: Relaciones y borrado en cascada — FK + lógica de aplicación (patrón 001), Research: Editor de Documentos APA
+
+### Community 86 - "Community 86"
+Cohesion: 0.25
+Nodes (7): R1: Fuente única de verdad — modelo estructurado por secciones, R2: Campo de desarrollo enriquecido — fragmento TipTap acotado, R3: Vista previa + controles PDF — mismo DOM que se imprime, R4: Bibliografía dinámica — lista estructurada + formateador puro, R5: Persistencia y migración — mismo store, esquema v2, R6: Validación y responsive — por sección, apilado con pestañas, Research: Editor APA por Formulario con Vista Previa PDF
+
+### Community 87 - "Community 87"
+Cohesion: 0.25
+Nodes (7): D1 — Modelo de acceso compartido en Firestore, D2 — Envío del correo de invitación, D3 — Reclamo de acceso (aceptar invitación), D4 — Visibilidad "solo la asignatura invitada", D5 — UI y roles, D6 — Desarrollo y verificación local, Research: Trabajo Colaborativo por Invitación
+
+### Community 88 - "Community 88"
+Cohesion: 0.25
+Nodes (7): Decision 1: Mantener un único contenido estructurado para edición, preview y PDF, Decision 2: Embebido local para imágenes, Decision 3: Tablas académicas básicas, Decision 4: Texto alternativo y degradación segura, Decision 5: Preview y PDF comparten renderer y estilos, Decision 6: Validación disponible en el repositorio, Research: Desarrollo con Imágenes y Tablas en Editor APA
+
+### Community 89 - "Community 89"
+Cohesion: 0.29
+Nodes (6): Asignatura compartida (sin colección nueva), CourseMember (colección `courseMembers`, doc ID = `${courseId}_${uid}`), Data Model: Trabajo Colaborativo por Invitación, Documento colaborativo (extensión de metadatos), Invitation (colección `invitations`, doc ID = token aleatorio), Relaciones
+
+### Community 90 - "Community 90"
+Cohesion: 0.29
+Nodes (6): acceptInvitation(token), Contract: Ciclo de Vida de Invitaciones, Listados (propietario), renewInvitation(invitationId), revokeInvitation(invitationId) / removeMember(courseId, uid), sendInvitation(courseId, email, courseName)
+
+### Community 91 - "Community 91"
+Cohesion: 0.33
+Nodes (5): Specification Quality Checklist: Desarrollo con Imágenes y Tablas en Editor APA, Content Quality, Feature Readiness, Notes, Requirement Completeness
+
+### Community 92 - "Community 92"
+Cohesion: 0.33
+Nodes (5): Specification Quality Checklist: Trabajo Colaborativo por Invitación, Content Quality, Feature Readiness, Notes, Requirement Completeness
+
+### Community 93 - "Community 93"
+Cohesion: 0.33
+Nodes (5): Contract: Correo de Invitación y Ruta de Aceptación, Enlace de invitación, Extensión de `TeamPage` (`/courses/:courseId/team`), Plantilla informativa opcional, Ruta pública `/invite/:token` (`InviteAcceptPage`)
+
+### Community 94 - "Community 94"
+Cohesion: 0.40
+Nodes (4): Contract: Control de Acceso (Reglas Firestore), Matriz de acceso, Notas, Reglas de reclamo (batch aceptación)
+
+### Community 99 - "Community 99"
+Cohesion: 0.18
+Nodes (10): Completion Report, Done When, Key rules, Mandatory Post-Execution Hooks, Outline, Phase 0: Outline & Research, Phase 1: Design & Contracts, Phases (+2 more)
+
+### Community 100 - "Community 100"
+Cohesion: 0.18
+Nodes (10): Completion Report, Done When, For AI Generation, Mandatory Post-Execution Hooks, Outline, Pre-Execution Checks, Quick Guidelines, Section Requirements (+2 more)
+
+### Community 101 - "Community 101"
+Cohesion: 0.18
+Nodes (10): Checklist Format (REQUIRED), Completion Report, Done When, Mandatory Post-Execution Hooks, Outline, Phase Structure, Pre-Execution Checks, Task Generation Rules (+2 more)
+
+### Community 102 - "Community 102"
+Cohesion: 0.18
+Nodes (11): Assumptions, Edge Cases, Feature Specification: [FEATURE NAME], Key Entities *(include if feature involves data)*, Measurable Outcomes, Requirements *(mandatory)*, Success Criteria *(mandatory)*, User Scenarios & Testing *(mandatory)* (+3 more)
+
+### Community 103 - "Community 103"
+Cohesion: 0.20
+Nodes (9): Complexity Tracking, Constitution Check, Documentation (this feature), Implementation Plan: Mejoras de Formato APA y Navegación en el Editor de PDF, Project Structure, Re-check post-Phase 1, Source Code (repository root), Summary (+1 more)
+
+### Community 104 - "Community 104"
+Cohesion: 0.20
+Nodes (9): Prerequisites, Quickstart: Mejoras de Formato APA y Navegación en el Editor de PDF, Scenario 1: Fuente y márgenes APA en el PDF exportado, Scenario 2: Referencia bibliográfica sin fecha, Scenario 3: Tabla de contenido configurable, Scenario 4: Listado de figuras y listado de tablas, Scenario 5: Compatibilidad con documentos existentes, Scenario 6: Accesibilidad (+1 more)
+
+### Community 105 - "Community 105"
+Cohesion: 0.22
+Nodes (8): Decision 1: Selector de fuente (Arial / Times New Roman, 12 pt), Decision 2: Año de bibliografía opcional → "(s.f.)", Decision 3: Tabla de contenido automática — alcance de "número de página", Decision 4: Extracción de entradas de TOC y listados (figuras/tablas), Decision 5: Título (caption) de tabla para el listado de tablas, Decision 6: Persistencia y compatibilidad hacia atrás, Decision 7: Enfoque de pruebas, Research: Mejoras de Formato APA y Navegación en el Editor de PDF
+
+### Community 106 - "Community 106"
+Cohesion: 0.28
+Nodes (6): Functional Requirements, Success Criteria, User Story, MVP First Delivery, Parallel Execution, Task Phases
+
+### Community 107 - "Community 107"
 Cohesion: 0.25
 Nodes (7): Anti-Examples: What NOT To Do, Checklist Purpose: "Unit Tests for English", Example Checklist Types & Sample Items, Execution Steps, Post-Execution Checks, Pre-Execution Checks, User Input
 
-### Community 45 - "Community 45"
+### Community 108 - "Community 108"
+Cohesion: 0.25
+Nodes (7): Anti-Examples: What NOT To Do, Checklist Purpose: "Unit Tests for English", Example Checklist Types & Sample Items, Execution Steps, Post-Execution Checks, Pre-Execution Checks, User Input
+
+### Community 109 - "Community 109"
+Cohesion: 0.25
+Nodes (8): Complexity Tracking, Constitution Check, Documentation (this feature), Implementation Plan: [FEATURE], Project Structure, Source Code (repository root), Summary, Technical Context
+
+### Community 110 - "Community 110"
+Cohesion: 0.29
+Nodes (6): Completion Report, Done When, Mandatory Post-Execution Hooks, Outline, Pre-Execution Checks, User Input
+
+### Community 111 - "Community 111"
+Cohesion: 0.29
+Nodes (6): Completion Report, Done When, Mandatory Post-Execution Hooks, Outline, Pre-Execution Checks, User Input
+
+### Community 112 - "Community 112"
 Cohesion: 0.38
-Nodes (6): ApaFormEditor(), ApaPageStyle(), APA_STATUS_LABELS_ES, usePartners(), useApaFormDocument(), DocumentEditorPage()
+Nodes (7): Specification-Driven Development, Speckit Workflow, Implement Step, Plan Step, Review Gates, Specify Step, Tasks Step
 
-### Community 46 - "Community 46"
+### Community 113 - "Community 113"
 Cohesion: 0.29
 Nodes (6): Completion Report, Done When, Mandatory Post-Execution Hooks, Outline, Pre-Execution Checks, User Input
 
-### Community 47 - "Community 47"
+### Community 114 - "Community 114"
 Cohesion: 0.29
 Nodes (6): Completion Report, Done When, Mandatory Post-Execution Hooks, Outline, Pre-Execution Checks, User Input
 
-### Community 48 - "Community 48"
+### Community 115 - "Community 115"
+Cohesion: 0.33
+Nodes (5): Specification Quality Checklist: Mejoras de Formato APA y Navegación en el Editor de PDF, Content Quality, Feature Readiness, Notes, Requirement Completeness
+
+### Community 116 - "Community 116"
+Cohesion: 0.33
+Nodes (5): Specification Quality Checklist: Números de Página Reales en Índice y Listados del Editor APA, Content Quality, Feature Readiness, Notes, Requirement Completeness
+
+### Community 117 - "Community 117"
 Cohesion: 0.33
 Nodes (5): Outline, Post-Execution Checks, Pre-Execution Checks, Scope Guard, User Input
 
-### Community 49 - "Community 49"
+### Community 118 - "Community 118"
+Cohesion: 0.33
+Nodes (5): Outline, Post-Execution Checks, Pre-Execution Checks, Scope Guard, User Input
+
+### Community 119 - "Community 119"
 Cohesion: 0.40
 Nodes (4): Outline, Post-Execution Checks, Pre-Execution Checks, User Input
 
-### Community 50 - "Community 50"
-Cohesion: 0.50
-Nodes (4): ApaPdfPreviewProps, DocumentListProps, ApaDocumentStatus, ApaFormDocument
+### Community 120 - "Community 120"
+Cohesion: 0.40
+Nodes (4): Outline, Post-Execution Checks, Pre-Execution Checks, User Input
+
+### Community 121 - "Community 121"
+Cohesion: 0.40
+Nodes (5): Dependencies & Execution Order, Parallel Opportunities, Phase Dependencies, User Story Dependencies, Within Each User Story
+
+### Community 122 - "Community 122"
+Cohesion: 0.67
+Nodes (3): Implementation for User Story 3, Phase 5: User Story 3 - [Title] (Priority: P3), Tests for User Story 3 (OPTIONAL - only if tests requested) ⚠️
 
 ## Knowledge Gaps
-- **263 isolated node(s):** `$schema`, `style`, `rsc`, `tsx`, `config` (+258 more)
+- **841 isolated node(s):** `check-prerequisites.sh script`, `common.sh script`, `resolve-template.sh script`, `setup-plan.sh script`, `setup-tasks.sh script` (+836 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **2 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **6 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `cn()` connect `Prerequisites Check` to `React UI Components`, `Community 42`, `Auth & Card UI`, `Speckit Planning`, `Plan Setup`, `Tasks Setup`?**
-  _High betweenness centrality (0.067) - this node is a cross-community bridge._
-- **Why does `Button()` connect `Speckit Planning` to `React UI Components`, `Theme System`, `Community 38`, `Auth & Card UI`, `Branch Management`, `Community 45`, `OpenCode Plugin`, `Prerequisites Check`, `Template Resolver`, `Plan Setup`, `Tasks Setup`, `Community 26`?**
-  _High betweenness centrality (0.037) - this node is a cross-community bridge._
-- **Why does `Badge()` connect `Auth & Card UI` to `Theme System`, `Community 38`, `Community 42`, `Speckit Planning`, `Community 45`, `Prerequisites Check`?**
+- **Why does `cn()` connect `Prerequisites Check` to `React UI Components`, `Community 68`, `Community 73`, `Community 42`, `Speckit Planning`, `Community 47`, `Tasks Setup`, `Community 25`, `Community 26`?**
+  _High betweenness centrality (0.020) - this node is a cross-community bridge._
+- **Why does `Button()` connect `Community 73` to `React UI Components`, `Community 37`, `Community 38`, `Speckit Planning`, `OpenCode Plugin`, `Prerequisites Check`, `Template Resolver`, `Tasks Setup`, `Community 25`, `Community 26`?**
+  _High betweenness centrality (0.012) - this node is a cross-community bridge._
+- **Why does `ApaFormDocument` connect `Community 43` to `Community 33`, `Community 35`, `Community 38`, `Shell Utilities`, `Spec Quality & Domain`, `Speckit Planning`, `Community 26`?**
   _High betweenness centrality (0.006) - this node is a cross-community bridge._
-- **What connects `$schema`, `style`, `rsc` to the rest of the system?**
-  _267 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **What connects `check-prerequisites.sh script`, `common.sh script`, `resolve-template.sh script` to the rest of the system?**
+  _845 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `React UI Components` be split into smaller, more focused modules?**
-  _Cohesion score 0.09103840682788052 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.1168091168091168 - nodes in this community are weakly interconnected._
 - **Should `Dev Toolchain` be split into smaller, more focused modules?**
   _Cohesion score 0.13333333333333333 - nodes in this community are weakly interconnected._
 - **Should `Speckit Commands` be split into smaller, more focused modules?**
-  _Cohesion score 0.0761904761904762 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05061224489795919 - nodes in this community are weakly interconnected._

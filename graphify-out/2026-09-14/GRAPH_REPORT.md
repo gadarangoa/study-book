@@ -1,16 +1,16 @@
-# Graph Report - study-book  (2026-09-13)
+# Graph Report - study-book  (2026-09-14)
 
 ## Corpus Check
-- 112 files · ~28,705 words
+- 125 files · ~48,837 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 645 nodes · 1680 edges · 33 communities (31 shown, 2 thin omitted)
+- 779 nodes · 1850 edges · 51 communities (49 shown, 2 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 24 edges (avg confidence: 0.84)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `663d9ad1`
+- Built from commit: `a7bb09ec`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -43,13 +43,31 @@
 - [[_COMMUNITY_Community 28|Community 28]]
 - [[_COMMUNITY_Community 29|Community 29]]
 - [[_COMMUNITY_Community 31|Community 31]]
+- [[_COMMUNITY_Community 33|Community 33]]
+- [[_COMMUNITY_Community 34|Community 34]]
+- [[_COMMUNITY_Community 35|Community 35]]
+- [[_COMMUNITY_Community 36|Community 36]]
+- [[_COMMUNITY_Community 37|Community 37]]
+- [[_COMMUNITY_Community 38|Community 38]]
+- [[_COMMUNITY_Community 39|Community 39]]
+- [[_COMMUNITY_Community 40|Community 40]]
+- [[_COMMUNITY_Community 41|Community 41]]
+- [[_COMMUNITY_Community 42|Community 42]]
+- [[_COMMUNITY_Community 43|Community 43]]
+- [[_COMMUNITY_Community 44|Community 44]]
+- [[_COMMUNITY_Community 45|Community 45]]
+- [[_COMMUNITY_Community 46|Community 46]]
+- [[_COMMUNITY_Community 47|Community 47]]
+- [[_COMMUNITY_Community 48|Community 48]]
+- [[_COMMUNITY_Community 49|Community 49]]
+- [[_COMMUNITY_Community 50|Community 50]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `cn()` - 104 edges
-2. `Button()` - 41 edges
-3. `compilerOptions` - 19 edges
-4. `Input()` - 18 edges
-5. `Label()` - 18 edges
+2. `Button()` - 43 edges
+3. `Input()` - 20 edges
+4. `Label()` - 20 edges
+5. `compilerOptions` - 19 edges
 6. `Course` - 18 edges
 7. `Badge()` - 17 edges
 8. `useAuth()` - 16 edges
@@ -79,11 +97,11 @@
 - **Specification Quality Framework** — templates_spec_template, checklists_requirements, checklists_requirements_content_quality, checklists_requirements_requirement_completeness, checklists_requirements_feature_readiness [INFERRED 0.85]
 - **Course Domain Model** — specs_spec_course_entity, specs_spec_resource_entity, specs_spec_task_entity, specs_spec_partner_entity, specs_spec_schedule_entry_entity [EXTRACTED 1.00]
 
-## Communities (33 total, 2 thin omitted)
+## Communities (51 total, 2 thin omitted)
 
 ### Community 0 - "React UI Components"
-Cohesion: 0.11
-Nodes (21): useIsMobile(), Separator(), Sidebar(), SidebarContext, SidebarContextProps, SidebarGroupAction(), SidebarInput(), SidebarMenuAction() (+13 more)
+Cohesion: 0.09
+Nodes (33): AppSidebar(), useIsMobile(), Sidebar(), SidebarContent(), SidebarContext, SidebarContextProps, SidebarFooter(), SidebarGroup() (+25 more)
 
 ### Community 1 - "Dev Toolchain"
 Cohesion: 0.13
@@ -102,12 +120,12 @@ Cohesion: 0.09
 Nodes (21): compilerOptions, allowImportingTsExtensions, erasableSyntaxOnly, jsx, lib, module, moduleDetection, moduleResolution (+13 more)
 
 ### Community 5 - "Theme System"
-Cohesion: 0.10
-Nodes (19): AuthProvider(), AuthContext, AuthContextValue, ProtectedRoute(), useAuth(), ResolvedTheme, Theme, THEME_VALUES (+11 more)
+Cohesion: 0.08
+Nodes (28): AuthProvider(), AuthContext, AuthContextValue, ProtectedRoute(), useAuth(), InvitationList(), InvitationListProps, InviteDialog() (+20 more)
 
 ### Community 6 - "Shell Utilities"
-Cohesion: 0.07
-Nodes (57): ApaFormEditor(), ApaFormEditorProps, PAPER_MAX_WIDTH_CM, ZOOM_LEVELS, ApaPageStyle(), ApaPdfPreview(), ApaPdfPreviewProps, ApaZoomLevel (+49 more)
+Cohesion: 0.14
+Nodes (21): BibliographyFieldProps, CoverFieldsProps, ObjectivesFieldsProps, APA_DOCUMENT_STATUSES, APA_STATUS_LABELS, ApaDocument, ApaDocumentFormData, ApaDocumentWithMeta (+13 more)
 
 ### Community 7 - "Spec-Driven Development"
 Cohesion: 0.08
@@ -118,24 +136,24 @@ Cohesion: 0.11
 Nodes (17): compilerOptions, allowImportingTsExtensions, erasableSyntaxOnly, lib, module, moduleDetection, moduleResolution, noEmit (+9 more)
 
 ### Community 9 - "Spec Quality & Domain"
-Cohesion: 0.07
-Nodes (47): ContributionAttribution, CourseAccess, CourseMember, Invitation, InvitationStatus, InvitationWithCourse, MemberRole, SharedCourseView (+39 more)
+Cohesion: 0.09
+Nodes (21): ContributionAttribution, CourseAccess, CourseMember, Invitation, InvitationStatus, InvitationWithCourse, MemberRole, SharedCourseView (+13 more)
 
 ### Community 10 - "NPM Dependencies"
-Cohesion: 0.08
-Nodes (26): dependencies, @base-ui/react, class-variance-authority, clsx, date-fns, firebase, @fontsource-variable/inter, katex (+18 more)
+Cohesion: 0.07
+Nodes (27): dependencies, @base-ui/react, class-variance-authority, clsx, date-fns, firebase, @fontsource-variable/inter, katex (+19 more)
 
 ### Community 11 - "Auth & Card UI"
-Cohesion: 0.13
-Nodes (29): EMPTY_FORM, EntryErrors, EntryForm(), CareerForm(), CourseTagFilter(), CourseTagFilterProps, Field(), colorStyles (+21 more)
+Cohesion: 0.14
+Nodes (28): EMPTY_FORM, EntryErrors, EntryForm(), CareerForm(), CourseTagFilter(), CourseTagFilterProps, Field(), colorStyles (+20 more)
 
 ### Community 12 - "Speckit Planning"
 Cohesion: 0.13
-Nodes (28): DevelopmentFieldProps, DocumentCreateDialogProps, InviteDialogProps, LinkForm(), LinkFormProps, NoteForm(), NoteFormProps, ResourceListProps (+20 more)
+Nodes (31): DevelopmentField(), DevelopmentFieldProps, DevelopmentImage, DevelopmentImageDialog(), DevelopmentImageDialogProps, DevelopmentTableControls(), DevelopmentTableControlsProps, DocumentCreateDialogProps (+23 more)
 
 ### Community 13 - "Branch Management"
-Cohesion: 0.11
-Nodes (27): CourseCard(), CourseCardProps, CourseDetailProps, CourseForm(), CourseFormProps, CourseList(), CourseListProps, ScheduleEntryList() (+19 more)
+Cohesion: 0.16
+Nodes (19): CourseCard(), CourseCardProps, CourseDetailProps, CourseForm(), CourseFormProps, CourseList(), CourseListProps, ScheduleEntryListProps (+11 more)
 
 ### Community 14 - "Root TypeScript Config"
 Cohesion: 0.33
@@ -146,16 +164,16 @@ Cohesion: 0.50
 Nodes (4): React Logo, Vite Logo, React TypeScript Vite shadcn/ui Stack, README
 
 ### Community 16 - "OpenCode Plugin"
-Cohesion: 0.15
-Nodes (18): CourseLanding(), CourseLandingProps, DocumentCreateDialog(), DocumentList(), FeatureCard(), TaskFormProps, TaskItem(), TaskItemProps (+10 more)
+Cohesion: 0.35
+Nodes (6): TaskFormProps, TaskItem(), TaskItemProps, TaskListProps, Task, TaskFormData
 
 ### Community 17 - "Prerequisites Check"
-Cohesion: 0.14
-Nodes (15): cn(), AlertDialogMedia(), AlertDialogOverlay(), CardAction(), CardFooter(), DialogOverlay(), DropdownMenuCheckboxItem(), DropdownMenuLabel() (+7 more)
+Cohesion: 0.12
+Nodes (18): cn(), AlertDialogMedia(), AlertDialogOverlay(), CardAction(), CardFooter(), Checkbox(), DialogOverlay(), DropdownMenuCheckboxItem() (+10 more)
 
 ### Community 18 - "Template Resolver"
-Cohesion: 0.29
-Nodes (10): Career, CareerFormData, CareerWithStats, CareerCard(), CareerCardProps, CareerFormProps, CareerList(), CareerListProps (+2 more)
+Cohesion: 0.32
+Nodes (9): Career, CareerFormData, CareerWithStats, CareerCard(), CareerCardProps, CareerFormProps, CareerList(), CareerListProps (+1 more)
 
 ### Community 19 - "Plan Setup"
 Cohesion: 0.23
@@ -166,12 +184,12 @@ Cohesion: 0.18
 Nodes (7): Sheet(), SheetContent(), SheetDescription(), SheetFooter(), SheetHeader(), SheetOverlay(), SheetTitle()
 
 ### Community 25 - "Community 25"
-Cohesion: 0.22
-Nodes (8): SidebarContent(), SidebarFooter(), SidebarGroup(), SidebarGroupContent(), SidebarGroupLabel(), SidebarHeader(), SidebarMenu(), SidebarMenuItem()
+Cohesion: 0.08
+Nodes (25): 1. Initialize Analysis Context, 2. Load Artifacts (Progressive Disclosure), 3. Build Semantic Models, 4. Detection Passes (Token-Efficient Analysis), 5. Severity Assignment, 6. Produce Compact Analysis Report, 7. Provide Next Actions, 8. Offer Remediation (+17 more)
 
 ### Community 26 - "Community 26"
-Cohesion: 0.29
-Nodes (6): AppSidebar(), SidebarInset(), Tooltip(), TooltipContent(), TooltipProvider(), TooltipTrigger()
+Cohesion: 0.13
+Nodes (16): ApaFormEditorProps, PAPER_MAX_WIDTH_CM, ZOOM_LEVELS, BibliographyField(), CoverFields(), ObjectivesFields(), ConclusionsFields(), ConclusionsFieldsProps (+8 more)
 
 ### Community 27 - "Community 27"
 Cohesion: 0.29
@@ -185,24 +203,96 @@ Nodes (4): name, private, type, version
 Cohesion: 0.50
 Nodes (3): Adding components, React + TypeScript + Vite + shadcn/ui, Using components
 
+### Community 33 - "Community 33"
+Cohesion: 0.23
+Nodes (16): clearStore(), create(), createInvitation(), deleteByCourseId(), deleteCareerCascade(), deleteCourseCascade(), deleteInvitationsByCourseId(), deleteMembersByCourseId() (+8 more)
+
+### Community 34 - "Community 34"
+Cohesion: 0.12
+Nodes (15): 1. Initialize Convergence Context, 2. Load Artifacts (Progressive Disclosure), 3. Build the Intent Inventory, 4. Assess the Codebase and Classify Findings, 5. Assign Severity, 6. Present the In-Session Findings Summary, 7. Append Convergence Tasks (or report converged), 8. Provide Next Actions (Handoff) (+7 more)
+
+### Community 35 - "Community 35"
+Cohesion: 0.18
+Nodes (10): ApaPdfPreview(), ApaZoomLevel, formatCoverDate(), PAGE_CONTENT_HEIGHT, PAGE_SIZE_DIMENSIONS, renderPlainText(), validateEntry(), formatBibEntry() (+2 more)
+
+### Community 36 - "Community 36"
+Cohesion: 0.27
+Nodes (11): DEVELOPMENT_IMAGE_MIME_TYPES, DevelopmentImageAttrs, DevelopmentImageMimeType, embedDevelopmentImage(), ImageValidationResult, isRecord(), normalizeDevelopmentContent(), normalizeNode() (+3 more)
+
+### Community 37 - "Community 37"
+Cohesion: 0.29
+Nodes (7): CourseLanding(), CourseLandingProps, FeatureCard(), PartnerListProps, TeamManagerProps, ScheduleEntry, Partner
+
+### Community 38 - "Community 38"
+Cohesion: 0.31
+Nodes (9): DocumentCreateDialog(), DocumentList(), useResources(), useScheduleEntries(), useTasks(), useApaDocuments(), getById(), CourseDetailPage() (+1 more)
+
+### Community 39 - "Community 39"
+Cohesion: 0.18
+Nodes (10): Completion Report, Done When, Key rules, Mandatory Post-Execution Hooks, Outline, Phase 0: Outline & Research, Phase 1: Design & Contracts, Phases (+2 more)
+
+### Community 40 - "Community 40"
+Cohesion: 0.18
+Nodes (10): Completion Report, Done When, For AI Generation, Mandatory Post-Execution Hooks, Outline, Pre-Execution Checks, Quick Guidelines, Section Requirements (+2 more)
+
+### Community 41 - "Community 41"
+Cohesion: 0.18
+Nodes (10): Checklist Format (REQUIRED), Completion Report, Done When, Mandatory Post-Execution Hooks, Outline, Phase Structure, Pre-Execution Checks, Task Generation Rules (+2 more)
+
+### Community 42 - "Community 42"
+Cohesion: 0.36
+Nodes (6): ScheduleEntryList(), Tabs(), TabsContent(), TabsList(), tabsListVariants, TabsTrigger()
+
+### Community 43 - "Community 43"
+Cohesion: 0.33
+Nodes (7): createApaFormTemplate(), createApaTemplateContent(), todayInputValue(), ApaDocumentContent, normalizePageSize(), isFormDocument(), migrateLegacyDocument()
+
+### Community 44 - "Community 44"
+Cohesion: 0.25
+Nodes (7): Anti-Examples: What NOT To Do, Checklist Purpose: "Unit Tests for English", Example Checklist Types & Sample Items, Execution Steps, Post-Execution Checks, Pre-Execution Checks, User Input
+
+### Community 45 - "Community 45"
+Cohesion: 0.38
+Nodes (6): ApaFormEditor(), ApaPageStyle(), APA_STATUS_LABELS_ES, usePartners(), useApaFormDocument(), DocumentEditorPage()
+
+### Community 46 - "Community 46"
+Cohesion: 0.29
+Nodes (6): Completion Report, Done When, Mandatory Post-Execution Hooks, Outline, Pre-Execution Checks, User Input
+
+### Community 47 - "Community 47"
+Cohesion: 0.29
+Nodes (6): Completion Report, Done When, Mandatory Post-Execution Hooks, Outline, Pre-Execution Checks, User Input
+
+### Community 48 - "Community 48"
+Cohesion: 0.33
+Nodes (5): Outline, Post-Execution Checks, Pre-Execution Checks, Scope Guard, User Input
+
+### Community 49 - "Community 49"
+Cohesion: 0.40
+Nodes (4): Outline, Post-Execution Checks, Pre-Execution Checks, User Input
+
+### Community 50 - "Community 50"
+Cohesion: 0.50
+Nodes (4): ApaPdfPreviewProps, DocumentListProps, ApaDocumentStatus, ApaFormDocument
+
 ## Knowledge Gaps
-- **169 isolated node(s):** `$schema`, `style`, `rsc`, `tsx`, `config` (+164 more)
+- **263 isolated node(s):** `$schema`, `style`, `rsc`, `tsx`, `config` (+258 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **2 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `cn()` connect `Prerequisites Check` to `React UI Components`, `Auth & Card UI`, `Speckit Planning`, `Branch Management`, `Plan Setup`, `Tasks Setup`, `Community 25`, `Community 26`?**
-  _High betweenness centrality (0.090) - this node is a cross-community bridge._
-- **Why does `Button()` connect `Speckit Planning` to `React UI Components`, `Theme System`, `Shell Utilities`, `Spec Quality & Domain`, `Auth & Card UI`, `Branch Management`, `OpenCode Plugin`, `Prerequisites Check`, `Template Resolver`, `Plan Setup`, `Tasks Setup`, `Community 25`?**
-  _High betweenness centrality (0.049) - this node is a cross-community bridge._
-- **Why does `Badge()` connect `Auth & Card UI` to `Shell Utilities`, `Spec Quality & Domain`, `Speckit Planning`, `Branch Management`, `OpenCode Plugin`, `Prerequisites Check`?**
-  _High betweenness centrality (0.008) - this node is a cross-community bridge._
+- **Why does `cn()` connect `Prerequisites Check` to `React UI Components`, `Community 42`, `Auth & Card UI`, `Speckit Planning`, `Plan Setup`, `Tasks Setup`?**
+  _High betweenness centrality (0.067) - this node is a cross-community bridge._
+- **Why does `Button()` connect `Speckit Planning` to `React UI Components`, `Theme System`, `Community 38`, `Auth & Card UI`, `Branch Management`, `Community 45`, `OpenCode Plugin`, `Prerequisites Check`, `Template Resolver`, `Plan Setup`, `Tasks Setup`, `Community 26`?**
+  _High betweenness centrality (0.037) - this node is a cross-community bridge._
+- **Why does `Badge()` connect `Auth & Card UI` to `Theme System`, `Community 38`, `Community 42`, `Speckit Planning`, `Community 45`, `Prerequisites Check`?**
+  _High betweenness centrality (0.006) - this node is a cross-community bridge._
 - **What connects `$schema`, `style`, `rsc` to the rest of the system?**
-  _173 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _267 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `React UI Components` be split into smaller, more focused modules?**
-  _Cohesion score 0.11 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.09103840682788052 - nodes in this community are weakly interconnected._
 - **Should `Dev Toolchain` be split into smaller, more focused modules?**
   _Cohesion score 0.13333333333333333 - nodes in this community are weakly interconnected._
 - **Should `Speckit Commands` be split into smaller, more focused modules?**

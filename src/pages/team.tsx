@@ -20,8 +20,19 @@ export function TeamPage() {
   const { user } = useAuth()
   const [course, setCourse] = useState<Course | null>(null)
   const { partners, addPartner, removePartner } = usePartners(courseId ?? "")
-  const { pending, loading: invitationsLoading, loadPending, sendInvitation, resendInvitation } = useInvitations(courseId ?? "")
-  const { members, loading: membersLoading, loadMembers, removeMember } = useMembers(courseId ?? "")
+  const {
+    pending,
+    loading: invitationsLoading,
+    loadPending,
+    renewInvitation,
+    revokeInvitation,
+  } = useInvitations(courseId ?? "")
+  const {
+    members,
+    loading: membersLoading,
+    loadMembers,
+    removeMember,
+  } = useMembers(courseId ?? "")
 
   useEffect(() => {
     if (!courseId) return
@@ -55,12 +66,20 @@ export function TeamPage() {
     loadPending()
   }, [loadPending])
 
-  const handleResend = useCallback(
+  const handleRenew = useCallback(
     async (invitationId: string) => {
-      await resendInvitation(invitationId)
+      await renewInvitation(invitationId)
       loadPending()
     },
-    [resendInvitation, loadPending]
+    [renewInvitation, loadPending]
+  )
+
+  const handleRevoke = useCallback(
+    async (invitationId: string) => {
+      await revokeInvitation(invitationId)
+      loadPending()
+    },
+    [revokeInvitation, loadPending]
   )
 
   const handleRemoveMember = useCallback(
@@ -93,7 +112,7 @@ export function TeamPage() {
           <ArrowLeftIcon />
           <span className="sr-only">Back to course</span>
         </Button>
-        <div className="flex-1 flex flex-col gap-1">
+        <div className="flex flex-1 flex-col gap-1">
           <h1 className="text-2xl font-semibold">
             {course.teamName ?? "Team"}
           </h1>
@@ -107,20 +126,38 @@ export function TeamPage() {
       </div>
 
       <div className="space-y-6">
-        <section>
-          <h2 className="text-lg font-semibold mb-4">Colaboradores con acceso (Firebase)</h2>
-          {isOwner && <InviteDialog courseId={courseId ?? ""} courseName={course.name} onInviteSent={handleInviteSent} />}
-          <InvitationList invitations={pending} onResend={handleResend} loading={invitationsLoading} />
+        <section className="space-y-4">
+          <h2 className="mb-4 text-lg font-semibold">
+            Colaboradores con acceso (Firebase)
+          </h2>
+          {isOwner && (
+            <>
+              <InviteDialog
+                courseId={courseId ?? ""}
+                courseName={course.name}
+                onInviteSent={handleInviteSent}
+              />
+              <InvitationList
+                invitations={pending}
+                onRenew={handleRenew}
+                onRevoke={handleRevoke}
+                loading={invitationsLoading}
+              />
+            </>
+          )}
           <MemberList
             members={members}
             currentUserUid={currentUserUid}
             onRemove={handleRemoveMember}
             loading={membersLoading}
+            canManage={!!isOwner}
           />
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold mb-4">Equipo local (para portadas APA)</h2>
+          <h2 className="mb-4 text-lg font-semibold">
+            Equipo local (para portadas APA)
+          </h2>
           <TeamManager
             teamName={course.teamName}
             partners={partners}

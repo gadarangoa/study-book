@@ -7,14 +7,32 @@ import { useAcceptInvite } from "@/features/collaboration/hooks/use-accept-invit
 import { getInvitationById } from "@/lib/db"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { ArrowRight, Loader2, CheckCircle, XCircle, AlertCircle, Clock, Mail, User, Lock } from "lucide-react"
+import {
+  ArrowRight,
+  Loader2,
+  CheckCircle,
+  XCircle,
+  AlertCircle,
+  Clock,
+  Mail,
+  User,
+  Lock,
+} from "lucide-react"
 import { format } from "date-fns"
 import { es } from "date-fns/locale"
 
-type InviteState = "loading" | "valid" | "accepted" | "expired" | "revoked" | "wrong-email" | "not-found"
+type InviteState =
+  | "loading"
+  | "valid"
+  | "accepted"
+  | "expired"
+  | "revoked"
+  | "wrong-email"
+  | "not-found"
 
 interface InvitationData {
   courseName: string
+  courseId: string
   invitedByEmail: string
   status: string
   expiresAt: string
@@ -25,15 +43,17 @@ export function InviteAcceptPage() {
   const { token } = useParams<{ token: string }>()
   const navigate = useNavigate()
   const { user, isLoading: authLoading } = useAuth()
-  const { acceptInvitation, loading: accepting } = useAcceptInvite()
+  const { acceptInvitation } = useAcceptInvite()
+  const [accepting, setAccepting] = useState(false)
 
-  const [state, setState] = useState<InviteState>("loading")
+  const [state, setState] = useState<InviteState>(
+    token ? "loading" : "not-found"
+  )
   const [invitation, setInvitation] = useState<InvitationData | null>(null)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     if (!token) {
-      setState("not-found")
       return
     }
 
@@ -45,6 +65,7 @@ export function InviteAcceptPage() {
           return
         }
         setInvitation({
+          courseId: inv.courseId,
           courseName: inv.courseName,
           invitedByEmail: inv.invitedByEmail,
           status: inv.status,
@@ -76,28 +97,37 @@ export function InviteAcceptPage() {
 
   useEffect(() => {
     if (state === "valid" && !authLoading && !user) {
-      navigate(`/login?redirect=/invite/${token}`, { replace: true })
+      const params = new URLSearchParams({ redirect: `/invite/${token}` })
+      if (invitation?.emailLower) {
+        params.set("email", invitation.emailLower)
+      }
+      navigate(`/login?${params.toString()}`, { replace: true })
     }
-  }, [state, user, authLoading, navigate, token])
+  }, [state, user, authLoading, navigate, token, invitation])
 
   const handleAccept = async () => {
     if (!token) return
     setError(null)
-    const result = await acceptInvitation(token)
-    if (result.success && result.courseId) {
-      navigate(`/courses/${result.courseId}`, { replace: true })
-    } else {
-      if (result.error === "wrong-email") {
-        setState("wrong-email")
-      } else if (result.error === "expired") {
-        setState("expired")
-      } else if (result.error === "accepted") {
-        setState("accepted")
-      } else if (result.error === "revoked") {
-        setState("revoked")
+    setAccepting(true)
+    try {
+      const result = await acceptInvitation(token)
+      if (result.success && result.courseId) {
+        navigate(`/courses/${result.courseId}`, { replace: true })
       } else {
-        setError("Error al aceptar la invitación. Inténtalo de nuevo.")
+        if (result.error === "wrong-email") {
+          setState("wrong-email")
+        } else if (result.error === "expired") {
+          setState("expired")
+        } else if (result.error === "accepted") {
+          setState("accepted")
+        } else if (result.error === "revoked") {
+          setState("revoked")
+        } else {
+          setError("Error al aceptar la invitación. Inténtalo de nuevo.")
+        }
       }
+    } finally {
+      setAccepting(false)
     }
   }
 
@@ -106,7 +136,10 @@ export function InviteAcceptPage() {
       case "loading":
         return (
           <div className="flex flex-col items-center gap-4 text-center">
-            <Loader2 className="h-10 w-10 animate-spin text-primary" aria-hidden="true" />
+            <Loader2
+              className="h-10 w-10 animate-spin text-primary"
+              aria-hidden="true"
+            />
             <p>Verificando invitación…</p>
           </div>
         )
@@ -117,7 +150,7 @@ export function InviteAcceptPage() {
               <Mail className="h-8 w-8" aria-hidden="true" />
               <h2 className="text-2xl font-semibold">Invitación válida</h2>
             </div>
-            <div className="space-y-3 text-left border-t pt-4">
+            <div className="space-y-3 border-t pt-4 text-left">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
                   <Mail className="h-5 w-5 text-primary" aria-hidden="true" />
@@ -142,17 +175,32 @@ export function InviteAcceptPage() {
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Vence</p>
-                  <p className="font-medium">{format(new Date(invitation?.expiresAt ?? ""), "dd 'de' MMMM 'de' yyyy", { locale: es })}</p>
+                  <p className="font-medium">
+                    {format(
+                      new Date(invitation?.expiresAt ?? ""),
+                      "dd 'de' MMMM 'de' yyyy",
+                      { locale: es }
+                    )}
+                  </p>
                 </div>
               </div>
             </div>
             <p className="text-sm text-muted-foreground">
-              Deberás iniciar sesión o crear tu cuenta con el correo: <strong>{invitation?.emailLower}</strong>
+              Deberás iniciar sesión o crear tu cuenta con el correo:{" "}
+              <strong>{invitation?.emailLower}</strong>
             </p>
-            <Button onClick={handleAccept} disabled={accepting} className="w-full" size="lg">
+            <Button
+              onClick={handleAccept}
+              disabled={accepting}
+              className="w-full"
+              size="lg"
+            >
               {accepting ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
+                  <Loader2
+                    className="mr-2 h-4 w-4 animate-spin"
+                    aria-hidden="true"
+                  />
                   Aceptando...
                 </>
               ) : (
@@ -169,14 +217,19 @@ export function InviteAcceptPage() {
           <div className="space-y-4 text-center">
             <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
               <CheckCircle className="h-10 w-10" aria-hidden="true" />
-              <h2 className="text-2xl font-semibold">¡Ya formas parte del equipo!</h2>
+              <h2 className="text-2xl font-semibold">
+                ¡Ya formas parte del equipo!
+              </h2>
             </div>
-            <p className="text-muted-foreground">Tu acceso a <strong>{invitation?.courseName}</strong> ya está activo.</p>
-            <Button asChild>
-              <Link to={`/courses/${token}`}>
-                Ir a la asignatura
-                <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
-              </Link>
+            <p className="text-muted-foreground">
+              Tu acceso a <strong>{invitation?.courseName}</strong> ya está
+              activo.
+            </p>
+            <Button
+              render={<Link to={`/courses/${invitation?.courseId ?? ""}`} />}
+            >
+              Ir a la asignatura
+              <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
             </Button>
           </div>
         )
@@ -188,9 +241,19 @@ export function InviteAcceptPage() {
               <h2 className="text-2xl font-semibold">Invitación expirada</h2>
             </div>
             <p className="text-muted-foreground">
-              Esta invitación venció el <strong>{format(new Date(invitation?.expiresAt ?? ""), "dd 'de' MMMM 'de' yyyy", { locale: es })}</strong>.
+              Esta invitación venció el{" "}
+              <strong>
+                {format(
+                  new Date(invitation?.expiresAt ?? ""),
+                  "dd 'de' MMMM 'de' yyyy",
+                  { locale: es }
+                )}
+              </strong>
+              .
             </p>
-            <p className="text-muted-foreground">Pide al propietario que la reenvíe para poder unirte.</p>
+            <p className="text-muted-foreground">
+              Pide al propietario que la reenvíe para poder unirte.
+            </p>
           </div>
         )
       case "revoked":
@@ -200,7 +263,9 @@ export function InviteAcceptPage() {
               <XCircle className="h-10 w-10" aria-hidden="true" />
               <h2 className="text-2xl font-semibold">Invitación revocada</h2>
             </div>
-            <p className="text-muted-foreground">Esta invitación fue retirada por el propietario de la asignatura.</p>
+            <p className="text-muted-foreground">
+              Esta invitación fue retirada por el propietario de la asignatura.
+            </p>
           </div>
         )
       case "wrong-email":
@@ -213,8 +278,13 @@ export function InviteAcceptPage() {
             <p className="text-muted-foreground">
               Esta invitación es para <strong>{invitation?.emailLower}</strong>.
             </p>
-            <p className="text-muted-foreground">Inicia sesión con esa cuenta para aceptar la invitación.</p>
-            <Button variant="outline" onClick={() => navigate("/login", { replace: true })}>
+            <p className="text-muted-foreground">
+              Inicia sesión con esa cuenta para aceptar la invitación.
+            </p>
+            <Button
+              variant="outline"
+              onClick={() => navigate("/login", { replace: true })}
+            >
               Cambiar de cuenta
             </Button>
           </div>
@@ -227,7 +297,9 @@ export function InviteAcceptPage() {
               <AlertCircle className="h-10 w-10" aria-hidden="true" />
               <h2 className="text-2xl font-semibold">Enlace no válido</h2>
             </div>
-            <p className="text-muted-foreground">Esta invitación no existe o ya no es válida.</p>
+            <p className="text-muted-foreground">
+              Esta invitación no existe o ya no es válida.
+            </p>
           </div>
         )
     }
@@ -242,7 +314,11 @@ export function InviteAcceptPage() {
         <CardContent className="pt-0">
           {renderState()}
           {error && (
-            <div className="mt-4 p-3 text-sm text-destructive bg-destructive/10 rounded-lg" role="alert" aria-live="polite">
+            <div
+              className="mt-4 rounded-lg bg-destructive/10 p-3 text-sm text-destructive"
+              role="alert"
+              aria-live="polite"
+            >
               {error}
             </div>
           )}

@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Navigate, useNavigate } from "react-router"
+import { Navigate, useNavigate, useSearchParams } from "react-router"
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -32,17 +32,26 @@ function friendlyMessage(code: string): string {
   return FRIENDLY_ERRORS[code] ?? "Something went wrong. Try again."
 }
 
+function safeRedirect(target: string | null): string {
+  if (!target) return "/dashboard"
+  // Only allow same-origin relative paths to avoid open redirects.
+  if (!target.startsWith("/") || target.startsWith("//")) return "/dashboard"
+  return target
+}
+
 export function LoginPage() {
   const navigate = useNavigate()
   const { user, isLoading } = useAuth()
+  const [searchParams] = useSearchParams()
+  const redirectTo = safeRedirect(searchParams.get("redirect"))
   const [mode, setMode] = useState<"signin" | "signup">("signin")
-  const [email, setEmail] = useState("")
+  const [email, setEmail] = useState(searchParams.get("email") ?? "")
   const [password, setPassword] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   if (!isLoading && user) {
-    return <Navigate to="/dashboard" replace />
+    return <Navigate to={redirectTo} replace />
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -55,7 +64,7 @@ export function LoginPage() {
       } else {
         await createUserWithEmailAndPassword(auth, email.trim(), password)
       }
-      navigate("/dashboard")
+      navigate(redirectTo)
     } catch (err) {
       const code =
         typeof err === "object" && err !== null && "code" in err

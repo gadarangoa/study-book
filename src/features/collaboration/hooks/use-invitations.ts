@@ -4,7 +4,6 @@ import {
   createInvitation,
   updateInvitation,
   getInvitationById,
-  createMailDoc,
 } from "@/lib/db"
 import type { Invitation } from "../types"
 import { auth } from "@/lib/firebase"
@@ -32,14 +31,24 @@ export function useInvitations(courseId: string) {
       const invitations = await getPendingInvitations(courseId)
       setPending(invitations)
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Error al cargar invitaciones")
+      setError(
+        err instanceof Error ? err.message : "Error al cargar invitaciones"
+      )
     } finally {
       setLoading(false)
     }
   }, [courseId])
 
   const sendInvitation = useCallback(
-    async (email: string): Promise<{ success: boolean; error?: string }> => {
+    async (
+      email: string,
+      courseName: string
+    ): Promise<{
+      success: boolean
+      invitation?: Invitation
+      shareUrl?: string
+      error?: string
+    }> => {
       const trimmed = email.trim().toLowerCase()
       if (!EMAIL_REGEX.test(trimmed)) {
         return { success: false, error: "invalid-email" }
@@ -67,7 +76,7 @@ export function useInvitations(courseId: string) {
         const invitation: Invitation = {
           id: token,
           courseId,
-          courseName: "", // Will be filled by caller or fetched
+          courseName,
           email: email.trim(),
           emailLower: trimmed,
           invitedByUid: currentUser.uid,
@@ -80,35 +89,43 @@ export function useInvitations(courseId: string) {
 
         await createInvitation(invitation)
 
-        // Enqueue email via Trigger Email extension
-        const appUrl = import.meta.env.VITE_APP_URL ?? window.location.origin
-        await createMailDoc({
-          to: trimmed,
-          message: {
-            subject: `${currentUser.email} te invitó a colaborar en ${invitation.courseName || "la asignatura"} (StudyBook)`,
-            text: `Hola,\n${currentUser.email} te invitó a colaborar en la asignatura "${invitation.courseName || "la asignatura"}".\nAcepta aquí: ${appUrl}/invite/${token} (válido 7 días).\nDeberás iniciar sesión o crear tu cuenta con este mismo correo: ${trimmed}.\nSi no esperabas este mensaje, ignóralo.`,
-            html: `<p>Hola,</p><p>${currentUser.email} te invitó a colaborar en la asignatura "<strong>${invitation.courseName || "la asignatura"}</strong>".</p><p><a href="${appUrl}/invite/${token}">Aceptar invitación</a> (válido 7 días).</p><p>Deberás iniciar sesión o crear tu cuenta con este mismo correo: <strong>${trimmed}</strong>.</p><p>Si no esperabas este mensaje, ignóralo.</p>`,
-          },
-        })
-
         setPending((prev) => [invitation, ...prev])
-        return { success: true }
+        const appUrl = window.location.origin
+        return {
+          success: true,
+          invitation,
+          shareUrl: `${appUrl}/invite/${token}`,
+        }
       } catch (err) {
-        return { success: false, error: err instanceof Error ? err.message : "Error al enviar invitación" }
+        return {
+          success: false,
+          error:
+            err instanceof Error ? err.message : "Error al enviar invitación",
+        }
       }
     },
     [courseId]
   )
 
-  const resendInvitation = useCallback(
-    async (invitationId: string): Promise<{ success: boolean; error?: string }> => {
+  const renewInvitation = useCallback(
+    async (
+      invitationId: string
+    ): Promise<{
+      success: boolean
+      invitation?: Invitation
+      shareUrl?: string
+      error?: string
+    }> => {
       try {
         const invitation = await getInvitationById(invitationId)
         if (!invitation) {
           return { success: false, error: "not-found" }
         }
-        if (invitation.status === "accepted" || invitation.status === "revoked") {
-          return { success: false, error: `cannot-resend:${invitation.status}` }
+        if (
+          invitation.status === "accepted" ||
+          invitation.status === "revoked"
+        ) {
+          return { success: false, error: `cannot-renew:${invitation.status}` }
         }
 
         const now = new Date()
@@ -123,23 +140,56 @@ export function useInvitations(courseId: string) {
 
         await updateInvitation(updated)
 
-        const currentUser = auth.currentUser
-        if (currentUser) {
-          const appUrl = import.meta.env.VITE_APP_URL ?? window.location.origin
-          await createMailDoc({
-            to: invitation.emailLower,
-            message: {
-              subject: `${currentUser.email} te invitó a colaborar en ${invitation.courseName || "la asignatura"} (StudyBook)`,
-              text: `Hola,\n${currentUser.email} te invitó a colaborar en la asignatura "${invitation.courseName || "la asignatura"}".\nAcepta aquí: ${appUrl}/invite/${invitation.id} (válido 7 días).\nDeberás iniciar sesión o crear tu cuenta con este mismo correo: ${invitation.emailLower}.\nSi no esperabas este mensaje, ignóralo.`,
-              html: `<p>Hola,</p><p>${currentUser.email} te invitó a colaborar en la asignatura "<strong>${invitation.courseName || "la asignatura"}</strong>".</p><p><a href="${appUrl}/invite/${invitation.id}">Aceptar invitación</a> (válido 7 días).</p><p>Deberás iniciar sesión o crear tu cuenta con este mismo correo: <strong>${invitation.emailLower}</strong>.</p><p>Si no esperabas este mensaje, ignóralo.</p>`,
-            },
-          })
+        setPending((prev) =>
+          prev.map((inv) => (inv.id === invitationId ? updated : inv))
+        )
+        return {
+          success: true,
+          invitation: updated,
+          shareUrl: `${window.location.origin}/invite/${invitation.id}`,
+        }
+      } catch (err) {
+        return {
+          success: false,
+          error:
+            err instanceof Error ? err.message : "Error al renovar invitación",
+        }
+      }
+    },
+    []
+  )
+
+  const revokeInvitation = useCallback(
+    async (
+      invitationId: string
+    ): Promise<{ success: boolean; error?: string }> => {
+      try {
+        const invitation = await getInvitationById(invitationId)
+        if (!invitation) {
+          return { success: false, error: "not-found" }
+        }
+        if (invitation.status !== "pending") {
+          return { success: false, error: `cannot-revoke:${invitation.status}` }
         }
 
-        setPending((prev) => prev.map((inv) => (inv.id === invitationId ? updated : inv)))
+        const updated: Invitation = {
+          ...invitation,
+          status: "revoked",
+          revokedAt: formatDate(new Date()),
+        }
+
+        await updateInvitation(updated)
+
+        setPending((prev) =>
+          prev.map((inv) => (inv.id === invitationId ? updated : inv))
+        )
         return { success: true }
       } catch (err) {
-        return { success: false, error: err instanceof Error ? err.message : "Error al reenviar invitación" }
+        return {
+          success: false,
+          error:
+            err instanceof Error ? err.message : "Error al revocar invitación",
+        }
       }
     },
     []
@@ -151,6 +201,7 @@ export function useInvitations(courseId: string) {
     error,
     loadPending,
     sendInvitation,
-    resendInvitation,
+    renewInvitation,
+    revokeInvitation,
   }
 }

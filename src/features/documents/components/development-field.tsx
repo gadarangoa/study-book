@@ -48,11 +48,22 @@ const DevelopmentImage = Image.extend({
   },
 })
 
+const DevelopmentTable = Table.extend({
+  addAttributes() {
+    return {
+      ...this.parent?.(),
+      title: { default: null },
+    }
+  },
+})
+
 export function DevelopmentField({ value, onChange }: DevelopmentFieldProps) {
   const lastEmitted = useRef<JSONContent>(value)
   const onChangeRef = useRef(onChange)
   const [imageDialogOpen, setImageDialogOpen] = useState(false)
-  const [imageDialogMode, setImageDialogMode] = useState<"insert" | "edit">("insert")
+  const [imageDialogMode, setImageDialogMode] = useState<"insert" | "edit">(
+    "insert"
+  )
 
   useEffect(() => {
     onChangeRef.current = onChange
@@ -64,7 +75,7 @@ export function DevelopmentField({ value, onChange }: DevelopmentFieldProps) {
       Underline,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       DevelopmentImage.configure({ allowBase64: true }),
-      Table.configure({ resizable: false }),
+      DevelopmentTable.configure({ resizable: false }),
       TableRow,
       TableHeader,
       TableCell,
@@ -73,7 +84,9 @@ export function DevelopmentField({ value, onChange }: DevelopmentFieldProps) {
     editorProps: {
       // Classes land directly on the ProseMirror element so the text matches
       // the shadcn Input/Textarea scale (text-xs) exactly.
-      attributes: { class: "min-h-[10rem] p-3 text-xs leading-5 focus:outline-none" },
+      attributes: {
+        class: "min-h-[10rem] p-3 text-xs leading-5 focus:outline-none",
+      },
     },
     onUpdate: ({ editor: updated }) => {
       const json = updated.getJSON()
@@ -130,7 +143,9 @@ export function DevelopmentField({ value, onChange }: DevelopmentFieldProps) {
     onChangeRef.current(json)
   }
 
-  const insertImage = async (input: Parameters<typeof embedDevelopmentImage>[0]) => {
+  const insertImage = async (
+    input: Parameters<typeof embedDevelopmentImage>[0]
+  ) => {
     const attrs = await embedDevelopmentImage(input)
     if (!editor.chain().focus().setImage(attrs).run()) {
       throw new Error("No se pudo insertar la imagen en el desarrollo.")
@@ -147,19 +162,74 @@ export function DevelopmentField({ value, onChange }: DevelopmentFieldProps) {
         <div
           role="toolbar"
           aria-label="Herramientas de formato del desarrollo"
-          className="flex flex-wrap gap-1 border p-1"
+          className="sticky top-0 z-10 flex flex-wrap gap-1 border bg-background/95 p-1 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-background/80"
         >
-          {tool("Negrita", editor.isActive("bold"), () => editor.chain().focus().toggleBold().run(), BoldIcon)}
-          {tool("Cursiva", editor.isActive("italic"), () => editor.chain().focus().toggleItalic().run(), ItalicIcon)}
-          {tool("Subrayado", editor.isActive("underline"), () => editor.chain().focus().toggleUnderline().run(), UnderlineIcon)}
-          {tool("Encabezado 2", editor.isActive("heading", { level: 2 }), () => editor.chain().focus().toggleHeading({ level: 2 }).run(), Heading2Icon)}
-          {tool("Encabezado 3", editor.isActive("heading", { level: 3 }), () => editor.chain().focus().toggleHeading({ level: 3 }).run(), Heading3Icon)}
-          {tool("Lista con viñetas", editor.isActive("bulletList"), () => editor.chain().focus().toggleBulletList().run(), ListIcon)}
-          {tool("Lista numerada", editor.isActive("orderedList"), () => editor.chain().focus().toggleOrderedList().run(), ListOrderedIcon)}
-          {tool("Cita", editor.isActive("blockquote"), () => editor.chain().focus().toggleBlockquote().run(), TextQuoteIcon)}
-          {tool("Alinear a la izquierda", editor.isActive({ textAlign: "left" }), () => editor.chain().focus().setTextAlign("left").run(), AlignLeftIcon)}
-          {tool("Centrar", editor.isActive({ textAlign: "center" }), () => editor.chain().focus().setTextAlign("center").run(), AlignCenterIcon)}
-          {tool("Justificar", editor.isActive({ textAlign: "justify" }), () => editor.chain().focus().setTextAlign("justify").run(), AlignJustifyIcon)}
+          {tool(
+            "Negrita",
+            editor.isActive("bold"),
+            () => editor.chain().focus().toggleBold().run(),
+            BoldIcon
+          )}
+          {tool(
+            "Cursiva",
+            editor.isActive("italic"),
+            () => editor.chain().focus().toggleItalic().run(),
+            ItalicIcon
+          )}
+          {tool(
+            "Subrayado",
+            editor.isActive("underline"),
+            () => editor.chain().focus().toggleUnderline().run(),
+            UnderlineIcon
+          )}
+          {tool(
+            "Encabezado 2",
+            editor.isActive("heading", { level: 2 }),
+            () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
+            Heading2Icon
+          )}
+          {tool(
+            "Encabezado 3",
+            editor.isActive("heading", { level: 3 }),
+            () => editor.chain().focus().toggleHeading({ level: 3 }).run(),
+            Heading3Icon
+          )}
+          {tool(
+            "Lista con viñetas",
+            editor.isActive("bulletList"),
+            () => editor.chain().focus().toggleBulletList().run(),
+            ListIcon
+          )}
+          {tool(
+            "Lista numerada",
+            editor.isActive("orderedList"),
+            () => editor.chain().focus().toggleOrderedList().run(),
+            ListOrderedIcon
+          )}
+          {tool(
+            "Cita",
+            editor.isActive("blockquote"),
+            () => editor.chain().focus().toggleBlockquote().run(),
+            TextQuoteIcon
+          )}
+          {tool(
+            "Alinear a la izquierda",
+            editor.isActive({ textAlign: "left" }),
+            () => editor.chain().focus().setTextAlign("left").run(),
+            AlignLeftIcon
+          )}
+          {tool(
+            "Centrar",
+            editor.isActive({ textAlign: "center" }),
+            () => editor.chain().focus().setTextAlign("center").run(),
+            AlignCenterIcon
+          )}
+          {tool(
+            "Justificar",
+            editor.isActive({ textAlign: "justify" }),
+            () => editor.chain().focus().setTextAlign("justify").run(),
+            AlignJustifyIcon
+          )}
           <Button
             type="button"
             variant="ghost"
@@ -204,8 +274,17 @@ export function DevelopmentField({ value, onChange }: DevelopmentFieldProps) {
           </Button>
           <DevelopmentTableControls
             isTableActive={editor.isActive("table")}
+            tableTitle={String(editor.getAttributes("table").title ?? "")}
+            onEditTitle={(title) => {
+              editor.chain().focus().updateAttributes("table", { title }).run()
+              updateContent()
+            }}
             onInsertTable={(rows, cols) => {
-              editor.chain().focus().insertTable({ rows, cols, withHeaderRow: true }).run()
+              editor
+                .chain()
+                .focus()
+                .insertTable({ rows, cols, withHeaderRow: true })
+                .run()
               updateContent()
             }}
             onAddRow={() => {
@@ -249,7 +328,13 @@ export function DevelopmentField({ value, onChange }: DevelopmentFieldProps) {
         initialAlt={String(editor.getAttributes("image").alt ?? "")}
         initialTitle={String(editor.getAttributes("image").title ?? "")}
         onUpdate={async ({ alt, title }) => {
-          if (!editor.chain().focus().updateAttributes("image", { alt, title }).run()) {
+          if (
+            !editor
+              .chain()
+              .focus()
+              .updateAttributes("image", { alt, title })
+              .run()
+          ) {
             throw new Error("No se pudo actualizar la imagen seleccionada.")
           }
         }}

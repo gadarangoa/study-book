@@ -13,6 +13,7 @@ import {
 import {
   Columns3Icon,
   MinusIcon,
+  PenLineIcon,
   PlusIcon,
   Rows3Icon,
   Table2Icon,
@@ -21,6 +22,7 @@ import {
 
 interface DevelopmentTableControlsProps {
   isTableActive: boolean
+  tableTitle: string
   onInsertTable: (rows: number, columns: number) => void
   onAddRow: () => void
   onDeleteRow: () => void
@@ -28,10 +30,12 @@ interface DevelopmentTableControlsProps {
   onDeleteColumn: () => void
   onToggleHeaderRow: () => void
   onDeleteTable: () => void
+  onEditTitle: (title: string) => void
 }
 
 export function DevelopmentTableControls({
   isTableActive,
+  tableTitle,
   onInsertTable,
   onAddRow,
   onDeleteRow,
@@ -39,11 +43,19 @@ export function DevelopmentTableControls({
   onDeleteColumn,
   onToggleHeaderRow,
   onDeleteTable,
+  onEditTitle,
 }: DevelopmentTableControlsProps) {
   const [open, setOpen] = useState(false)
   const [rows, setRows] = useState("3")
   const [columns, setColumns] = useState("3")
   const [error, setError] = useState<string | null>(null)
+  const [titleDialogOpen, setTitleDialogOpen] = useState(false)
+  const [titleDraft, setTitleDraft] = useState(tableTitle)
+
+  const openTitleDialog = () => {
+    setTitleDraft(tableTitle)
+    setTitleDialogOpen(true)
+  }
 
   const createTable = () => {
     const parsedRows = Number(rows)
@@ -99,7 +111,45 @@ export function DevelopmentTableControls({
       {tableTool("Agregar columna", onAddColumn, Columns3Icon)}
       {tableTool("Eliminar columna", onDeleteColumn, Rows3Icon)}
       {tableTool("Alternar fila de encabezado", onToggleHeaderRow, Rows3Icon)}
+      {tableTool("Título de tabla", openTitleDialog, PenLineIcon)}
       {tableTool("Eliminar tabla", onDeleteTable, Trash2Icon)}
+      <Dialog open={titleDialogOpen} onOpenChange={setTitleDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Título de tabla</DialogTitle>
+            <DialogDescription>
+              Se usa como leyenda ("Tabla N: …") y para el listado de tablas. Puedes dejarlo vacío.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="development-table-title">Título</Label>
+            <Input
+              id="development-table-title"
+              value={titleDraft}
+              onChange={(event) => setTitleDraft(event.target.value)}
+              placeholder="Título de la tabla"
+            />
+          </div>
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setTitleDialogOpen(false)}
+            >
+              Cancelar
+            </Button>
+            <Button
+              type="button"
+              onClick={() => {
+                onEditTitle(titleDraft.trim())
+                setTitleDialogOpen(false)
+              }}
+            >
+              Guardar
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
           <DialogHeader>

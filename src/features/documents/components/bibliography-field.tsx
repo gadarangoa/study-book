@@ -45,10 +45,8 @@ interface EntryErrors {
 function validateEntry(data: BibEntryFormData): EntryErrors {
   const errors: EntryErrors = {}
   if (data.author.trim().length === 0) errors.author = "El autor es obligatorio."
-  if (data.year.trim().length === 0) {
-    errors.year = "El año es obligatorio."
-  } else if (!isValidBibYear(data.year)) {
-    errors.year = "El año debe tener 4 dígitos (p. ej. 2024)."
+  if (data.year.trim().length > 0 && !isValidBibYear(data.year)) {
+    errors.year = "El año debe tener 4 dígitos (p. ej. 2024) o dejarse vacío."
   }
   if (data.title.trim().length === 0) errors.title = "El título es obligatorio."
   return errors
@@ -95,7 +93,8 @@ function EntryForm({
     label: string,
     placeholder: string,
     error?: string,
-    inputMode?: "numeric"
+    inputMode?: "numeric",
+    hint?: string
   ) => (
     <div className="flex min-w-0 flex-1 flex-col gap-1.5">
       <Label htmlFor={`${idPrefix}-${key}`}>{label}</Label>
@@ -108,10 +107,12 @@ function EntryForm({
         aria-invalid={error !== undefined}
         aria-describedby={error ? `${idPrefix}-${key}-error` : undefined}
       />
-      {error && (
+      {error ? (
         <p id={`${idPrefix}-${key}-error`} role="alert" className="text-sm text-destructive">
           {error}
         </p>
+      ) : (
+        hint && <p className="text-xs text-muted-foreground">{hint}</p>
       )}
     </div>
   )
@@ -120,7 +121,14 @@ function EntryForm({
     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
       <div className="grid gap-3 sm:grid-cols-2">
         {field("author", "Autor", "Apellido, N.", errors.author)}
-        {field("year", "Año", "2024", errors.year, "numeric")}
+        {field(
+          "year",
+          "Año (opcional)",
+          "2024",
+          errors.year,
+          "numeric",
+          'Déjalo vacío si la fuente no tiene fecha; se mostrará como "s.f.".'
+        )}
       </div>
       {field("title", "Título", "Título de la obra", errors.title)}
       {field("source", "Fuente", "Editorial, revista o URL")}

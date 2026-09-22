@@ -14,9 +14,10 @@ interface MemberListProps {
   currentUserUid: string
   onRemove: (memberUid: string) => void
   loading?: boolean
+  canManage?: boolean
 }
 
-export function MemberList({ members, currentUserUid, onRemove, loading }: MemberListProps) {
+export function MemberList({ members, currentUserUid, onRemove, loading, canManage = false }: MemberListProps) {
   const [memberToRemove, setMemberToRemove] = useState<CourseMember | null>(null)
 
   const handleRemoveClick = (member: CourseMember) => {
@@ -59,7 +60,7 @@ export function MemberList({ members, currentUserUid, onRemove, loading }: Membe
             </div>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
               <span>Desde: {format(new Date(member.addedAt), "dd MMM yyyy", { locale: es })}</span>
-              {member.uid !== currentUserUid && (
+              {canManage && member.uid !== currentUserUid && (
                 <Button
                   variant="ghost"
                   size="icon"

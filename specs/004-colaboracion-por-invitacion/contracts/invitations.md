@@ -4,16 +4,16 @@
 
 Operaciones sobre la colección `invitations` (ver [data-model.md](../data-model.md)). Todas requieren usuario autenticado salvo la lectura del enlace de aceptación.
 
-## sendInvitation(courseId, email)
+## sendInvitation(courseId, email, courseName)
 
 - **Pre**: actor es propietario del curso (`course.uid == auth.uid` o membresía `owner`); `email` con formato válido; no existe invitación `pending` ni membresía activa para `(courseId, emailLower)`.
-- **Post**: se crea `Invitation` en `pending` con `expiresAt = now + 7d`; se encola el correo (doc en `mail`); la invitación aparece en el listado de pendientes del curso.
+- **Post**: se crea `Invitation` en `pending` con `courseName` y `expiresAt = now + 7d`; se devuelve un enlace `/invite/{token}` para copiar y compartir; la invitación aparece en el listado de pendientes del curso.
 - **Errores**: `invalid-email` (mensaje claro, sin registro) · `duplicate-active` (informa el estado existente) · `not-owner` (denegado).
 
-## resendInvitation(invitationId)
+## renewInvitation(invitationId)
 
 - **Pre**: invitación en `pending` (o `expired` → se reactiva); actor propietario.
-- **Post**: `expiresAt = now + 7d`, `resendCount++`, `status = pending`; se re-encola el correo.
+- **Post**: `expiresAt = now + 7d`, `resendCount++`, `status = pending`; se devuelve el mismo enlace `/invite/{token}` para volver a compartirlo.
 - **Errores**: `already-accepted` / `revoked` (no reenviables; se informa y se ofrece crear una nueva).
 
 ## revokeInvitation(invitationId) / removeMember(courseId, uid)
@@ -32,5 +32,5 @@ Operaciones sobre la colección `invitations` (ver [data-model.md](../data-model
 
 ## Listados (propietario)
 
-- `pendingInvitations(courseId)`: `where courseId, status == pending`, ordenadas por `createdAt desc`.
+- `pendingInvitations(courseId)`: `where courseId, status == pending`, ordenadas por `createdAt desc`; el enlace se reconstruye como `${window.location.origin}/invite/${invitationId}`.
 - `activeMembers(courseId)`: `where courseId`, con rol y fecha; el propietario distingue su fila (`owner`, sin acción de revocar sobre sí mismo).

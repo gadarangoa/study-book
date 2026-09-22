@@ -1,7 +1,9 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // DEV: Open rules for local development
+    // DEV ONLY: Open rules are permitted only for local development/emulators.
+    // Before deploying to a shared or production Firebase project, replace this
+    // catch-all with the secured rules below and deploy with `firebase deploy --only firestore`.
     match /{document=**} {
       allow read, write: if true;
     }
@@ -18,38 +20,44 @@ service cloud.firestore {
     //   allow update, delete: if signedIn() && resource.data.uid == request.auth.uid;
     // }
 
-    // Course members: only the member themselves can read; only owners can create/delete
+    // Course members: the member themselves or the course owner can read;
+    // only owners can create (via accepted invitation); member or owner can delete (leave / revoke)
+    // function isCourseOwner(courseId) {
+    //   return get(/databases/$(database)/documents/courses/$(courseId)).data.uid == request.auth.uid;
+    // }
     // match /courseMembers/{memberId} {
-    //   allow read: if signedIn() && request.auth.uid == resource.data.uid;
+    //   allow read: if signedIn() && (request.auth.uid == resource.data.uid || isCourseOwner(resource.data.courseId));
     //   allow create: if signedIn()
     //     && request.resource.data.uid == request.auth.uid
-    //     && request.resource.data.role == "collaborator"
-    //     && request.resource.data.courseId == resource.data.courseId;
+    //     && request.resource.data.role == "collaborator";
     //   allow update: if false;
-    //   allow delete: if signedIn() && resource.data.uid == request.auth.uid;
+    //   allow delete: if signedIn() && (resource.data.uid == request.auth.uid || isCourseOwner(resource.data.courseId));
     // }
 
-    // Invitations: owners can list/create/update/delete for their courses; anyone can read by token
+    // Invitations: owners can list/create/update for their courses; anyone can read by token
     // match /invitations/{invitationId} {
     //   allow read: if true;
-    //   allow list: if signedIn() && resource.data.uid == request.auth.uid;
-    //   allow create: if signedIn() && request.resource.data.uid == request.auth.uid && request.resource.data.status == "pending" && request.resource.data.expiresAt > request.time;
+    //   allow list: if signedIn() && resource.data.invitedByUid == request.auth.uid;
+    //   allow create: if signedIn() && request.resource.data.invitedByUid == request.auth.uid && request.resource.data.status == "pending" && request.resource.data.expiresAt > request.time;
     //   allow update: if signedIn()
-    //     && request.resource.data.uid == request.auth.uid
     //     && (
-    //       (resource.data.status == "pending" || resource.data.status == "expired")
-    //       && request.resource.data.status == "pending"
-    //       && request.resource.data.resendCount == resource.data.resendCount + 1
-    //       && request.resource.data.expiresAt > request.time
-    //     ) || (
-    //       resource.data.status == "pending"
-    //       && request.resource.data.status == "accepted"
-    //       && request.resource.data.acceptedAt != null
-    //       && request.resource.data.acceptedByUid == request.auth.uid
-    //     ) || (
-    //       resource.data.status == "pending"
-    //       && request.resource.data.status == "revoked"
-    //       && request.resource.data.revokedAt != null
+    //       (
+    //         resource.data.invitedByUid == request.auth.uid
+    //         && (resource.data.status == "pending" || resource.data.status == "expired")
+    //         && request.resource.data.status == "pending"
+    //         && request.resource.data.resendCount == resource.data.resendCount + 1
+    //         && request.resource.data.expiresAt > request.time
+    //       ) || (
+    //         resource.data.status == "pending"
+    //         && request.resource.data.status == "accepted"
+    //         && request.resource.data.acceptedAt != null
+    //         && request.resource.data.acceptedByUid == request.auth.uid
+    //       ) || (
+    //         resource.data.invitedByUid == request.auth.uid
+    //         && resource.data.status == "pending"
+    //         && request.resource.data.status == "revoked"
+    //         && request.resource.data.revokedAt != null
+    //       )
     //     );
     //   allow delete: if false;
     // }
@@ -85,11 +93,7 @@ service cloud.firestore {
     //   allow create, update, delete: if signedIn() && resource.data.uid == request.auth.uid;
     // }
 
-    // Mail collection for Trigger Email extension
-    // match /mail/{mailId} {
-    //   allow create: if signedIn();
-    //   allow read, update, delete: if false;
-    // }
+    // No `mail` collection is used: invitations are shared by link.
 
     // Careers: existing rules (owner-only)
     // match /careers/{careerId} {

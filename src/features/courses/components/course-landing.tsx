@@ -1,8 +1,8 @@
-import { CalendarIcon, UsersIcon, BookOpenIcon, ClipboardListIcon } from "lucide-react"
+import { CalendarIcon, UsersIcon, BookOpenIcon, FileTextIcon } from "lucide-react"
 import type { Course } from "../types"
 import type { ScheduleEntry } from "../types"
 import type { Resource } from "@/features/resources/types"
-import type { Task } from "@/features/tasks/types"
+import type { ApaFormDocument } from "@/features/documents"
 import type { Partner } from "@/features/partners/types"
 import { FeatureCard } from "./feature-card"
 
@@ -10,7 +10,7 @@ interface CourseLandingProps {
   course: Course
   scheduleEntries: ScheduleEntry[]
   resources: Resource[]
-  tasks: Task[]
+  documents: ApaFormDocument[]
   partners: Partner[]
 }
 
@@ -18,10 +18,9 @@ export function CourseLanding({
   course,
   scheduleEntries,
   resources,
-  tasks,
+  documents,
   partners,
 }: CourseLandingProps) {
-  const pendingTasks = tasks.filter((t) => t.status === "pending")
   const notes = resources.filter((r) => r.type === "note")
   const links = resources.filter((r) => r.type === "link")
   const pdfs = resources.filter((r) => r.type === "pdf")
@@ -54,11 +53,15 @@ export function CourseLanding({
           color="blue"
         />
         <FeatureCard
-          title="Deliverables"
-          description={pendingTasks.length === 0 ? "All caught up!" : `${pendingTasks.length} pending task${pendingTasks.length !== 1 ? "s" : ""}`}
-          icon={ClipboardListIcon}
-          stats={pendingTasks.length > 0 ? `${pendingTasks.length}` : undefined}
-          href="#tasks"
+          title="Documentos APA"
+          description={
+            documents.length === 0
+              ? "Crea tu primer entregable con la plantilla APA"
+              : `${documents.length} documento${documents.length !== 1 ? "s" : ""} en este curso`
+          }
+          icon={FileTextIcon}
+          stats={documents.length > 0 ? `${documents.length}` : undefined}
+          href={`/courses/${course.id}/documents`}
           color="orange"
         />
         <FeatureCard

@@ -2,9 +2,23 @@
 
 **Feature**: `specs/004-colaboracion-por-invitacion` | **Date**: 2026-09-13
 
-## Plantilla de correo (Trigger Email extension, colección `mail`)
+## Enlace de invitación
 
-Doc encolado al invitar/reenviar (campos de la extensión):
+La aplicación genera y muestra un enlace para copiar y compartir manualmente. No escribe en la colección `mail` ni depende de Trigger Email, SMTP o SendGrid.
+
+El enlace tiene el formato:
+
+```text
+<APP_URL>/invite/<token>
+```
+
+El token es el ID aleatorio del documento de `invitations`, permanece válido durante 7 días y sigue asociado al correo invitado.
+
+El correo puede comunicarse por cualquier canal externo; si se habilita un proveedor de correo en el futuro, deberá usar la misma URL.
+
+### Plantilla informativa opcional
+
+Texto que el propietario puede acompañar al enlace:
 
 ```text
 to: <email invitado>
@@ -19,7 +33,7 @@ message:
   html: <misma información + botón "Aceptar invitación" → /invite/<token>>
 ```
 
-**Requisitos**: español; identifica asignatura + quién invita + acción clara (FR-005); incluye el correo destinatario esperado (evita confusión de cuentas, FR-007); enlace con token no adivinable y vigencia (FR-004/FR-013).
+**Requisitos**: español; identifica asignatura + quién invita + acción clara; incluye el correo destinatario esperado (evita confusión de cuentas, FR-007); enlace con token no adivinable y vigencia (FR-004/FR-013).
 
 ## Ruta pública `/invite/:token` (`InviteAcceptPage`)
 

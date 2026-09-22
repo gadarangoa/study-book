@@ -76,10 +76,7 @@ export async function getByIndex<K extends StoreName>(
   value: string
 ): Promise<StoreMap[K][]> {
   const snapshot = await getDocs(
-    query(
-      collection(db, storeName),
-      where(indexName, "==", value)
-    )
+    query(collection(db, storeName), where(indexName, "==", value))
   )
   return snapshot.docs.map((d) => d.data() as StoreMap[K])
 }
@@ -125,7 +122,8 @@ export async function clearStore<K extends StoreName>(
 }
 
 async function deleteByCourseId(
-  storeName: "resources" | "tasks" | "partners" | "scheduleEntries" | "apaDocuments",
+  storeName:
+    "resources" | "tasks" | "partners" | "scheduleEntries" | "apaDocuments",
   courseId: string,
   uid: string
 ): Promise<void> {
@@ -142,7 +140,10 @@ async function deleteByCourseId(
   await batch.commit()
 }
 
-async function deleteInvitationsByCourseId(courseId: string, uid: string): Promise<void> {
+async function deleteInvitationsByCourseId(
+  courseId: string,
+  uid: string
+): Promise<void> {
   const snapshot = await getDocs(
     query(
       collection(db, "invitations"),
@@ -195,13 +196,17 @@ export async function deleteCareerCascade(careerId: string): Promise<void> {
 
 // Collaboration functions
 
-export async function getInvitationById(invitationId: string): Promise<Invitation | undefined> {
+export async function getInvitationById(
+  invitationId: string
+): Promise<Invitation | undefined> {
   const snapshot = await getDoc(doc(db, "invitations", invitationId))
   if (!snapshot.exists()) return undefined
   return snapshot.data() as Invitation
 }
 
-export async function getPendingInvitations(courseId: string): Promise<Invitation[]> {
+export async function getPendingInvitations(
+  courseId: string
+): Promise<Invitation[]> {
   const snapshot = await getDocs(
     query(
       collection(db, "invitations"),
@@ -213,7 +218,9 @@ export async function getPendingInvitations(courseId: string): Promise<Invitatio
   return snapshot.docs.map((d) => d.data() as Invitation)
 }
 
-export async function getActiveMembers(courseId: string): Promise<CourseMember[]> {
+export async function getActiveMembers(
+  courseId: string
+): Promise<CourseMember[]> {
   const snapshot = await getDocs(
     query(collection(db, "courseMembers"), where("courseId", "==", courseId))
   )
@@ -227,7 +234,9 @@ export async function getSharedCourses(uid: string): Promise<Course[]> {
   ])
 
   const ownedCourses = ownedSnapshot.docs.map((d) => d.data() as Course)
-  const memberCourseIds = memberSnapshot.docs.map((d) => (d.data() as CourseMember).courseId)
+  const memberCourseIds = memberSnapshot.docs.map(
+    (d) => (d.data() as CourseMember).courseId
+  )
 
   const sharedCourses: Course[] = []
   for (const courseId of memberCourseIds) {
@@ -240,32 +249,34 @@ export async function getSharedCourses(uid: string): Promise<Course[]> {
   return [...ownedCourses, ...sharedCourses]
 }
 
-export async function createInvitation(invitation: Invitation): Promise<Invitation> {
+export async function createInvitation(
+  invitation: Invitation
+): Promise<Invitation> {
   const payload = stripUndefined({ ...invitation })
   await setDoc(doc(db, "invitations", invitation.id), payload)
   return invitation
 }
 
-export async function updateInvitation(invitation: Invitation): Promise<Invitation> {
+export async function updateInvitation(
+  invitation: Invitation
+): Promise<Invitation> {
   const payload = stripUndefined({ ...invitation })
   await setDoc(doc(db, "invitations", invitation.id), payload)
   return invitation
 }
 
-export async function createCourseMember(member: CourseMember): Promise<CourseMember> {
+export async function createCourseMember(
+  member: CourseMember
+): Promise<CourseMember> {
   const payload = stripUndefined({ ...member })
   await setDoc(doc(db, "courseMembers", member.id), payload)
   return member
 }
 
-export async function removeCourseMember(courseId: string, uid: string): Promise<void> {
+export async function removeCourseMember(
+  courseId: string,
+  uid: string
+): Promise<void> {
   const memberId = `${courseId}_${uid}`
   await deleteDoc(doc(db, "courseMembers", memberId))
 }
-
-export async function createMailDoc(mailData: Record<string, unknown>): Promise<void> {
-  const mailId = crypto.randomUUID()
-  await setDoc(doc(db, "mail", mailId), mailData)
-}
-
-

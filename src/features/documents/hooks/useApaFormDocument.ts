@@ -1,12 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import { getById, update as dbUpdate } from "@/lib/db"
-import { createApaFormTemplate } from "../apa-template"
+import { createApaFormTemplate, createApaFormatDefaults } from "../apa-template"
 import { useAuth } from "@/features/auth"
 import {
   APA_DEFAULT_PAGE_SIZE,
   APA_FORM_TEMPLATE_VERSION,
   normalizeCoverData,
   normalizePageSize,
+  normalizeFontFamily,
+  normalizeTocSettings,
+  normalizeListSettings,
 } from "../types"
 import { normalizeDevelopmentContent as normalizeContent } from "../lib/development-content"
 import type { JSONContent } from "@tiptap/react"
@@ -63,6 +66,7 @@ export function migrateLegacyDocument(
     },
     status: record.status ?? "draft",
     pageSize: APA_DEFAULT_PAGE_SIZE,
+    ...createApaFormatDefaults(),
     templateVersion: APA_FORM_TEMPLATE_VERSION,
     migratedFrom: "002-tiptap",
     createdAt: typeof record.createdAt === "string" ? record.createdAt : now,
@@ -118,6 +122,13 @@ export function useApaFormDocument(documentId: string) {
             },
             pageSize: normalizePageSize(
               (found as Partial<ApaFormDocument>).pageSize
+            ),
+            fontFamily: normalizeFontFamily(
+              (found as Partial<ApaFormDocument>).fontFamily
+            ),
+            toc: normalizeTocSettings((found as Partial<ApaFormDocument>).toc),
+            lists: normalizeListSettings(
+              (found as Partial<ApaFormDocument>).lists
             ),
           })
         } else {
@@ -219,9 +230,16 @@ export function useApaFormDocument(documentId: string) {
     if (document) await persist(document)
   }, [document, persist])
 
-  /** Persists top-level document fields (page size, title, status). */
+  /** Persists top-level document fields (page size, format, title, status). */
   const updateFields = useCallback(
-    (patch: Partial<Pick<ApaFormDocument, "pageSize" | "title" | "status">>) => {
+    (
+      patch: Partial<
+        Pick<
+          ApaFormDocument,
+          "pageSize" | "title" | "status" | "fontFamily" | "toc" | "lists"
+        >
+      >
+    ) => {
       setDocument((current) => {
         if (!current) return current
         const next: ApaFormDocument = { ...current, ...patch }

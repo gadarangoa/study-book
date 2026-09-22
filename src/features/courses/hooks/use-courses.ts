@@ -8,6 +8,7 @@ import {
 } from "@/lib/db"
 import type { Course, CourseFormData, CourseWithStats } from "../types"
 import { normalizeTags } from "../lib/tags"
+import { auth } from "@/lib/firebase"
 
 export function useCourses(careerId: string) {
   const [courses, setCourses] = useState<CourseWithStats[]>([])
@@ -26,7 +27,8 @@ export function useCourses(careerId: string) {
     })
 
     withStats.sort(
-      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     )
     setCourses(withStats)
     setIsLoading(false)
@@ -40,8 +42,11 @@ export function useCourses(careerId: string) {
     async (data: CourseFormData): Promise<Course> => {
       const now = new Date().toISOString()
       const tags = normalizeTags(data.tags)
+      const uid = auth.currentUser?.uid
+      if (!uid) throw new Error("Not authenticated")
       const course: Course = {
         id: crypto.randomUUID(),
+        uid,
         careerId,
         name: data.name,
         teacher: data.teacher,
@@ -95,5 +100,3 @@ export function useCourses(careerId: string) {
 
   return { courses, isLoading, createCourse, updateCourse, deleteCourse }
 }
-
-

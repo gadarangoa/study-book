@@ -18,6 +18,79 @@ export function normalizePageSize(value: unknown): ApaPageSize {
   return value === "a4" ? "a4" : APA_DEFAULT_PAGE_SIZE
 }
 
+export type ApaFontFamily = "times-new-roman" | "arial"
+
+export const APA_FONT_FAMILIES: ApaFontFamily[] = ["times-new-roman", "arial"]
+
+export const APA_FONT_FAMILY_LABELS_ES: Record<ApaFontFamily, string> = {
+  "times-new-roman": "Times New Roman",
+  arial: "Arial",
+}
+
+/** APA body font: 12 pt, Times New Roman by default (fixed size for both fonts). */
+export const APA_DEFAULT_FONT_FAMILY: ApaFontFamily = "times-new-roman"
+
+export function normalizeFontFamily(value: unknown): ApaFontFamily {
+  return value === "arial" ? "arial" : APA_DEFAULT_FONT_FAMILY
+}
+
+export type ApaTocDepth = 1 | 2 | 3
+
+export interface TocSettings {
+  enabled: boolean
+  depth: ApaTocDepth
+}
+
+/** Table of contents off by default so existing documents keep their appearance. */
+export const APA_DEFAULT_TOC_SETTINGS: TocSettings = { enabled: false, depth: 2 }
+
+function isTocDepth(value: unknown): value is ApaTocDepth {
+  return value === 1 || value === 2 || value === 3
+}
+
+export function normalizeTocSettings(value: unknown): TocSettings {
+  if (typeof value !== "object" || value === null) return APA_DEFAULT_TOC_SETTINGS
+  const record = value as Record<string, unknown>
+  return {
+    enabled: record.enabled === true,
+    depth: isTocDepth(record.depth) ? record.depth : APA_DEFAULT_TOC_SETTINGS.depth,
+  }
+}
+
+export interface ListSettings {
+  figuresEnabled: boolean
+  tablesEnabled: boolean
+}
+
+/** Figure/table listings off by default so existing documents keep their appearance. */
+export const APA_DEFAULT_LIST_SETTINGS: ListSettings = {
+  figuresEnabled: false,
+  tablesEnabled: false,
+}
+
+export function normalizeListSettings(value: unknown): ListSettings {
+  if (typeof value !== "object" || value === null) return APA_DEFAULT_LIST_SETTINGS
+  const record = value as Record<string, unknown>
+  return {
+    figuresEnabled: record.figuresEnabled === true,
+    tablesEnabled: record.tablesEnabled === true,
+  }
+}
+
+/** A table-of-contents entry derived from fixed sections and Desarrollo headings. */
+export interface TocEntry {
+  id: string
+  level: 1 | 2 | 3
+  text: string
+}
+
+/** A numbered entry in the figures or tables listing, derived from titled nodes. */
+export interface ListEntry {
+  id: string
+  number: number
+  caption: string
+}
+
 export const APA_DOCUMENT_STATUSES: ApaDocumentStatus[] = [
   "draft",
   "in_review",
@@ -68,6 +141,11 @@ export interface DevelopmentImageNode extends JSONContent {
 
 export interface DevelopmentTableNode extends JSONContent {
   type: "table"
+}
+
+export interface DevelopmentTableAttrs {
+  /** Caption/title used as "Tabla N: …" and listed in the tables listing. */
+  title?: string | null
 }
 
 export interface ApaDocument {
@@ -149,6 +227,12 @@ export interface ApaFormDocument {
   status: ApaDocumentStatus
   /** Paper size used by preview and PDF export. */
   pageSize: ApaPageSize
+  /** Body font used by preview and PDF export; always rendered at 12 pt. */
+  fontFamily: ApaFontFamily
+  /** Automatic table of contents settings. */
+  toc: TocSettings
+  /** Automatic figures/tables listing settings. */
+  lists: ListSettings
   templateVersion: string
   /** Set when migrated from the 002 free-form model */
   migratedFrom?: string

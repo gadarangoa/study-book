@@ -18,6 +18,7 @@ export function DocumentEditorPage() {
   }>()
   const [course, setCourse] = useState<Course | null>(null)
   const [exportError, setExportError] = useState<string | null>(null)
+  const [isExportingDocx, setIsExportingDocx] = useState(false)
   const prefilledTeacherRef = useRef<string | null>(null)
   const { document, isLoading, saveState, updateSections, updateFields, retrySave } =
     useApaFormDocument(documentId ?? "")
@@ -64,6 +65,46 @@ export function DocumentEditorPage() {
         setExportError(
           "No se pudo guardar el documento antes de exportar. Reintenta el guardado y vuelve a exportar."
         )
+      })
+  }
+
+  const handleExportDocx = () => {
+    setExportError(null)
+    setIsExportingDocx(true)
+    // Flush any pending autosave so the Word export matches the latest edits.
+    void retrySave()
+      .catch(() => {
+        throw new Error(
+          "No se pudo guardar el documento antes de exportar. Reintenta el guardado y vuelve a exportar."
+        )
+      })
+      // Code-split: the docx library is only needed when actually exporting.
+      .then(() => import("@/features/documents/lib/apa-docx"))
+      .then(({ buildApaDocxBlob, docxFileName }) => {
+        if (!document) return null
+        return buildApaDocxBlob(document).then((blob) => ({
+          blob,
+          fileName: docxFileName(document.title),
+        }))
+      })
+      .then((result) => {
+        if (!result) return
+        const url = URL.createObjectURL(result.blob)
+        const link = window.document.createElement("a")
+        link.href = url
+        link.download = `${result.fileName}.docx`
+        link.click()
+        URL.revokeObjectURL(url)
+      })
+      .catch((error: unknown) => {
+        setExportError(
+          error instanceof Error
+            ? error.message
+            : "No se pudo generar el archivo Word. Inténtalo de nuevo."
+        )
+      })
+      .finally(() => {
+        setIsExportingDocx(false)
       })
   }
 
@@ -133,8 +174,11 @@ export function DocumentEditorPage() {
             teamMembers={partners}
             onSectionChange={updateSections}
             onPageSizeChange={(pageSize) => updateFields({ pageSize })}
+            onFormatChange={(patch) => updateFields(patch)}
             onRetrySave={() => void retrySave()}
             onExportPdf={handleExportPdf}
+            onExportDocx={handleExportDocx}
+            isExportingDocx={isExportingDocx}
           />
           <ApaPageStyle pageSize={document.pageSize} />
         </>

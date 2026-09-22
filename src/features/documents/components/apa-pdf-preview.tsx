@@ -1,8 +1,15 @@
 import { Fragment } from "react"
 import "../lib/apa-styles.css"
 import { formatBibEntry, isBibEntryComplete } from "../lib/apa-format"
+import { extractFigureEntries, extractTableEntries, extractTocEntries } from "../lib/toc"
 import type { JSONContent } from "@tiptap/react"
 import type { ApaFormDocument, ApaPageSize } from "../types"
+
+/** Mutable, shared across a single render pass to number figures/tables in document order. */
+interface NodeCounters {
+  figure: number
+  table: number
+}
 
 export type ApaZoomLevel = 75 | 100 | 125 | 150
 
@@ -58,7 +65,7 @@ function renderInline(node: JSONContent, key: string): React.ReactNode {
   return null
 }
 
-function renderBlock(node: JSONContent, key: string): React.ReactNode {
+function renderBlock(node: JSONContent, key: string, counters: NodeCounters): React.ReactNode {
   const children = (node.content ?? []).map((child, index) =>
     renderInline(child, `${key}-${index}`)
   )
@@ -76,7 +83,7 @@ function renderBlock(node: JSONContent, key: string): React.ReactNode {
       return (
         <ul key={key}>
           {(node.content ?? []).map((item, index) =>
-            renderBlock(item, `${key}-${index}`)
+            renderBlock(item, `${key}-${index}`, counters)
           )}
         </ul>
       )
@@ -84,7 +91,7 @@ function renderBlock(node: JSONContent, key: string): React.ReactNode {
       return (
         <ol key={key}>
           {(node.content ?? []).map((item, index) =>
-            renderBlock(item, `${key}-${index}`)
+            renderBlock(item, `${key}-${index}`, counters)
           )}
         </ol>
       )
@@ -99,7 +106,7 @@ function renderBlock(node: JSONContent, key: string): React.ReactNode {
                 )}
               </Fragment>
             ) : (
-              renderBlock(child, `${key}-${index}`)
+              renderBlock(child, `${key}-${index}`, counters)
             )
           )}
         </li>
@@ -112,41 +119,59 @@ function renderBlock(node: JSONContent, key: string): React.ReactNode {
       const alt = typeof attrs?.alt === "string" ? attrs.alt : ""
       const title = typeof attrs?.title === "string" ? attrs.title : undefined
       if (!src) return <p key={key} className="apa-guide">[Imagen no disponible]</p>
+      const trimmedTitle = title?.trim()
+      let caption: string | undefined
+      if (trimmedTitle) {
+        counters.figure += 1
+        caption = `Figura ${counters.figure}: ${trimmedTitle}`
+      }
       return (
         <figure key={key}>
           <img src={src} alt={alt} title={title} />
-          {title && <figcaption>{title}</figcaption>}
+          {caption && <figcaption>{caption}</figcaption>}
           {!alt && <span className="apa-guide">[Descripción pendiente]</span>}
         </figure>
       )
     }
-    case "table":
+    case "table": {
+      const attrs = node.attrs as Record<string, unknown> | undefined
+      const title = typeof attrs?.title === "string" ? attrs.title.trim() : ""
+      let caption: string | undefined
+      if (title) {
+        counters.table += 1
+        caption = `Tabla ${counters.table}: ${title}`
+      }
       return (
-        <table key={key}>
-          <tbody>
-            {(node.content ?? []).map((row, rowIndex) => {
-              const isHeader = row.type === "tableHeader"
-              return (
-                <tr key={`${key}-row-${rowIndex}`}>
-                  {(row.content ?? []).map((cell, cellIndex) => {
-                    const Cell = isHeader ? "th" : "td"
-                    return (
-                      <Cell key={`${key}-cell-${rowIndex}-${cellIndex}`}>
-                        {(cell.content ?? []).map((paragraph, paragraphIndex) =>
-                          renderBlock(
-                            paragraph,
-                            `${key}-cell-${rowIndex}-${cellIndex}-${paragraphIndex}`
-                          )
-                        )}
-                      </Cell>
-                    )
-                  })}
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
+        <figure key={key} className="apa-table-figure">
+          {caption && <figcaption className="apa-table-caption">{caption}</figcaption>}
+          <table>
+            <tbody>
+              {(node.content ?? []).map((row, rowIndex) => {
+                const isHeader = row.type === "tableHeader"
+                return (
+                  <tr key={`${key}-row-${rowIndex}`}>
+                    {(row.content ?? []).map((cell, cellIndex) => {
+                      const Cell = isHeader ? "th" : "td"
+                      return (
+                        <Cell key={`${key}-cell-${rowIndex}-${cellIndex}`}>
+                          {(cell.content ?? []).map((paragraph, paragraphIndex) =>
+                            renderBlock(
+                              paragraph,
+                              `${key}-cell-${rowIndex}-${cellIndex}-${paragraphIndex}`,
+                              counters
+                            )
+                          )}
+                        </Cell>
+                      )
+                    })}
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </figure>
       )
+    }
     case "paragraph":
       return (
         <p key={key} style={style}>
@@ -210,9 +235,21 @@ export function ApaPdfPreview({ document, zoom = 100 }: ApaPdfPreviewProps) {
   } = document.sections
   const orderedRefs = [...bibliography].sort((a, b) => a.order - b.order)
   const zoomClass = zoom === 100 ? "" : `apa-zoom-${zoom}`
+  const fontClass = document.fontFamily === "arial" ? "apa-font-arial" : "apa-font-times"
+  const counters: NodeCounters = { figure: 0, table: 0 }
+
+  const tocEntries = document.toc.enabled
+    ? extractTocEntries(document.sections, document.toc.depth)
+    : []
+  const figureEntries = document.lists.figuresEnabled
+    ? extractFigureEntries(development)
+    : []
+  const tableEntries = document.lists.tablesEnabled
+    ? extractTableEntries(development)
+    : []
 
   return (
-    <div className={`apa-document ${zoomClass}`} data-testid="apa-preview">
+    <div className={`apa-document ${fontClass} ${zoomClass}`} data-testid="apa-preview">
       <section id="apa-cover" aria-label="Portada" className="apa-page-break">
         {cover.workTitle.trim().length > 0 ? (
           <h1 className="apa-cover-title">{cover.workTitle}</h1>
@@ -240,6 +277,41 @@ export function ApaPdfPreview({ document, zoom = 100 }: ApaPdfPreviewProps) {
         <div className="apa-cover-spacer" aria-hidden="true" />
         <p className="apa-cover">{formatCoverDate(cover.date)}</p>
       </section>
+
+      {tocEntries.length > 0 && (
+        <section id="apa-toc" aria-label="Tabla de contenido" className="apa-section-break">
+          <h2>Tabla de contenido</h2>
+          <ul className="apa-toc-list">
+            {tocEntries.map((entry) => (
+              <li key={entry.id} className={`apa-toc-level-${entry.level}`}>
+                {entry.text}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {figureEntries.length > 0 && (
+        <section id="apa-list-figures" aria-label="Listado de figuras" className="apa-section-break">
+          <h2>Listado de figuras</h2>
+          <ul className="apa-toc-list">
+            {figureEntries.map((entry) => (
+              <li key={entry.id}>{`Figura ${entry.number}: ${entry.caption}`}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {tableEntries.length > 0 && (
+        <section id="apa-list-tables" aria-label="Listado de tablas" className="apa-section-break">
+          <h2>Listado de tablas</h2>
+          <ul className="apa-toc-list">
+            {tableEntries.map((entry) => (
+              <li key={entry.id}>{`Tabla ${entry.number}: ${entry.caption}`}</li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section id="apa-introduction" aria-label="Introducción" className="apa-section-break">
         <h2>Introducción</h2>
@@ -281,7 +353,7 @@ export function ApaPdfPreview({ document, zoom = 100 }: ApaPdfPreviewProps) {
       <section id="apa-development" aria-label="Desarrollo" className="apa-section-break">
         <h2>Desarrollo</h2>
         {(development.content ?? []).map((node, index) =>
-          renderBlock(node, `dev-${index}`)
+          renderBlock(node, `dev-${index}`, counters)
         )}
       </section>
 

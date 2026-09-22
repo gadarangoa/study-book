@@ -7,7 +7,7 @@ Guía de validación end-to-end (sin código de implementación; el detalle vive
 
 - Node + `pnpm install` en la raíz del repo.
 - Proyecto Firebase con Auth (Email/Password) y Firestore; variables `VITE_FIREBASE_*` en `.env`.
-- Trigger Email extension instalada (colección `mail`) o plan B documentado; remitente verificado.
+- El propietario debe poder compartir manualmente el enlace generado; no se requiere Trigger Email ni configuración SMTP.
 - `firestore.rules` e índices de [contracts/access-rules.md](./contracts/access-rules.md) desplegados (o emulador con las reglas del repo).
 - Dos cuentas/correos de prueba: `owner@ejemplo.com`, `guest@ejemplo.com`.
 
@@ -24,7 +24,7 @@ pnpm typecheck && pnpm lint                  # gates de constitución
 ### E1 — Invitar (US1; FR-001/002/003/005; SC-001)
 
 1. Como `owner`, abre una asignatura propia → `/courses/:courseId/team` → "Invitar" → ingresa `guest@ejemplo.com`.
-2. Esperado: la invitación aparece en "Pendientes"; el correo llega en <2 min con asignatura, quién invita y enlace `/invite/<token>`.
+2. Esperado: la invitación aparece en "Pendientes" y la interfaz muestra un enlace `/invite/<token>` para copiar y compartir.
 3. Repite con el mismo correo → esperado: mensaje `duplicate-active`, sin nueva invitación.
 4. Prueba `no-es-correo` → esperado: error claro, sin registro.
 
@@ -38,7 +38,7 @@ pnpm typecheck && pnpm lint                  # gates de constitución
 
 ### E3 — Gestionar y revocar (US3; FR-011/012/013; SC-005)
 
-1. Como `owner`, reenvía la pendiente → esperado: nuevo correo, `resendCount` incrementado, vigencia extendida 7 días.
+1. Como `owner`, copia o renueva el enlace pendiente → esperado: enlace disponible, `resendCount` incrementado al renovar y vigencia extendida 7 días.
 2. Revoca al colaborador (con confirmación) → esperado: en <1 min el invitado deja de ver la asignatura y sus documentos fallan con denegado.
 3. Abre un enlace expirado/revocado → esperado: mensaje `expired`/`revoked` explicativo, sin acceso.
 4. Elimina el curso (con su cascada) → esperado: invitaciones y membresías asociadas dejan de ser válidas.

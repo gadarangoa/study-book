@@ -5,7 +5,7 @@ import {
   update as dbUpdate,
   remove as dbRemove,
 } from "@/lib/db"
-import { createApaFormTemplate } from "../apa-template"
+import { createApaFormTemplate, createApaFormatDefaults } from "../apa-template"
 import {
   APA_DEFAULT_PAGE_SIZE,
   APA_FORM_TEMPLATE_VERSION,
@@ -49,6 +49,7 @@ export function useApaDocuments(courseId: string) {
         sections: createApaFormTemplate(courseName, teacherName),
         status: "draft",
         pageSize: APA_DEFAULT_PAGE_SIZE,
+        ...createApaFormatDefaults(),
         templateVersion: APA_FORM_TEMPLATE_VERSION,
         createdAt: now,
         updatedAt: now,
