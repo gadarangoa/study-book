@@ -1,16 +1,16 @@
-# Graph Report - study-book  (2026-09-21)
+# Graph Report - study-book  (2026-09-22)
 
 ## Corpus Check
-- 228 files · ~139,045 words
+- 221 files · ~137,812 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1704 nodes · 2892 edges · 123 communities (117 shown, 6 thin omitted)
+- 1691 nodes · 2821 edges · 117 communities (111 shown, 6 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 24 edges (avg confidence: 0.84)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `cab673ec`
+- Built from commit: `665a6ae5`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -112,17 +112,13 @@
 - [[_COMMUNITY_Community 99|Community 99]]
 - [[_COMMUNITY_Community 100|Community 100]]
 - [[_COMMUNITY_Community 101|Community 101]]
-- [[_COMMUNITY_Community 102|Community 102]]
 - [[_COMMUNITY_Community 103|Community 103]]
 - [[_COMMUNITY_Community 104|Community 104]]
 - [[_COMMUNITY_Community 105|Community 105]]
-- [[_COMMUNITY_Community 106|Community 106]]
 - [[_COMMUNITY_Community 107|Community 107]]
 - [[_COMMUNITY_Community 108|Community 108]]
-- [[_COMMUNITY_Community 109|Community 109]]
 - [[_COMMUNITY_Community 110|Community 110]]
 - [[_COMMUNITY_Community 111|Community 111]]
-- [[_COMMUNITY_Community 112|Community 112]]
 - [[_COMMUNITY_Community 113|Community 113]]
 - [[_COMMUNITY_Community 114|Community 114]]
 - [[_COMMUNITY_Community 115|Community 115]]
@@ -131,20 +127,18 @@
 - [[_COMMUNITY_Community 118|Community 118]]
 - [[_COMMUNITY_Community 119|Community 119]]
 - [[_COMMUNITY_Community 120|Community 120]]
-- [[_COMMUNITY_Community 121|Community 121]]
-- [[_COMMUNITY_Community 122|Community 122]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `cn()` - 106 edges
-2. `Button()` - 47 edges
+2. `Button()` - 44 edges
 3. `Label()` - 22 edges
 4. `Input()` - 21 edges
 5. `Course` - 19 edges
 6. `compilerOptions` - 19 edges
-7. `Badge()` - 17 edges
-8. `Resource` - 17 edges
-9. `useAuth()` - 16 edges
-10. `compilerOptions` - 16 edges
+7. `Resource` - 17 edges
+8. `useAuth()` - 16 edges
+9. `compilerOptions` - 16 edges
+10. `Badge()` - 15 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `Acceptance Criteria` --semantically_similar_to--> `Specification Quality Checklist`  [INFERRED] [semantically similar]
@@ -169,7 +163,7 @@
 - **Specification Quality Framework** — templates_spec_template, checklists_requirements, checklists_requirements_content_quality, checklists_requirements_requirement_completeness, checklists_requirements_feature_readiness [INFERRED 0.85]
 - **Course Domain Model** — specs_spec_course_entity, specs_spec_resource_entity, specs_spec_task_entity, specs_spec_partner_entity, specs_spec_schedule_entry_entity [EXTRACTED 1.00]
 
-## Communities (123 total, 6 thin omitted)
+## Communities (117 total, 6 thin omitted)
 
 ### Community 0 - "React UI Components"
 Cohesion: 0.12
@@ -200,16 +194,16 @@ Cohesion: 0.14
 Nodes (28): baseRunProps(), buildApaDocxBlob(), buildCoverParagraphs(), buildInlineRuns(), buildListingSection(), buildObjectivesSection(), buildReferencesSection(), buildTocSection() (+20 more)
 
 ### Community 7 - "Spec-Driven Development"
-Cohesion: 0.22
-Nodes (10): Core Principles, Governance, [PRINCIPLE_1_NAME], [PRINCIPLE_2_NAME], [PRINCIPLE_3_NAME], [PRINCIPLE_4_NAME], [PRINCIPLE_5_NAME], [PROJECT_NAME] Constitution (+2 more)
+Cohesion: 0.05
+Nodes (42): Specification-Driven Development, Core Principles, Governance, [PRINCIPLE_1_NAME], [PRINCIPLE_2_NAME], [PRINCIPLE_3_NAME], [PRINCIPLE_4_NAME], [PRINCIPLE_5_NAME] (+34 more)
 
 ### Community 8 - "Node TypeScript Config"
 Cohesion: 0.11
 Nodes (17): compilerOptions, allowImportingTsExtensions, erasableSyntaxOnly, lib, module, moduleDetection, moduleResolution, noEmit (+9 more)
 
 ### Community 9 - "Spec Quality & Domain"
-Cohesion: 0.20
-Nodes (11): ContributionAttribution, CourseAccess, CourseMember, Invitation, InvitationStatus, InvitationWithCourse, MemberRole, SharedCourseView (+3 more)
+Cohesion: 0.11
+Nodes (16): ContributionAttribution, CourseAccess, CourseMember, MemberRole, SharedCourseView, TeamMemberStatus, TeamMemberList(), useAcceptInvite() (+8 more)
 
 ### Community 10 - "NPM Dependencies"
 Cohesion: 0.07
@@ -220,8 +214,8 @@ Cohesion: 0.08
 Nodes (25): 1. Initialize Analysis Context, 2. Load Artifacts (Progressive Disclosure), 3. Build Semantic Models, 4. Detection Passes (Token-Efficient Analysis), 5. Severity Assignment, 6. Produce Compact Analysis Report, 7. Provide Next Actions, 8. Offer Remediation (+17 more)
 
 ### Community 12 - "Speckit Planning"
-Cohesion: 0.08
-Nodes (44): AuthProvider(), AuthContext, AuthContextValue, ProtectedRoute(), useAuth(), EMPTY_FORM, EntryErrors, EntryForm() (+36 more)
+Cohesion: 0.07
+Nodes (53): Career, CareerFormData, CareerWithStats, EMPTY_FORM, EntryErrors, CareerCard(), CareerCardProps, CareerForm() (+45 more)
 
 ### Community 13 - "Branch Management"
 Cohesion: 0.08
@@ -236,16 +230,16 @@ Cohesion: 0.50
 Nodes (4): React Logo, Vite Logo, React TypeScript Vite shadcn/ui Stack, README
 
 ### Community 16 - "OpenCode Plugin"
-Cohesion: 0.32
-Nodes (7): TaskFormProps, TaskItem(), TaskItemProps, TaskListProps, useTasks(), Task, TaskFormData
+Cohesion: 0.35
+Nodes (6): TaskFormProps, TaskItem(), TaskItemProps, TaskListProps, Task, TaskFormData
 
 ### Community 17 - "Prerequisites Check"
 Cohesion: 0.14
 Nodes (20): cn(), AlertDialogMedia(), AlertDialogOverlay(), CardAction(), CardFooter(), Checkbox(), DialogOverlay(), ScrollArea() (+12 more)
 
 ### Community 18 - "Template Resolver"
-Cohesion: 0.13
-Nodes (23): Career, CareerFormData, CareerWithStats, CareerCard(), CareerCardProps, CareerForm(), CareerFormProps, CareerList() (+15 more)
+Cohesion: 0.24
+Nodes (13): AuthProvider(), ProtectedRoute(), useAuth(), AddMemberDialog(), useTeamMembers(), useApaFormDocument(), AppLayout(), CareerDetailPage() (+5 more)
 
 ### Community 19 - "Plan Setup"
 Cohesion: 0.09
@@ -256,12 +250,12 @@ Cohesion: 0.18
 Nodes (7): Sheet(), SheetContent(), SheetDescription(), SheetFooter(), SheetHeader(), SheetOverlay(), SheetTitle()
 
 ### Community 25 - "Community 25"
-Cohesion: 0.18
-Nodes (15): ApaFormEditor(), ApaPageStyle(), DocumentCreateDialog(), DocumentList(), ResourceList(), useResources(), useScheduleEntries(), useApaDocuments() (+7 more)
+Cohesion: 0.24
+Nodes (11): CourseLanding(), DocumentCreateDialog(), DocumentList(), useResources(), useScheduleEntries(), useTasks(), useApaDocuments(), getById() (+3 more)
 
 ### Community 26 - "Community 26"
-Cohesion: 0.10
-Nodes (23): PAPER_MAX_WIDTH_CM, ZOOM_LEVELS, ApaZoomLevel, BibliographyField(), CoverFields(), CoverFieldsProps, DevelopmentField(), DocumentFormatControls() (+15 more)
+Cohesion: 0.07
+Nodes (36): TeamMember, ApaFormEditor(), PAPER_MAX_WIDTH_CM, ZOOM_LEVELS, BibliographyField(), EntryForm(), CoverFields(), CoverFieldsProps (+28 more)
 
 ### Community 27 - "Community 27"
 Cohesion: 0.29
@@ -276,8 +270,8 @@ Cohesion: 0.50
 Nodes (3): Adding components, React + TypeScript + Vite + shadcn/ui, Using components
 
 ### Community 33 - "Community 33"
-Cohesion: 0.11
-Nodes (26): clearStore(), create(), createCourseMember(), createInvitation(), deleteByCourseId(), deleteCareerCascade(), deleteCourseCascade(), deleteInvitationsByCourseId() (+18 more)
+Cohesion: 0.23
+Nodes (14): clearStore(), createTeamMember(), deleteByCourseId(), deleteCareerCascade(), deleteCourseCascade(), deleteMembersByCourseId(), deleteTeamMembersByCourseId(), getAll() (+6 more)
 
 ### Community 34 - "Community 34"
 Cohesion: 0.12
@@ -285,19 +279,19 @@ Nodes (15): 1. Initialize Convergence Context, 2. Load Artifacts (Progressive Di
 
 ### Community 35 - "Community 35"
 Cohesion: 0.13
-Nodes (19): ApaPdfPreview(), formatCoverDate(), NodeCounters, PAGE_CONTENT_HEIGHT, PAGE_SIZE_DIMENSIONS, renderPlainText(), validateEntry(), ApaTocDepth (+11 more)
+Nodes (18): ApaPageStyle(), ApaPdfPreview(), ApaZoomLevel, formatCoverDate(), NodeCounters, PAGE_CONTENT_HEIGHT, PAGE_SIZE_DIMENSIONS, renderPlainText() (+10 more)
 
 ### Community 36 - "Community 36"
 Cohesion: 0.27
 Nodes (11): DEVELOPMENT_IMAGE_MIME_TYPES, DevelopmentImageAttrs, DevelopmentImageMimeType, embedDevelopmentImage(), ImageValidationResult, isRecord(), normalizeDevelopmentContent(), normalizeNode() (+3 more)
 
 ### Community 37 - "Community 37"
-Cohesion: 0.39
-Nodes (4): PartnerListProps, TeamManagerProps, usePartners(), Partner
+Cohesion: 0.25
+Nodes (7): AuthContext, AuthContextValue, app, auth, db, firebaseConfig, storage
 
 ### Community 38 - "Community 38"
-Cohesion: 0.23
-Nodes (14): CourseCard(), CourseCardProps, CourseDetailProps, CourseFormProps, CourseLanding(), CourseLandingProps, CourseListProps, FeatureCard() (+6 more)
+Cohesion: 0.28
+Nodes (11): CourseDetailProps, CourseLandingProps, FeatureCard(), ScheduleEntryListProps, Course, ScheduleEntry, ScheduleEntryFormData, useCourses() (+3 more)
 
 ### Community 39 - "Community 39"
 Cohesion: 0.12
@@ -312,12 +306,12 @@ Cohesion: 0.14
 Nodes (13): ApaFontFamily, ApaFormDocument (extendido), BibEntry (sin cambios de forma, semántica ajustada), Data Model: Mejoras de Formato APA y Navegación en el Editor de PDF, DevelopmentTableAttrs (nuevo, análogo a DevelopmentImageAttrs), Entidades derivadas (no persistidas), Extensión de tipos existentes, ListEntry (+5 more)
 
 ### Community 42 - "Community 42"
-Cohesion: 0.36
-Nodes (6): ScheduleEntryList(), Tabs(), TabsContent(), TabsList(), tabsListVariants, TabsTrigger()
+Cohesion: 0.50
+Nodes (4): validateEntry(), formatBibEntry(), isBibEntryComplete(), isValidBibYear()
 
 ### Community 43 - "Community 43"
 Cohesion: 0.09
-Nodes (46): ApaFormEditorProps, ApaPdfPreviewProps, BibliographyFieldProps, DocumentListProps, ObjectivesFieldsProps, createApaFormatDefaults(), createApaFormTemplate(), createApaTemplateContent() (+38 more)
+Nodes (45): ApaFormEditorProps, ApaPdfPreviewProps, BibliographyFieldProps, DocumentListProps, ObjectivesFieldsProps, createApaFormatDefaults(), createApaFormTemplate(), createApaTemplateContent() (+37 more)
 
 ### Community 44 - "Community 44"
 Cohesion: 0.14
@@ -356,8 +350,8 @@ Cohesion: 0.08
 Nodes (25): Dependencies & Execution Order, Format: `[ID] [P?] [Story] Description`, Implementation for User Story 1, Implementation for User Story 2, Implementation for User Story 3, Implementation for User Story 4, Implementation Strategy, Incremental Delivery (+17 more)
 
 ### Community 53 - "Community 53"
-Cohesion: 0.11
-Nodes (18): Format: `[ID] [P?] [Story] Description`, Implementation for User Story 1, Implementation for User Story 2, Implementation Strategy, Incremental Delivery, MVP First (User Story 1 Only), Notes, Parallel Example: User Story 1 (+10 more)
+Cohesion: 0.08
+Nodes (26): Dependencies & Execution Order, Format: `[ID] [P?] [Story] Description`, Implementation for User Story 1, Implementation for User Story 2, Implementation for User Story 3, Implementation Strategy, Incremental Delivery, MVP First (User Story 1 Only) (+18 more)
 
 ### Community 54 - "Community 54"
 Cohesion: 0.08
@@ -436,8 +430,8 @@ Cohesion: 0.20
 Nodes (9): Complexity Tracking, Constitution Check, Documentation (this feature), Implementation Plan: Desarrollo con Imágenes y Tablas en Editor APA, Project Structure, Re-check post-Phase 1, Source Code (repository root), Summary (+1 more)
 
 ### Community 73 - "Community 73"
-Cohesion: 0.08
-Nodes (50): DevelopmentFieldProps, DevelopmentImage, DevelopmentTable, DevelopmentImageDialog(), DevelopmentImageDialogProps, DevelopmentTableControls(), DevelopmentTableControlsProps, DocumentCreateDialogProps (+42 more)
+Cohesion: 0.09
+Nodes (49): AddMemberDialogProps, DevelopmentField(), DevelopmentFieldProps, DevelopmentImage, DevelopmentTable, DevelopmentImageDialog(), DevelopmentImageDialogProps, DevelopmentTableControls() (+41 more)
 
 ### Community 74 - "Community 74"
 Cohesion: 0.22
@@ -535,10 +529,6 @@ Nodes (10): Completion Report, Done When, For AI Generation, Mandatory Post-Exec
 Cohesion: 0.18
 Nodes (10): Checklist Format (REQUIRED), Completion Report, Done When, Mandatory Post-Execution Hooks, Outline, Phase Structure, Pre-Execution Checks, Task Generation Rules (+2 more)
 
-### Community 102 - "Community 102"
-Cohesion: 0.18
-Nodes (11): Assumptions, Edge Cases, Feature Specification: [FEATURE NAME], Key Entities *(include if feature involves data)*, Measurable Outcomes, Requirements *(mandatory)*, Success Criteria *(mandatory)*, User Scenarios & Testing *(mandatory)* (+3 more)
-
 ### Community 103 - "Community 103"
 Cohesion: 0.20
 Nodes (9): Complexity Tracking, Constitution Check, Documentation (this feature), Implementation Plan: Mejoras de Formato APA y Navegación en el Editor de PDF, Project Structure, Re-check post-Phase 1, Source Code (repository root), Summary (+1 more)
@@ -551,10 +541,6 @@ Nodes (9): Prerequisites, Quickstart: Mejoras de Formato APA y Navegación en el
 Cohesion: 0.22
 Nodes (8): Decision 1: Selector de fuente (Arial / Times New Roman, 12 pt), Decision 2: Año de bibliografía opcional → "(s.f.)", Decision 3: Tabla de contenido automática — alcance de "número de página", Decision 4: Extracción de entradas de TOC y listados (figuras/tablas), Decision 5: Título (caption) de tabla para el listado de tablas, Decision 6: Persistencia y compatibilidad hacia atrás, Decision 7: Enfoque de pruebas, Research: Mejoras de Formato APA y Navegación en el Editor de PDF
 
-### Community 106 - "Community 106"
-Cohesion: 0.28
-Nodes (6): Functional Requirements, Success Criteria, User Story, MVP First Delivery, Parallel Execution, Task Phases
-
 ### Community 107 - "Community 107"
 Cohesion: 0.25
 Nodes (7): Anti-Examples: What NOT To Do, Checklist Purpose: "Unit Tests for English", Example Checklist Types & Sample Items, Execution Steps, Post-Execution Checks, Pre-Execution Checks, User Input
@@ -563,10 +549,6 @@ Nodes (7): Anti-Examples: What NOT To Do, Checklist Purpose: "Unit Tests for Eng
 Cohesion: 0.25
 Nodes (7): Anti-Examples: What NOT To Do, Checklist Purpose: "Unit Tests for English", Example Checklist Types & Sample Items, Execution Steps, Post-Execution Checks, Pre-Execution Checks, User Input
 
-### Community 109 - "Community 109"
-Cohesion: 0.25
-Nodes (8): Complexity Tracking, Constitution Check, Documentation (this feature), Implementation Plan: [FEATURE], Project Structure, Source Code (repository root), Summary, Technical Context
-
 ### Community 110 - "Community 110"
 Cohesion: 0.29
 Nodes (6): Completion Report, Done When, Mandatory Post-Execution Hooks, Outline, Pre-Execution Checks, User Input
@@ -574,10 +556,6 @@ Nodes (6): Completion Report, Done When, Mandatory Post-Execution Hooks, Outline
 ### Community 111 - "Community 111"
 Cohesion: 0.29
 Nodes (6): Completion Report, Done When, Mandatory Post-Execution Hooks, Outline, Pre-Execution Checks, User Input
-
-### Community 112 - "Community 112"
-Cohesion: 0.38
-Nodes (7): Specification-Driven Development, Speckit Workflow, Implement Step, Plan Step, Review Gates, Specify Step, Tasks Step
 
 ### Community 113 - "Community 113"
 Cohesion: 0.29
@@ -611,30 +589,22 @@ Nodes (4): Outline, Post-Execution Checks, Pre-Execution Checks, User Input
 Cohesion: 0.40
 Nodes (4): Outline, Post-Execution Checks, Pre-Execution Checks, User Input
 
-### Community 121 - "Community 121"
-Cohesion: 0.40
-Nodes (5): Dependencies & Execution Order, Parallel Opportunities, Phase Dependencies, User Story Dependencies, Within Each User Story
-
-### Community 122 - "Community 122"
-Cohesion: 0.67
-Nodes (3): Implementation for User Story 3, Phase 5: User Story 3 - [Title] (Priority: P3), Tests for User Story 3 (OPTIONAL - only if tests requested) ⚠️
-
 ## Knowledge Gaps
-- **841 isolated node(s):** `check-prerequisites.sh script`, `common.sh script`, `resolve-template.sh script`, `setup-plan.sh script`, `setup-tasks.sh script` (+836 more)
+- **844 isolated node(s):** `check-prerequisites.sh script`, `common.sh script`, `resolve-template.sh script`, `setup-plan.sh script`, `setup-tasks.sh script` (+839 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **6 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `cn()` connect `Prerequisites Check` to `React UI Components`, `Community 68`, `Community 73`, `Community 42`, `Speckit Planning`, `Community 47`, `Tasks Setup`, `Community 25`, `Community 26`?**
+- **Why does `cn()` connect `Prerequisites Check` to `React UI Components`, `Community 68`, `Community 73`, `Speckit Planning`, `Community 47`, `Tasks Setup`, `Community 26`?**
   _High betweenness centrality (0.020) - this node is a cross-community bridge._
-- **Why does `Button()` connect `Community 73` to `React UI Components`, `Community 37`, `Community 38`, `Speckit Planning`, `OpenCode Plugin`, `Prerequisites Check`, `Template Resolver`, `Tasks Setup`, `Community 25`, `Community 26`?**
-  _High betweenness centrality (0.012) - this node is a cross-community bridge._
-- **Why does `ApaFormDocument` connect `Community 43` to `Community 33`, `Community 35`, `Community 38`, `Shell Utilities`, `Spec Quality & Domain`, `Speckit Planning`, `Community 26`?**
-  _High betweenness centrality (0.006) - this node is a cross-community bridge._
+- **Why does `Button()` connect `Community 73` to `React UI Components`, `Speckit Planning`, `OpenCode Plugin`, `Prerequisites Check`, `Template Resolver`, `Tasks Setup`, `Community 25`, `Community 26`?**
+  _High betweenness centrality (0.011) - this node is a cross-community bridge._
+- **Why does `ApaFormDocument` connect `Community 43` to `Community 33`, `Community 35`, `Community 38`, `Shell Utilities`, `Speckit Planning`, `Community 26`?**
+  _High betweenness centrality (0.005) - this node is a cross-community bridge._
 - **What connects `check-prerequisites.sh script`, `common.sh script`, `resolve-template.sh script` to the rest of the system?**
-  _845 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _848 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `React UI Components` be split into smaller, more focused modules?**
   _Cohesion score 0.1168091168091168 - nodes in this community are weakly interconnected._
 - **Should `Dev Toolchain` be split into smaller, more focused modules?**

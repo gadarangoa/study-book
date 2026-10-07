@@ -9,12 +9,11 @@
       ]
     },
     {
-      "collectionGroup": "invitations",
+      "collectionGroup": "teamMembers",
       "queryScope": "COLLECTION",
       "fields": [
         { "fieldPath": "courseId", "order": "ASCENDING" },
-        { "fieldPath": "emailLower", "order": "ASCENDING" },
-        { "fieldPath": "status", "order": "ASCENDING" }
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
       ]
     }
   ],

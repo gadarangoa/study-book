@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { useParams, useNavigate, Link } from "react-router"
 import { useAuth } from "@/features/auth"
 import { useAcceptInvite } from "@/features/collaboration/hooks/use-accept-invite"
-import { getInvitationById } from "@/lib/db"
+import { getTeamMemberById } from "@/lib/db"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import {
@@ -35,8 +35,8 @@ interface InvitationData {
   courseId: string
   invitedByEmail: string
   status: string
-  expiresAt: string
-  emailLower: string
+  expiresAt?: string
+  emailLower?: string
 }
 
 export function InviteAcceptPage() {
@@ -59,7 +59,7 @@ export function InviteAcceptPage() {
 
     const loadInvitation = async () => {
       try {
-        const inv = await getInvitationById(token)
+        const inv = await getTeamMemberById(token)
         if (!inv) {
           setState("not-found")
           return
@@ -73,15 +73,12 @@ export function InviteAcceptPage() {
           emailLower: inv.emailLower,
         })
 
-        const now = new Date()
-        const expiresAt = new Date(inv.expiresAt)
-
         if (inv.status !== "pending") {
           setState(inv.status as InviteState)
           return
         }
 
-        if (now > expiresAt) {
+        if (inv.expiresAt && new Date() > new Date(inv.expiresAt)) {
           setState("expired")
           return
         }

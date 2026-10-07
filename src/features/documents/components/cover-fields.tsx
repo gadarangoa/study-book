@@ -1,13 +1,13 @@
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import type { Partner } from "@/features/partners/types"
+import type { TeamMember } from "@/features/collaboration/types"
 import type { CoverData } from "../types"
 
 interface CoverFieldsProps {
   value: CoverData
   /** Team members of the course; each gets an include/exclude checkbox. */
-  teamMembers: Partner[]
+  teamMembers: TeamMember[]
   onChange: (patch: Partial<CoverData>) => void
 }
 

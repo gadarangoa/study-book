@@ -8,7 +8,7 @@ import type { Course } from "@/features/courses/types"
 import { CourseLanding } from "@/features/courses/components/course-landing"
 import { useScheduleEntries } from "@/features/courses/hooks/use-schedule-entries"
 import { useResources } from "@/features/resources/hooks/use-resources"
-import { usePartners } from "@/features/partners/hooks/use-partners"
+import { useTeamMembers } from "@/features/collaboration/hooks/use-team-members"
 import { useApaDocuments } from "@/features/documents/hooks/useApaDocuments"
 
 export function CourseDetailPage() {
@@ -17,7 +17,7 @@ export function CourseDetailPage() {
 
   const { entries: scheduleEntries } = useScheduleEntries(courseId ?? "")
   const { resources } = useResources(courseId ?? "")
-  const { partners } = usePartners(courseId ?? "")
+  const { members: teamMembers } = useTeamMembers(courseId ?? "")
   const { documents } = useApaDocuments(courseId ?? "")
 
   useEffect(() => {
@@ -100,7 +100,7 @@ export function CourseDetailPage() {
         scheduleEntries={scheduleEntries}
         resources={resources}
         documents={documents}
-        partners={partners}
+        teamMembers={teamMembers}
       />
     </div>
   )

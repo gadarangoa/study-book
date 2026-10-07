@@ -3,36 +3,30 @@
 import { useCallback, useEffect, useState } from "react"
 import { useParams, Link } from "react-router"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { ArrowLeftIcon } from "lucide-react"
 import { getById, update } from "@/lib/db"
 import type { Course } from "@/features/courses/types"
-import { usePartners } from "@/features/partners/hooks/use-partners"
-import { TeamManager } from "@/features/partners/components/team-manager"
 import { useAuth } from "@/features/auth"
-import { useInvitations } from "@/features/collaboration/hooks/use-invitations"
-import { useMembers } from "@/features/collaboration/hooks/use-members"
-import { InviteDialog } from "@/features/collaboration/components/invite-dialog"
-import { InvitationList } from "@/features/collaboration/components/invitation-list"
-import { MemberList } from "@/features/collaboration/components/member-list"
+import { useTeamMembers } from "@/features/collaboration/hooks/use-team-members"
+import { AddMemberDialog } from "@/features/collaboration/components/add-member-dialog"
+import { TeamMemberList } from "@/features/collaboration/components/team-member-list"
 
 export function TeamPage() {
   const { courseId } = useParams<{ courseId: string }>()
   const { user } = useAuth()
   const [course, setCourse] = useState<Course | null>(null)
-  const { partners, addPartner, removePartner } = usePartners(courseId ?? "")
-  const {
-    pending,
-    loading: invitationsLoading,
-    loadPending,
-    renewInvitation,
-    revokeInvitation,
-  } = useInvitations(courseId ?? "")
+  const [draftTeamName, setDraftTeamName] = useState("")
   const {
     members,
     loading: membersLoading,
-    loadMembers,
-    removeMember,
-  } = useMembers(courseId ?? "")
+    load: loadMembers,
+    inviteExistingMember,
+    renewInvitation,
+    revokeMember,
+    deleteLocalMember,
+  } = useTeamMembers(courseId ?? "")
 
   useEffect(() => {
     if (!courseId) return
@@ -42,52 +36,57 @@ export function TeamPage() {
   }, [courseId])
 
   useEffect(() => {
-    if (courseId) {
-      loadPending()
-      loadMembers()
-    }
-  }, [courseId, loadPending, loadMembers])
+    setDraftTeamName(course?.teamName ?? "")
+  }, [course?.teamName])
 
-  const handleTeamNameChange = useCallback(
-    async (teamName: string | undefined) => {
-      if (!course) return
-      const updated: Course = {
-        ...course,
-        teamName,
-        updatedAt: new Date().toISOString(),
-      }
-      await update("courses", updated)
-      setCourse(updated)
+  const handleTeamNameSave = useCallback(async () => {
+    if (!course) return
+    const teamName = draftTeamName.trim() || undefined
+    if (teamName === course.teamName) return
+    const updated: Course = {
+      ...course,
+      teamName,
+      updatedAt: new Date().toISOString(),
+    }
+    await update("courses", updated)
+    setCourse(updated)
+  }, [course, draftTeamName])
+
+  const handleMemberAdded = useCallback(() => {
+    loadMembers()
+  }, [loadMembers])
+
+  const handleInviteExisting = useCallback(
+    async (memberId: string, email: string) => {
+      const result = await inviteExistingMember(memberId, email)
+      loadMembers()
+      return result
     },
-    [course]
+    [inviteExistingMember, loadMembers]
   )
 
-  const handleInviteSent = useCallback(() => {
-    loadPending()
-  }, [loadPending])
-
   const handleRenew = useCallback(
-    async (invitationId: string) => {
-      await renewInvitation(invitationId)
-      loadPending()
+    async (memberId: string) => {
+      await renewInvitation(memberId)
+      loadMembers()
     },
-    [renewInvitation, loadPending]
+    [renewInvitation, loadMembers]
   )
 
   const handleRevoke = useCallback(
-    async (invitationId: string) => {
-      await revokeInvitation(invitationId)
-      loadPending()
-    },
-    [revokeInvitation, loadPending]
-  )
-
-  const handleRemoveMember = useCallback(
-    async (memberUid: string) => {
-      await removeMember(memberUid)
+    async (memberId: string) => {
+      await revokeMember(memberId)
       loadMembers()
     },
-    [removeMember, loadMembers]
+    [revokeMember, loadMembers]
+  )
+
+  const handleDeleteLocal = useCallback(
+    async (memberId: string) => {
+      await deleteLocalMember(memberId)
+      loadMembers()
+    },
+    [deleteLocalMember, loadMembers]
   )
 
   if (!course) {
@@ -98,8 +97,9 @@ export function TeamPage() {
     )
   }
 
-  const isOwner = user && course.uid === user.uid
-  const currentUserUid = user?.uid ?? ""
+  const isOwner = !!(user && course.uid === user.uid)
+  const isTeamNameDirty =
+    (draftTeamName.trim() || undefined) !== (course.teamName ?? undefined)
 
   return (
     <div className="flex flex-col gap-6">
@@ -117,53 +117,54 @@ export function TeamPage() {
             {course.teamName ?? "Team"}
           </h1>
           <p className="text-sm text-muted-foreground">
-            {course.name}
-            {course.teamName
-              ? ` • ${partners.length} member${partners.length !== 1 ? "s" : ""} (local)`
-              : ` • Manage the group and its members`}
+            {course.name} • {members.length} miembro
+            {members.length !== 1 ? "s" : ""}
           </p>
         </div>
       </div>
 
       <div className="space-y-6">
+        {isOwner && (
+          <div className="flex flex-col gap-2 sm:max-w-sm">
+            <Label htmlFor="team-name">Nombre del equipo</Label>
+            <div className="flex gap-2">
+              <Input
+                id="team-name"
+                value={draftTeamName}
+                onChange={(e) => setDraftTeamName(e.target.value)}
+                placeholder="p. ej. Los Algoritmos"
+              />
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleTeamNameSave}
+                disabled={!isTeamNameDirty}
+              >
+                Guardar
+              </Button>
+            </div>
+          </div>
+        )}
+
         <section className="space-y-4">
-          <h2 className="mb-4 text-lg font-semibold">
-            Colaboradores con acceso (Firebase)
-          </h2>
-          {isOwner && (
-            <>
-              <InviteDialog
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold">Miembros del equipo</h2>
+            {isOwner && (
+              <AddMemberDialog
                 courseId={courseId ?? ""}
                 courseName={course.name}
-                onInviteSent={handleInviteSent}
+                onMemberAdded={handleMemberAdded}
               />
-              <InvitationList
-                invitations={pending}
-                onRenew={handleRenew}
-                onRevoke={handleRevoke}
-                loading={invitationsLoading}
-              />
-            </>
-          )}
-          <MemberList
+            )}
+          </div>
+          <TeamMemberList
             members={members}
-            currentUserUid={currentUserUid}
-            onRemove={handleRemoveMember}
+            canManage={isOwner}
             loading={membersLoading}
-            canManage={!!isOwner}
-          />
-        </section>
-
-        <section>
-          <h2 className="mb-4 text-lg font-semibold">
-            Equipo local (para portadas APA)
-          </h2>
-          <TeamManager
-            teamName={course.teamName}
-            partners={partners}
-            onTeamNameChange={handleTeamNameChange}
-            onAdd={addPartner}
-            onDelete={removePartner}
+            onInviteExisting={handleInviteExisting}
+            onRenew={handleRenew}
+            onRevoke={handleRevoke}
+            onDeleteLocal={handleDeleteLocal}
           />
         </section>
       </div>

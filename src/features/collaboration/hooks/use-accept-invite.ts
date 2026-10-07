@@ -1,10 +1,10 @@
 import { useCallback } from "react"
 import {
-  getInvitationById,
+  getTeamMemberById,
   createCourseMember,
-  updateInvitation,
+  updateTeamMember,
 } from "@/lib/db"
-import type { Invitation, CourseMember } from "../types"
+import type { TeamMember, CourseMember } from "../types"
 import { auth } from "@/lib/firebase"
 
 export function useAcceptInvite() {
@@ -16,51 +16,50 @@ export function useAcceptInvite() {
       }
 
       try {
-        const invitation = await getInvitationById(token)
-        if (!invitation) {
+        const member = await getTeamMemberById(token)
+        if (!member) {
           return { success: false, error: "not-found" }
         }
 
-        if (invitation.status !== "pending") {
-          return { success: false, error: invitation.status }
+        if (member.status !== "pending") {
+          return { success: false, error: member.status }
         }
 
         const now = new Date()
-        const expiresAt = new Date(invitation.expiresAt)
-        if (now > expiresAt) {
+        if (member.expiresAt && now > new Date(member.expiresAt)) {
           return { success: false, error: "expired" }
         }
 
         const userEmailLower = currentUser.email?.toLowerCase() ?? ""
-        if (userEmailLower !== invitation.emailLower) {
+        if (userEmailLower !== member.emailLower) {
           return { success: false, error: "wrong-email" }
         }
 
-        const memberId = `${invitation.courseId}_${currentUser.uid}`
-        const member: CourseMember = {
-          id: memberId,
-          courseId: invitation.courseId,
+        const courseMemberId = `${member.courseId}_${currentUser.uid}`
+        const courseMember: CourseMember = {
+          id: courseMemberId,
+          courseId: member.courseId,
           uid: currentUser.uid,
           email: currentUser.email ?? "",
           emailLower: userEmailLower,
           role: "collaborator",
           addedAt: formatDate(now),
-          addedByUid: invitation.invitedByUid,
+          addedByUid: member.invitedByUid,
         }
 
-        const updatedInvitation: Invitation = {
-          ...invitation,
+        const updatedMember: TeamMember = {
+          ...member,
           status: "accepted",
           acceptedAt: formatDate(now),
           acceptedByUid: currentUser.uid,
         }
 
         await Promise.all([
-          createCourseMember(member),
-          updateInvitation(updatedInvitation),
+          createCourseMember(courseMember),
+          updateTeamMember(updatedMember),
         ])
 
-        return { success: true, courseId: invitation.courseId }
+        return { success: true, courseId: member.courseId }
       } catch (err) {
         return { success: false, error: err instanceof Error ? err.message : "Error al aceptar invitación" }
       }

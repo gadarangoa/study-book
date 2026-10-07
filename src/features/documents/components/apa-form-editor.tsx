@@ -19,14 +19,14 @@ import { DocumentFormatControls } from "./document-format-controls"
 import { ObjectivesFields } from "./objectives-fields"
 import { ConclusionsFields, IntroductionFields } from "./section-fields"
 import { SAVE_STATE_LABELS } from "../types"
-import type { Partner } from "@/features/partners/types"
+import type { TeamMember } from "@/features/collaboration/types"
 import type { ApaFormDocument, ApaFormSections, SaveState } from "../types"
 import { cn } from "@/lib/utils"
 
 interface ApaFormEditorProps {
   document: ApaFormDocument
   saveState: SaveState
-  teamMembers: Partner[]
+  teamMembers: TeamMember[]
   onSectionChange: (patch: Partial<ApaFormSections>) => void
   onPageSizeChange: (pageSize: ApaPageSize) => void
   onFormatChange: (

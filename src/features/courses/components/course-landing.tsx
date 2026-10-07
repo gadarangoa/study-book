@@ -3,7 +3,7 @@ import type { Course } from "../types"
 import type { ScheduleEntry } from "../types"
 import type { Resource } from "@/features/resources/types"
 import type { ApaFormDocument } from "@/features/documents"
-import type { Partner } from "@/features/partners/types"
+import type { TeamMember } from "@/features/collaboration/types"
 import { FeatureCard } from "./feature-card"
 
 interface CourseLandingProps {
@@ -11,7 +11,7 @@ interface CourseLandingProps {
   scheduleEntries: ScheduleEntry[]
   resources: Resource[]
   documents: ApaFormDocument[]
-  partners: Partner[]
+  teamMembers: TeamMember[]
 }
 
 export function CourseLanding({
@@ -19,8 +19,9 @@ export function CourseLanding({
   scheduleEntries,
   resources,
   documents,
-  partners,
+  teamMembers,
 }: CourseLandingProps) {
+  const activeTeamMembers = teamMembers.filter((m) => m.status !== "revoked")
   const notes = resources.filter((r) => r.type === "note")
   const links = resources.filter((r) => r.type === "link")
   const pdfs = resources.filter((r) => r.type === "pdf")
@@ -42,13 +43,13 @@ export function CourseLanding({
           title="Team"
           description={
             course.teamName
-              ? `${course.teamName} • ${partners.length} member${partners.length !== 1 ? "s" : ""}`
-              : partners.length === 0
+              ? `${course.teamName} • ${activeTeamMembers.length} member${activeTeamMembers.length !== 1 ? "s" : ""}`
+              : activeTeamMembers.length === 0
                 ? "No team members yet"
-                : `${partners.length} member${partners.length !== 1 ? "s" : ""}`
+                : `${activeTeamMembers.length} member${activeTeamMembers.length !== 1 ? "s" : ""}`
           }
           icon={UsersIcon}
-          stats={partners.length > 0 ? `${partners.length}` : undefined}
+          stats={activeTeamMembers.length > 0 ? `${activeTeamMembers.length}` : undefined}
           href={`/courses/${course.id}/team`}
           color="blue"
         />

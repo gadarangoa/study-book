@@ -15,20 +15,18 @@ import type { Career } from "@/features/careers/types"
 import type { Course } from "@/features/courses/types"
 import type { Resource } from "@/features/resources/types"
 import type { Task } from "@/features/tasks/types"
-import type { Partner } from "@/features/partners/types"
 import type { ScheduleEntry } from "@/features/courses/types"
 import type { ApaFormDocument } from "@/features/documents/types"
-import type { Invitation, CourseMember } from "@/features/collaboration/types"
+import type { TeamMember, CourseMember } from "@/features/collaboration/types"
 
 export interface StoreMap {
   careers: Career
   courses: Course
   resources: Resource
   tasks: Task
-  partners: Partner
   scheduleEntries: ScheduleEntry
   apaDocuments: ApaFormDocument
-  invitations: Invitation
+  teamMembers: TeamMember
   courseMembers: CourseMember
 }
 
@@ -122,8 +120,7 @@ export async function clearStore<K extends StoreName>(
 }
 
 async function deleteByCourseId(
-  storeName:
-    "resources" | "tasks" | "partners" | "scheduleEntries" | "apaDocuments",
+  storeName: "resources" | "tasks" | "scheduleEntries" | "apaDocuments",
   courseId: string,
   uid: string
 ): Promise<void> {
@@ -140,16 +137,9 @@ async function deleteByCourseId(
   await batch.commit()
 }
 
-async function deleteInvitationsByCourseId(
-  courseId: string,
-  uid: string
-): Promise<void> {
+async function deleteTeamMembersByCourseId(courseId: string): Promise<void> {
   const snapshot = await getDocs(
-    query(
-      collection(db, "invitations"),
-      where("courseId", "==", courseId),
-      where("invitedByUid", "==", uid)
-    )
+    query(collection(db, "teamMembers"), where("courseId", "==", courseId))
   )
   if (snapshot.empty) return
   const batch = writeBatch(db)
@@ -169,11 +159,10 @@ async function deleteMembersByCourseId(courseId: string): Promise<void> {
 
 export async function deleteCourseCascade(courseId: string): Promise<void> {
   const uid = getUid()
-  await deleteInvitationsByCourseId(courseId, uid)
+  await deleteTeamMembersByCourseId(courseId)
   await deleteMembersByCourseId(courseId)
   await deleteByCourseId("resources", courseId, uid)
   await deleteByCourseId("tasks", courseId, uid)
-  await deleteByCourseId("partners", courseId, uid)
   await deleteByCourseId("scheduleEntries", courseId, uid)
   await deleteByCourseId("apaDocuments", courseId, uid)
   await deleteDoc(doc(db, "courses", courseId))
@@ -196,35 +185,23 @@ export async function deleteCareerCascade(careerId: string): Promise<void> {
 
 // Collaboration functions
 
-export async function getInvitationById(
-  invitationId: string
-): Promise<Invitation | undefined> {
-  const snapshot = await getDoc(doc(db, "invitations", invitationId))
+export async function getTeamMemberById(
+  memberId: string
+): Promise<TeamMember | undefined> {
+  const snapshot = await getDoc(doc(db, "teamMembers", memberId))
   if (!snapshot.exists()) return undefined
-  return snapshot.data() as Invitation
+  return snapshot.data() as TeamMember
 }
 
-export async function getPendingInvitations(
-  courseId: string
-): Promise<Invitation[]> {
+export async function getTeamMembers(courseId: string): Promise<TeamMember[]> {
   const snapshot = await getDocs(
     query(
-      collection(db, "invitations"),
+      collection(db, "teamMembers"),
       where("courseId", "==", courseId),
-      where("status", "==", "pending"),
       orderBy("createdAt", "desc")
     )
   )
-  return snapshot.docs.map((d) => d.data() as Invitation)
-}
-
-export async function getActiveMembers(
-  courseId: string
-): Promise<CourseMember[]> {
-  const snapshot = await getDocs(
-    query(collection(db, "courseMembers"), where("courseId", "==", courseId))
-  )
-  return snapshot.docs.map((d) => d.data() as CourseMember)
+  return snapshot.docs.map((d) => d.data() as TeamMember)
 }
 
 export async function getSharedCourses(uid: string): Promise<Course[]> {
@@ -249,20 +226,24 @@ export async function getSharedCourses(uid: string): Promise<Course[]> {
   return [...ownedCourses, ...sharedCourses]
 }
 
-export async function createInvitation(
-  invitation: Invitation
-): Promise<Invitation> {
-  const payload = stripUndefined({ ...invitation })
-  await setDoc(doc(db, "invitations", invitation.id), payload)
-  return invitation
+export async function createTeamMember(
+  member: TeamMember
+): Promise<TeamMember> {
+  const payload = stripUndefined({ ...member })
+  await setDoc(doc(db, "teamMembers", member.id), payload)
+  return member
 }
 
-export async function updateInvitation(
-  invitation: Invitation
-): Promise<Invitation> {
-  const payload = stripUndefined({ ...invitation })
-  await setDoc(doc(db, "invitations", invitation.id), payload)
-  return invitation
+export async function updateTeamMember(
+  member: TeamMember
+): Promise<TeamMember> {
+  const payload = stripUndefined({ ...member })
+  await setDoc(doc(db, "teamMembers", member.id), payload)
+  return member
+}
+
+export async function removeTeamMember(memberId: string): Promise<void> {
+  await deleteDoc(doc(db, "teamMembers", memberId))
 }
 
 export async function createCourseMember(

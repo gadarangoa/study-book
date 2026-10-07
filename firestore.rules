@@ -34,32 +34,52 @@ service cloud.firestore {
     //   allow delete: if signedIn() && (resource.data.uid == request.auth.uid || isCourseOwner(resource.data.courseId));
     // }
 
-    // Invitations: owners can list/create/update for their courses; anyone can read by token
-    // match /invitations/{invitationId} {
+    // Team members: unified roster + invitation/access-status row per course.
+    // "local" = name-only roster entry (e.g. for APA covers), no account required.
+    // "pending" -> "accepted" (by the invited user) or "revoked" (by the owner).
+    // Only the course owner can add/manage rows; anyone can read a row by its token/id.
+    // match /teamMembers/{memberId} {
     //   allow read: if true;
     //   allow list: if signedIn() && resource.data.invitedByUid == request.auth.uid;
-    //   allow create: if signedIn() && request.resource.data.invitedByUid == request.auth.uid && request.resource.data.status == "pending" && request.resource.data.expiresAt > request.time;
+    //   allow create: if signedIn()
+    //     && request.resource.data.invitedByUid == request.auth.uid
+    //     && isCourseOwner(request.resource.data.courseId)
+    //     && (
+    //       request.resource.data.status == "local" || (
+    //         request.resource.data.status == "pending"
+    //         && request.resource.data.expiresAt > request.time
+    //       )
+    //     );
     //   allow update: if signedIn()
     //     && (
     //       (
+    //         // owner generates an invite link for a local-only roster entry
     //         resource.data.invitedByUid == request.auth.uid
-    //         && (resource.data.status == "pending" || resource.data.status == "expired")
+    //         && resource.data.status == "local"
+    //         && request.resource.data.status == "pending"
+    //         && request.resource.data.expiresAt > request.time
+    //       ) || (
+    //         // owner renews an expired/unused invite link
+    //         resource.data.invitedByUid == request.auth.uid
+    //         && resource.data.status == "pending"
     //         && request.resource.data.status == "pending"
     //         && request.resource.data.resendCount == resource.data.resendCount + 1
     //         && request.resource.data.expiresAt > request.time
     //       ) || (
+    //         // invited user accepts their own pending invite
     //         resource.data.status == "pending"
     //         && request.resource.data.status == "accepted"
     //         && request.resource.data.acceptedAt != null
     //         && request.resource.data.acceptedByUid == request.auth.uid
     //       ) || (
+    //         // owner revokes a pending invite or previously-accepted access
     //         resource.data.invitedByUid == request.auth.uid
-    //         && resource.data.status == "pending"
+    //         && (resource.data.status == "pending" || resource.data.status == "accepted")
     //         && request.resource.data.status == "revoked"
     //         && request.resource.data.revokedAt != null
     //       )
     //     );
-    //   allow delete: if false;
+    //   allow delete: if signedIn() && isCourseOwner(resource.data.courseId);
     // }
 
     // Documents and related resources: owner can read/write; course members can read
@@ -86,11 +106,6 @@ service cloud.firestore {
     //   allow read: if signedIn() && (request.auth.uid == resource.data.uid || exists(/databases/$(database)/documents/courseMembers/$(resource.data.courseId + "_" + request.auth.uid)));
     //   allow create, update: if signedIn() && resource.data.uid == request.auth.uid;
     //   allow delete: if signedIn() && resource.data.uid == request.auth.uid;
-    // }
-
-    // match /partners/{docId} {
-    //   allow read: if signedIn() && (request.auth.uid == resource.data.uid || exists(/databases/$(database)/documents/courseMembers/$(resource.data.courseId + "_" + request.auth.uid)));
-    //   allow create, update, delete: if signedIn() && resource.data.uid == request.auth.uid;
     // }
 
     // No `mail` collection is used: invitations are shared by link.

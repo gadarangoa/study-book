@@ -325,8 +325,8 @@
     "semantic_hash": ""
   },
   "firestore.indexes.json": {
-    "mtime": 1789346662.8925824,
-    "ast_hash": "d1d9e3041e73626e0be77b81b0688902",
+    "mtime": 1790054642.4826179,
+    "ast_hash": "d6f5820ec735acb037eb52eb065903a7",
     "semantic_hash": ""
   },
   "src/components/ui/alert-dialog.tsx": {
@@ -434,44 +434,19 @@
     "ast_hash": "062dcd5036b4b728ecf6c690d5ddd11a",
     "semantic_hash": ""
   },
-  "src/features/collaboration/components/invitation-list.tsx": {
-    "mtime": 1790047663.8569942,
-    "ast_hash": "7ebfcf951ed37820be9b633ba5cc510f",
-    "semantic_hash": ""
-  },
-  "src/features/collaboration/components/invite-dialog.tsx": {
-    "mtime": 1789400973.1127279,
-    "ast_hash": "e84baee0f4cffcfe5aa7da05bcae4315",
-    "semantic_hash": ""
-  },
-  "src/features/collaboration/components/member-list.tsx": {
-    "mtime": 1790047686.5872898,
-    "ast_hash": "324ce8776ed27850ffb05fb2179b6adb",
-    "semantic_hash": ""
-  },
   "src/features/collaboration/hooks/use-accept-invite.ts": {
-    "mtime": 1789340060.4815044,
-    "ast_hash": "c0a1043912691b2de5abe8f1489b8142",
-    "semantic_hash": ""
-  },
-  "src/features/collaboration/hooks/use-invitations.ts": {
-    "mtime": 1790047630.7731106,
-    "ast_hash": "fb869d0b7cce924cb75450447ccf54ab",
-    "semantic_hash": ""
-  },
-  "src/features/collaboration/hooks/use-members.ts": {
-    "mtime": 1789340035.8169217,
-    "ast_hash": "95c5b7f87fcbeb1829df6cc605d374a3",
+    "mtime": 1790054219.4510233,
+    "ast_hash": "ecac5d4c078e40d0a8bd66e84774506f",
     "semantic_hash": ""
   },
   "src/features/collaboration/index.ts": {
-    "mtime": 1789339991.244099,
-    "ast_hash": "411e31dd41ba655dc7d4e98c2bb0a896",
+    "mtime": 1790054321.7204096,
+    "ast_hash": "fb085225266aaa74184d1aac41b508c4",
     "semantic_hash": ""
   },
   "src/features/collaboration/types.ts": {
-    "mtime": 1789338752.7918794,
-    "ast_hash": "a7cb0e920f972738a6f3b78778763331",
+    "mtime": 1790054362.6369712,
+    "ast_hash": "ec007135ae5d72d8e19cc8ab8bb68e7f",
     "semantic_hash": ""
   },
   "src/features/courses/components/course-card.tsx": {
@@ -490,8 +465,8 @@
     "semantic_hash": ""
   },
   "src/features/courses/components/course-landing.tsx": {
-    "mtime": 1790045519.5022287,
-    "ast_hash": "c6266ab863e2928965d1902a8fc4e853",
+    "mtime": 1790054446.5240455,
+    "ast_hash": "7a172586a59e86212d38e8deea2772ff",
     "semantic_hash": ""
   },
   "src/features/courses/components/course-list.tsx": {
@@ -545,8 +520,8 @@
     "semantic_hash": ""
   },
   "src/features/documents/components/apa-form-editor.tsx": {
-    "mtime": 1790047349.873969,
-    "ast_hash": "ccaff4eea9611a9e6b6cdc1e8d325fca",
+    "mtime": 1790054473.112692,
+    "ast_hash": "b4b5749da93e21bab0fec9c8360238be",
     "semantic_hash": ""
   },
   "src/features/documents/components/apa-pdf-preview.tsx": {
@@ -560,8 +535,8 @@
     "semantic_hash": ""
   },
   "src/features/documents/components/cover-fields.tsx": {
-    "mtime": 1789008215.7288637,
-    "ast_hash": "efc98a330d51ea19c76ab37c75185e64",
+    "mtime": 1790054466.2715452,
+    "ast_hash": "96728a9617c1a6f187fb2a1e2b4766a0",
     "semantic_hash": ""
   },
   "src/features/documents/components/development-field.tsx": {
@@ -612,31 +587,6 @@
   "src/features/documents/types.ts": {
     "mtime": 1790044145.536575,
     "ast_hash": "c0b895a6f2f80cc2c8c2eb6c91031b90",
-    "semantic_hash": ""
-  },
-  "src/features/partners/components/partner-list.tsx": {
-    "mtime": 1788329282.462969,
-    "ast_hash": "25165d4cc8e5890788300853502aef96",
-    "semantic_hash": ""
-  },
-  "src/features/partners/components/team-manager.tsx": {
-    "mtime": 1788492942.9846237,
-    "ast_hash": "e3a4d651ea45b11d503bfb044ba9b61d",
-    "semantic_hash": ""
-  },
-  "src/features/partners/hooks/use-partners.ts": {
-    "mtime": 1788329277.3302293,
-    "ast_hash": "9f4ada8c5ccfae8cc69263351cdeab06",
-    "semantic_hash": ""
-  },
-  "src/features/partners/index.ts": {
-    "mtime": 1788492952.9257667,
-    "ast_hash": "876f40855c97941f39929c85b35b67fc",
-    "semantic_hash": ""
-  },
-  "src/features/partners/types.ts": {
-    "mtime": 1788329014.5018363,
-    "ast_hash": "a24fa74bf10ee1e1210933d6dd60a805",
     "semantic_hash": ""
   },
   "src/features/resources/components/link-form.tsx": {
@@ -700,8 +650,8 @@
     "semantic_hash": ""
   },
   "src/lib/db.ts": {
-    "mtime": 1789400975.0381064,
-    "ast_hash": "a802faf748b97fc262d388f5c8977609",
+    "mtime": 1790054182.1320188,
+    "ast_hash": "e5482f9d9fa47d61327d8c0e2c156bb2",
     "semantic_hash": ""
   },
   "src/lib/firebase.ts": {
@@ -715,13 +665,13 @@
     "semantic_hash": ""
   },
   "src/pages/course-detail.tsx": {
-    "mtime": 1790045544.2878146,
-    "ast_hash": "b79e20fa08e4b0d1ad4bd3b8484c5dd9",
+    "mtime": 1790054425.7543101,
+    "ast_hash": "401ba6e708f37b7cd8218734e5332a0c",
     "semantic_hash": ""
   },
   "src/pages/document-editor.tsx": {
-    "mtime": 1790047538.4249587,
-    "ast_hash": "422a79703942d33b4f95ae1415c6c7dc",
+    "mtime": 1790054461.7452447,
+    "ast_hash": "d6f6881884b10bb5d3feb7e139f467e8",
     "semantic_hash": ""
   },
   "src/pages/documents.tsx": {
@@ -730,13 +680,13 @@
     "semantic_hash": ""
   },
   "src/pages/invite-accept.tsx": {
-    "mtime": 1790047624.7460003,
-    "ast_hash": "6babe4ccb910f48dbf568f40b5bea6d0",
+    "mtime": 1790054500.4570227,
+    "ast_hash": "99726c48020e45706b3b29636e513de4",
     "semantic_hash": ""
   },
   "src/pages/team.tsx": {
-    "mtime": 1790047678.3400285,
-    "ast_hash": "4adca4e92e155eccad0839537d81bbde",
+    "mtime": 1790054414.6254406,
+    "ast_hash": "03ea6d19d86381b86e524130f531c948",
     "semantic_hash": ""
   },
   "src/vite-env.d.ts": {
@@ -750,32 +700,32 @@
     "semantic_hash": ""
   },
   ".playwright-mcp/page-2026-09-14T04-24-05-365Z.yml": {
-    "mtime": 1789359845.3670542,
+    "mtime": 1790047919.1343977,
     "ast_hash": "7257a1bf2ad0bf65aca7454b457326a3",
     "semantic_hash": ""
   },
   ".playwright-mcp/page-2026-09-14T04-30-08-341Z.yml": {
-    "mtime": 1789360208.348178,
+    "mtime": 1790047919.1358054,
     "ast_hash": "99bbe78552b239e258d51fa4fc0a140e",
     "semantic_hash": ""
   },
   ".playwright-mcp/page-2026-09-14T04-30-44-492Z.yml": {
-    "mtime": 1789360244.4935002,
+    "mtime": 1790047919.138314,
     "ast_hash": "cbcc49121504bc1cde86b1855278486f",
     "semantic_hash": ""
   },
   ".playwright-mcp/page-2026-09-14T04-39-04-530Z.yml": {
-    "mtime": 1789360744.5351644,
+    "mtime": 1790047919.1399283,
     "ast_hash": "65635c60130cefd61b81c7a6eddb041e",
     "semantic_hash": ""
   },
   ".playwright-mcp/page-2026-09-14T04-39-13-166Z.yml": {
-    "mtime": 1789360753.1689858,
+    "mtime": 1790047919.1410837,
     "ast_hash": "35c7e47ce94833f69450c39618670377",
     "semantic_hash": ""
   },
   ".playwright-mcp/page-2026-09-14T04-39-22-369Z.yml": {
-    "mtime": 1789360762.3703847,
+    "mtime": 1790047919.1424375,
     "ast_hash": "09684e78b085967ff5e354efc77f1c3b",
     "semantic_hash": ""
   },
@@ -1214,16 +1164,6 @@
     "ast_hash": "7257a1bf2ad0bf65aca7454b457326a3",
     "semantic_hash": ""
   },
-  ".playwright-mcp/page-2026-09-22T03-28-52-684Z.yml": {
-    "mtime": 1790047732.694091,
-    "ast_hash": "31d63efbf896881d941dd1ebf82169ff",
-    "semantic_hash": ""
-  },
-  "docx-smoke-test.html": {
-    "mtime": 1790047699.1333601,
-    "ast_hash": "ccf9cdef6aea85df08ccc93bb7aee116",
-    "semantic_hash": ""
-  },
   "specs/006-mejoras-formato-apa-pdf/checklists/requirements.md": {
     "mtime": 1790043322.5233963,
     "ast_hash": "ef8d3ea56a6ebecfe8650006bd8b8421",
@@ -1272,6 +1212,21 @@
   "specs/007-numeracion-paginas-indice-pdf/spec.md": {
     "mtime": 1790046355.744386,
     "ast_hash": "7fa7d4805598653678b03ea98c2c0a82",
+    "semantic_hash": ""
+  },
+  "src/features/collaboration/components/add-member-dialog.tsx": {
+    "mtime": 1790054384.6797507,
+    "ast_hash": "b26b0f66e272707d97087fea8eab7a71",
+    "semantic_hash": ""
+  },
+  "src/features/collaboration/components/team-member-list.tsx": {
+    "mtime": 1790054318.2357476,
+    "ast_hash": "f12a4a7a245d2a0e6ab59adab4449ea6",
+    "semantic_hash": ""
+  },
+  "src/features/collaboration/hooks/use-team-members.ts": {
+    "mtime": 1790054407.0818484,
+    "ast_hash": "28a5393e9c25c336876201cb29f15c6f",
     "semantic_hash": ""
   }
 }

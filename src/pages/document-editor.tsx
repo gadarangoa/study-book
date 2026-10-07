@@ -6,7 +6,7 @@ import { ArrowLeftIcon } from "lucide-react"
 import { getById } from "@/lib/db"
 import type { Course } from "@/features/courses/types"
 import { useApaFormDocument } from "@/features/documents/hooks/useApaFormDocument"
-import { usePartners } from "@/features/partners/hooks/use-partners"
+import { useTeamMembers } from "@/features/collaboration/hooks/use-team-members"
 import { ApaPageStyle } from "@/features/documents/components/apa-pdf-preview"
 import { ApaFormEditor } from "@/features/documents/components/apa-form-editor"
 import { APA_STATUS_LABELS_ES } from "@/features/documents/types"
@@ -22,7 +22,8 @@ export function DocumentEditorPage() {
   const prefilledTeacherRef = useRef<string | null>(null)
   const { document, isLoading, saveState, updateSections, updateFields, retrySave } =
     useApaFormDocument(documentId ?? "")
-  const { partners } = usePartners(courseId ?? "")
+  const { members: teamMembers } = useTeamMembers(courseId ?? "")
+  const authorEligibleMembers = teamMembers.filter((m) => m.status !== "revoked")
 
   useEffect(() => {
     if (!courseId) return
@@ -171,7 +172,7 @@ export function DocumentEditorPage() {
           <ApaFormEditor
             document={document}
             saveState={saveState}
-            teamMembers={partners}
+            teamMembers={authorEligibleMembers}
             onSectionChange={updateSections}
             onPageSizeChange={(pageSize) => updateFields({ pageSize })}
             onFormatChange={(patch) => updateFields(patch)}
