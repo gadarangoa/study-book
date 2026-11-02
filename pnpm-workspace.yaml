@@ -1,5 +1,7 @@
 packages: []
 
 allowBuilds:
+  '@firebase/util': true
   esbuild: true
   msw: false
+  protobufjs: false
