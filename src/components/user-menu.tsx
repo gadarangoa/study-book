@@ -20,25 +20,46 @@ function getInitials(email?: string | null) {
     .split(/[^\p{L}\p{N}]+/u)
     .filter(Boolean)
   const initials =
-    parts.length > 1 ? parts[0][0] + parts[1][0] : (parts[0] ?? "").slice(0, 2)
+    parts.length > 1
+      ? firstChars(parts[0], 1) + firstChars(parts[1], 1)
+      : firstChars(parts[0] ?? "", 2)
   return initials ? initials.toUpperCase() : "?"
+}
+
+/** First `n` code points, so letters outside the BMP aren't split in half. */
+function firstChars(value: string, n: number) {
+  return Array.from(value).slice(0, n).join("")
 }
 
 export function UserMenu() {
   const { user, signOut } = useAuth()
   const email = user?.email ?? "Usuario"
+  const [open, setOpen] = useState(false)
+  const [isSigningOut, setIsSigningOut] = useState(false)
   const [signOutError, setSignOutError] = useState(false)
 
+  // The item keeps the menu open while signing out so a failure is shown in
+  // place; on success the auth guard redirects to /login.
   const handleSignOut = () => {
     setSignOutError(false)
-    signOut().catch((error: unknown) => {
-      console.error("Sign out failed", error)
-      setSignOutError(true)
-    })
+    setIsSigningOut(true)
+    signOut()
+      .then(() => setOpen(false))
+      .catch((error: unknown) => {
+        console.error("Sign out failed", error)
+        setSignOutError(true)
+      })
+      .finally(() => setIsSigningOut(false))
   }
 
   return (
-    <DropdownMenu>
+    <DropdownMenu
+      open={open}
+      onOpenChange={(next) => {
+        setOpen(next)
+        if (!next) setSignOutError(false)
+      }}
+    >
       <DropdownMenuTrigger
         render={
           <Button
@@ -63,9 +84,14 @@ export function UserMenu() {
           )}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem variant="destructive" onClick={handleSignOut}>
+        <DropdownMenuItem
+          variant="destructive"
+          closeOnClick={false}
+          disabled={isSigningOut}
+          onClick={handleSignOut}
+        >
           <LogOutIcon />
-          Cerrar sesión
+          {isSigningOut ? "Cerrando sesión…" : "Cerrar sesión"}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

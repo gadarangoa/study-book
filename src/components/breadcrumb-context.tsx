@@ -13,102 +13,91 @@ type Entities = {
 
 type Kind = keyof Entities
 
-type BreadcrumbContextValue = {
-  entities: Entities
-  publish: <K extends Kind>(kind: K, entity: Entities[K]) => void
+type Actions = {
+  publish: <K extends Kind>(kind: K, entity: NonNullable<Entities[K]>) => void
   retract: (kind: Kind, id: string) => void
 }
 
-const BreadcrumbContext = React.createContext<BreadcrumbContextValue | null>(
-  null
-)
+// Entities and actions live in separate contexts so publishing pages (which
+// only need the stable actions) don't re-render when any entity changes.
+const EntitiesContext = React.createContext<Entities | null>(null)
+const ActionsContext = React.createContext<Actions | null>(null)
 
 /**
  * Pages publish the entities they already loaded (course, career, document)
  * so the header breadcrumb can show live names without re-reading Firestore.
  */
-export function BreadcrumbProvider({ children }: { children: React.ReactNode }) {
+export function BreadcrumbProvider({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   const [entities, setEntities] = React.useState<Entities>({})
 
-  const publish = React.useCallback(
-    <K extends Kind>(kind: K, entity: Entities[K]) => {
-      setEntities((prev) => ({ ...prev, [kind]: entity }))
-    },
+  const actions = React.useMemo<Actions>(
+    () => ({
+      publish: (kind, entity) => {
+        setEntities((prev) => ({ ...prev, [kind]: entity }))
+      },
+      // Only clears the slot if it still holds the entity being retracted, so
+      // a page unmounting late can't wipe what the next page published.
+      retract: (kind, id) => {
+        setEntities((prev) =>
+          prev[kind]?.id === id ? { ...prev, [kind]: undefined } : prev
+        )
+      },
+    }),
     []
   )
 
-  // Only clears the slot if it still holds the entity being retracted, so a
-  // page unmounting late can't wipe what the next page already published.
-  const retract = React.useCallback((kind: Kind, id: string) => {
-    setEntities((prev) =>
-      prev[kind]?.id === id ? { ...prev, [kind]: undefined } : prev
-    )
-  }, [])
-
-  const value = React.useMemo(
-    () => ({ entities, publish, retract }),
-    [entities, publish, retract]
-  )
-
   return (
-    <BreadcrumbContext.Provider value={value}>
-      {children}
-    </BreadcrumbContext.Provider>
+    <ActionsContext.Provider value={actions}>
+      <EntitiesContext.Provider value={entities}>
+        {children}
+      </EntitiesContext.Provider>
+    </ActionsContext.Provider>
   )
 }
 
-function useBreadcrumbContext() {
-  const ctx = React.useContext(BreadcrumbContext)
-  if (!ctx) {
+function useRequired<T>(ctx: React.Context<T | null>): T {
+  const value = React.useContext(ctx)
+  if (value === null) {
     throw new Error("Breadcrumb hooks must be used within a BreadcrumbProvider")
   }
-  return ctx
+  return value
 }
 
 export function useBreadcrumbEntities() {
-  return useBreadcrumbContext().entities
+  return useRequired(EntitiesContext)
 }
 
-export function usePublishCourse(course: BreadcrumbCourse | null | undefined) {
-  const { publish, retract } = useBreadcrumbContext()
-  const id = course?.id
-  const name = course?.name
-  const careerId = course?.careerId
-
-  React.useEffect(() => {
-    if (id === undefined || name === undefined || careerId === undefined) {
-      return undefined
-    }
-    publish("course", { id, name, careerId })
-    return () => retract("course", id)
-  }, [id, name, careerId, publish, retract])
-}
-
-export function usePublishCareer(career: BreadcrumbCareer | null | undefined) {
-  const { publish, retract } = useBreadcrumbContext()
-  const id = career?.id
-  const name = career?.name
-
-  React.useEffect(() => {
-    if (id === undefined || name === undefined) return undefined
-    publish("career", { id, name })
-    return () => retract("career", id)
-  }, [id, name, publish, retract])
-}
-
-export function usePublishDocument(
-  document: BreadcrumbDocument | null | undefined
+/**
+ * Publishes `entity` under `kind` while the caller is mounted. Pass `null`
+ * (e.g. while loading) to publish nothing. Only the fields of the entity type
+ * are published, keyed by value so object identity changes don't re-publish.
+ */
+export function usePublishBreadcrumb<K extends Kind>(
+  kind: K,
+  entity: NonNullable<Entities[K]> | null | undefined
 ) {
-  const { publish, retract } = useBreadcrumbContext()
-  const id = document?.id
-  const title = document?.title
-  const courseId = document?.courseId
+  const { publish, retract } = useRequired(ActionsContext)
+  const key = entity ? JSON.stringify(pick(kind, entity)) : null
 
   React.useEffect(() => {
-    if (id === undefined || title === undefined || courseId === undefined) {
-      return undefined
-    }
-    publish("document", { id, title, courseId })
-    return () => retract("document", id)
-  }, [id, title, courseId, publish, retract])
+    if (key === null) return undefined
+    const value = JSON.parse(key) as NonNullable<Entities[K]>
+    publish(kind, value)
+    return () => retract(kind, value.id)
+  }, [kind, key, publish, retract])
+}
+
+function pick(kind: Kind, entity: { id: string } & Record<string, unknown>) {
+  switch (kind) {
+    case "career":
+      return { id: entity.id, name: entity.name }
+    case "course":
+      return { id: entity.id, name: entity.name, careerId: entity.careerId }
+    case "document":
+      return { id: entity.id, title: entity.title, courseId: entity.courseId }
+  }
 }

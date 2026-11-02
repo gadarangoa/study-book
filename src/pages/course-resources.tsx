@@ -4,12 +4,12 @@ import { useEffect, useState } from "react"
 import type { Course } from "@/features/courses/types"
 import { useResources } from "@/features/resources/hooks/use-resources"
 import { ResourceList } from "@/features/resources/components/resource-list"
-import { usePublishCourse } from "@/components/breadcrumb-context"
+import { usePublishBreadcrumb } from "@/components/breadcrumb-context"
 
 export function CourseResourcesPage() {
   const { courseId } = useParams<{ courseId: string }>()
   const [course, setCourse] = useState<Course | null>(null)
-  usePublishCourse(course)
+  usePublishBreadcrumb("course", course)
   const [courseLoading, setCourseLoading] = useState(true)
 
   const {

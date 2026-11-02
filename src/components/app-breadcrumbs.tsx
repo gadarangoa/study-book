@@ -23,7 +23,7 @@ const SECTION_LABELS: Record<string, string> = {
   team: "Equipo",
 }
 
-type Crumb = { label: string | null; to?: string }
+type Crumb = { label: string; to?: string; pending?: boolean }
 
 function useRouteParams() {
   const { pathname } = useLocation()
@@ -53,31 +53,47 @@ function useRouteParams() {
   return {}
 }
 
+// Career names rarely change; cache them for the session so moving between
+// a career and its courses doesn't re-read Firestore each time.
+const careerNameCache = new Map<string, string>()
+
 /**
  * Course pages don't load the career, so look it up here. A failure (e.g. a
- * collaborator without read access to the owner's career) just hides that
- * crumb instead of breaking the rest.
+ * collaborator without read access to the owner's career) only leaves the
+ * career crumb with its generic label instead of breaking the rest.
  */
-function useCareerLookup(careerId: string | undefined, known: boolean) {
+function useCareerName(careerId: string | undefined, published?: string) {
   const [fetched, setFetched] = useState<BreadcrumbCareer | null>(null)
 
+  if (careerId && published !== undefined) {
+    careerNameCache.set(careerId, published)
+  }
+  const cached = careerId ? careerNameCache.get(careerId) : undefined
+
   useEffect(() => {
-    if (!careerId || known) return undefined
+    if (!careerId || published !== undefined || careerNameCache.has(careerId)) {
+      return undefined
+    }
     let cancelled = false
     getById("careers", careerId)
       .then((career) => {
-        if (!cancelled && career)
-          setFetched({ id: careerId, name: career.name })
+        if (!career) return
+        careerNameCache.set(careerId, career.name)
+        if (!cancelled) setFetched({ id: careerId, name: career.name })
       })
       .catch(() => {
-        // Career is optional context; ignore read errors.
+        // Career is optional context; keep the generic label.
       })
     return () => {
       cancelled = true
     }
-  }, [careerId, known])
+  }, [careerId, published])
 
-  return fetched && fetched.id === careerId ? fetched : null
+  return (
+    published ??
+    cached ??
+    (fetched && fetched.id === careerId ? fetched.name : undefined)
+  )
 }
 
 export function AppBreadcrumbs() {
@@ -94,25 +110,30 @@ export function AppBreadcrumbs() {
       ? entities.document
       : undefined
 
-  const careerIdForRoute = careerId ?? course?.careerId
-  const publishedCareer =
-    careerIdForRoute && entities.career?.id === careerIdForRoute
-      ? entities.career
+  const routeCareerId = careerId ?? course?.careerId
+  const careerName = useCareerName(
+    routeCareerId,
+    routeCareerId && entities.career?.id === routeCareerId
+      ? entities.career.name
       : undefined
-  const fetchedCareer = useCareerLookup(
-    courseId ? course?.careerId : undefined,
-    publishedCareer !== undefined
   )
-  const career = publishedCareer ?? fetchedCareer
 
+  // Missing names (loading, not found or no access) fall back to a generic,
+  // dimmed label so the crumb stays readable and navigable.
   const crumbs: Crumb[] = [{ label: "Dashboard", to: "/dashboard" }]
-  if (careerId) {
-    crumbs.push({ label: career?.name ?? null, to: `/careers/${careerId}` })
-  } else if (career) {
-    crumbs.push({ label: career.name, to: `/careers/${career.id}` })
+  if (routeCareerId) {
+    crumbs.push({
+      label: careerName ?? "Carrera",
+      pending: careerName === undefined,
+      to: `/careers/${routeCareerId}`,
+    })
   }
   if (courseId) {
-    crumbs.push({ label: course?.name ?? null, to: `/courses/${courseId}` })
+    crumbs.push({
+      label: course?.name ?? "Curso",
+      pending: !course,
+      to: `/courses/${courseId}`,
+    })
     if (section) {
       crumbs.push({
         label: SECTION_LABELS[section],
@@ -120,7 +141,7 @@ export function AppBreadcrumbs() {
       })
     }
     if (documentId) {
-      crumbs.push({ label: document?.title ?? null })
+      crumbs.push({ label: document?.title ?? "Documento", pending: !document })
     }
   }
 
@@ -133,7 +154,7 @@ export function AppBreadcrumbs() {
         <Link
           to={parent.to}
           className="flex shrink-0 items-center rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground md:hidden"
-          aria-label={`Volver a ${parent.label ?? "nivel anterior"}`}
+          aria-label={`Volver a ${parent.label}`}
         >
           <ChevronLeftIcon className="size-4" />
         </Link>
@@ -155,22 +176,25 @@ export function AppBreadcrumbs() {
                   !isLast && i > 0 && "max-w-40"
                 )}
               >
-                {crumb.label === null ? (
-                  <span
-                    aria-hidden
-                    className="h-3.5 w-20 animate-pulse rounded bg-muted"
-                  />
-                ) : isLast || !crumb.to ? (
+                {isLast || !crumb.to ? (
                   <span
                     aria-current={isLast ? "page" : undefined}
-                    className="truncate font-medium text-foreground"
+                    className={cn(
+                      "truncate font-medium",
+                      crumb.pending
+                        ? "text-muted-foreground"
+                        : "text-foreground"
+                    )}
                   >
                     {crumb.label}
                   </span>
                 ) : (
                   <Link
                     to={crumb.to}
-                    className="truncate transition-colors hover:text-foreground"
+                    className={cn(
+                      "truncate transition-colors hover:text-foreground",
+                      crumb.pending && "opacity-70"
+                    )}
                   >
                     {crumb.label}
                   </Link>
