@@ -14,7 +14,7 @@ export function CareerDetailPage() {
   const { courses, isLoading, createCourse, updateCourse, deleteCourse } =
     useCourses(careerId ?? "")
   const [addOpen, setAddOpen] = useState(false)
-  const { careers } = useNavData()
+  const { careers, careersLoaded } = useNavData()
   const career = careers.find((c) => c.id === careerId) ?? null
   const [selectedTags, setSelectedTags] = useState<string[]>([])
 
@@ -43,7 +43,10 @@ export function CareerDetailPage() {
     <div className="flex flex-col gap-6">
       <div className="flex items-center gap-4">
         <div className="flex-1">
-          <h1 className="text-2xl font-semibold">{career?.name ?? "Career"}</h1>
+          <h1 className="text-2xl font-semibold">
+            {career?.name ??
+              (careersLoaded ? "Carrera no encontrada" : "Cargando…")}
+          </h1>
           {career?.description && (
             <p className="text-muted-foreground">{career.description}</p>
           )}
