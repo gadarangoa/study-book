@@ -1,11 +1,10 @@
 "use client"
 
 import { useCallback, useEffect, useState } from "react"
-import { useParams, Link } from "react-router"
+import { useParams } from "react-router"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { ArrowLeftIcon } from "lucide-react"
 import { getById, update } from "@/lib/db"
 import type { Course } from "@/features/courses/types"
 import { useAuth } from "@/features/auth"
@@ -104,14 +103,6 @@ export function TeamPage() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center gap-4">
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          render={<Link to={`/courses/${course.id}`} />}
-        >
-          <ArrowLeftIcon />
-          <span className="sr-only">Back to course</span>
-        </Button>
         <div className="flex flex-1 flex-col gap-1">
           <h1 className="text-2xl font-semibold">
             {course.teamName ?? "Team"}

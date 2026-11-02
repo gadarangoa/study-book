@@ -1,15 +1,13 @@
-import { useEffect, useState } from "react"
 import { Link, useLocation } from "react-router"
 import {
   BookOpenIcon,
   HomeIcon,
   GraduationCapIcon,
-  LogOutIcon,
+  LibraryBigIcon,
 } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -18,29 +16,29 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { getAll } from "@/lib/db"
-import { useAuth } from "@/features/auth"
-import { Button } from "@/components/ui/button"
-import type { Career } from "@/features/careers/types"
-import type { Course } from "@/features/courses/types"
+import { useNavData } from "@/components/nav-data-context"
 
 export function AppSidebar() {
   const location = useLocation()
-  const { user, signOut } = useAuth()
-  const [careers, setCareers] = useState<Career[]>([])
-  const [courses, setCourses] = useState<Course[]>([])
-
-  useEffect(() => {
-    getAll("careers").then(setCareers)
-    getAll("courses").then(setCourses)
-  }, [location.pathname])
+  const { careers, courses } = useNavData()
 
   return (
     <Sidebar>
       <SidebarHeader>
-        <div className="flex items-center gap-2 px-2 text-sm font-semibold">
-          StudyBook
-        </div>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              size="lg"
+              render={<Link to="/dashboard" />}
+              tooltip="StudyBook"
+            >
+              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                <LibraryBigIcon className="size-4" />
+              </div>
+              <span className="font-semibold">StudyBook</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
@@ -105,17 +103,6 @@ export function AppSidebar() {
           </SidebarGroup>
         )}
       </SidebarContent>
-      <SidebarFooter>
-        <div className="flex items-center gap-2 px-2">
-          <span className="flex-1 truncate text-xs text-muted-foreground">
-            {user?.email ?? "User"}
-          </span>
-          <Button variant="ghost" size="icon-sm" onClick={signOut} title="Sign out">
-            <LogOutIcon />
-            <span className="sr-only">Sign out</span>
-          </Button>
-        </div>
-      </SidebarFooter>
     </Sidebar>
   )
 }

@@ -57,7 +57,7 @@ export function PDFViewer({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
-      <div className="relative w-full max-w-4xl h-[90vh] bg-white rounded-lg shadow-lg flex flex-col">
+      <div className="relative w-full max-w-4xl h-[90vh] bg-background rounded-lg shadow-lg flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between border-b p-4">
           <div className="flex-1">
