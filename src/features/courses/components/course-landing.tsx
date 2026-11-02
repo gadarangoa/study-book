@@ -1,14 +1,14 @@
 import { CalendarIcon, UsersIcon, BookOpenIcon, FileTextIcon } from "lucide-react"
 import type { Course } from "../types"
-import type { ScheduleEntry } from "../types"
 import type { Resource } from "@/features/resources/types"
+import type { Task } from "@/features/tasks"
 import type { ApaFormDocument } from "@/features/documents"
 import type { TeamMember } from "@/features/collaboration/types"
 import { FeatureCard } from "./feature-card"
 
 interface CourseLandingProps {
   course: Course
-  scheduleEntries: ScheduleEntry[]
+  tasks: Task[]
   resources: Resource[]
   documents: ApaFormDocument[]
   teamMembers: TeamMember[]
@@ -16,7 +16,7 @@ interface CourseLandingProps {
 
 export function CourseLanding({
   course,
-  scheduleEntries,
+  tasks,
   resources,
   documents,
   teamMembers,
@@ -26,27 +26,17 @@ export function CourseLanding({
   const links = resources.filter((r) => r.type === "link")
   const pdfs = resources.filter((r) => r.type === "pdf")
 
-  const getScheduleDisplay = () => {
-    if (course.schedule) return course.schedule
-    if (scheduleEntries.length === 0) return null
-    const days = [...new Set(scheduleEntries.map((e) => e.day))]
-    const times = scheduleEntries.map((e) => `${e.startTime}-${e.endTime}`)
-    return `${days.join(", ")} ${times[0]}`
-  }
-
-  const scheduleDisplay = getScheduleDisplay()
-
   return (
     <div className="flex flex-col gap-6">
       <div className="grid gap-4 sm:grid-cols-2">
         <FeatureCard
-          title="Team"
+          title="Equipo"
           description={
             course.teamName
-              ? `${course.teamName} • ${activeTeamMembers.length} member${activeTeamMembers.length !== 1 ? "s" : ""}`
+              ? `${course.teamName} • ${activeTeamMembers.length} integrante${activeTeamMembers.length !== 1 ? "s" : ""}`
               : activeTeamMembers.length === 0
-                ? "No team members yet"
-                : `${activeTeamMembers.length} member${activeTeamMembers.length !== 1 ? "s" : ""}`
+                ? "Aún no hay integrantes"
+                : `${activeTeamMembers.length} integrante${activeTeamMembers.length !== 1 ? "s" : ""}`
           }
           icon={UsersIcon}
           stats={activeTeamMembers.length > 0 ? `${activeTeamMembers.length}` : undefined}
@@ -66,18 +56,23 @@ export function CourseLanding({
           color="orange"
         />
         <FeatureCard
-          title="Resources"
-          description={resources.length === 0 ? "No resources yet" : `${notes.length} notes • ${links.length} links • ${pdfs.length} PDFs`}
+          title="Recursos"
+          description={resources.length === 0 ? "Aún no hay recursos" : `${notes.length} nota${notes.length !== 1 ? "s" : ""} • ${links.length} enlace${links.length !== 1 ? "s" : ""} • ${pdfs.length} PDF`}
           icon={BookOpenIcon}
           stats={resources.length > 0 ? `${resources.length}` : undefined}
           href={`/courses/${course.id}/resources`}
           color="green"
         />
         <FeatureCard
-          title="Schedule"
-          description={scheduleDisplay || "No schedule set"}
+          title="Actividades"
+          description={
+            tasks.length === 0
+              ? "No hay actividades programadas"
+              : `${tasks.length} actividad${tasks.length !== 1 ? "es" : ""} programada${tasks.length !== 1 ? "s" : ""}`
+          }
           icon={CalendarIcon}
-          href="#schedule"
+          stats={tasks.length > 0 ? `${tasks.length}` : undefined}
+          href={`/courses/${course.id}/schedule`}
           color="purple"
         />
       </div>

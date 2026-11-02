@@ -6,6 +6,7 @@ import type { Course } from "@/features/courses/types"
 import { CourseLanding } from "@/features/courses/components/course-landing"
 import { useScheduleEntries } from "@/features/courses/hooks/use-schedule-entries"
 import { useResources } from "@/features/resources/hooks/use-resources"
+import { useTasks } from "@/features/tasks"
 import { useTeamMembers } from "@/features/collaboration/hooks/use-team-members"
 import { useApaDocuments } from "@/features/documents/hooks/useApaDocuments"
 
@@ -14,6 +15,7 @@ export function CourseDetailPage() {
   const [course, setCourse] = useState<Course | null>(null)
 
   const { entries: scheduleEntries } = useScheduleEntries(courseId ?? "")
+  const { tasks } = useTasks(courseId ?? "")
   const { resources } = useResources(courseId ?? "")
   const { members: teamMembers } = useTeamMembers(courseId ?? "")
   const { documents } = useApaDocuments(courseId ?? "")
@@ -87,7 +89,7 @@ export function CourseDetailPage() {
 
       <CourseLanding
         course={course}
-        scheduleEntries={scheduleEntries}
+        tasks={tasks}
         resources={resources}
         documents={documents}
         teamMembers={teamMembers}
