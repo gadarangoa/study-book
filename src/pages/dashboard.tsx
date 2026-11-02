@@ -10,7 +10,7 @@ import { CareerForm } from "@/features/careers/components/career-form"
 import { CourseTagFilter } from "@/features/courses/components/course-tag-filter"
 import { collectAllTags, matchesTags } from "@/features/courses/lib/tags"
 import {
-  CourseOverviewGrid,
+  CourseProgressChart,
   StatTiles,
   UpcomingDeadlines,
   daysUntil,
@@ -166,10 +166,14 @@ export function DashboardPage() {
         <div className="lg:max-h-[640px] lg:overflow-y-auto">
           <UpcomingDeadlines items={overview.deadlines} />
         </div>
-        <div className="flex flex-col gap-3">
-          <h2 className="text-lg font-semibold">Cursos</h2>
-          <CourseOverviewGrid courses={overview.courseCards} />
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Avance por curso</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <CourseProgressChart courses={overview.courseCards} />
+          </CardContent>
+        </Card>
       </div>
 
       <div>
