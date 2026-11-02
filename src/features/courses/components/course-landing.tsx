@@ -1,14 +1,14 @@
 import { CalendarIcon, UsersIcon, BookOpenIcon, FileTextIcon } from "lucide-react"
 import type { Course } from "../types"
-import type { ScheduleEntry } from "../types"
 import type { Resource } from "@/features/resources/types"
+import type { Task } from "@/features/tasks"
 import type { ApaFormDocument } from "@/features/documents"
 import type { TeamMember } from "@/features/collaboration/types"
 import { FeatureCard } from "./feature-card"
 
 interface CourseLandingProps {
   course: Course
-  scheduleEntries: ScheduleEntry[]
+  tasks: Task[]
   resources: Resource[]
   documents: ApaFormDocument[]
   teamMembers: TeamMember[]
@@ -16,7 +16,7 @@ interface CourseLandingProps {
 
 export function CourseLanding({
   course,
-  scheduleEntries,
+  tasks,
   resources,
   documents,
   teamMembers,
@@ -25,16 +25,6 @@ export function CourseLanding({
   const notes = resources.filter((r) => r.type === "note")
   const links = resources.filter((r) => r.type === "link")
   const pdfs = resources.filter((r) => r.type === "pdf")
-
-  const getScheduleDisplay = () => {
-    if (course.schedule) return course.schedule
-    if (scheduleEntries.length === 0) return null
-    const days = [...new Set(scheduleEntries.map((e) => e.day))]
-    const times = scheduleEntries.map((e) => `${e.startTime}-${e.endTime}`)
-    return `${days.join(", ")} ${times[0]}`
-  }
-
-  const scheduleDisplay = getScheduleDisplay()
 
   return (
     <div className="flex flex-col gap-6">
@@ -75,9 +65,14 @@ export function CourseLanding({
         />
         <FeatureCard
           title="Schedule"
-          description={scheduleDisplay || "No schedule set"}
+          description={
+            tasks.length === 0
+              ? "No hay actividades programadas"
+              : `${tasks.length} actividad${tasks.length !== 1 ? "es" : ""} programada${tasks.length !== 1 ? "s" : ""}`
+          }
           icon={CalendarIcon}
-          href="#schedule"
+          stats={tasks.length > 0 ? `${tasks.length}` : undefined}
+          href={`/courses/${course.id}/schedule`}
           color="purple"
         />
       </div>

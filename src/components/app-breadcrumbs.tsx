@@ -22,6 +22,7 @@ const ROUTES = {
 
 const SECTION_LABELS: Record<string, string> = {
   resources: "Recursos",
+  schedule: "Actividades",
   documents: "Documentos",
   team: "Equipo",
 }

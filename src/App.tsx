@@ -6,6 +6,7 @@ import { LoginPage } from "@/pages/login"
 import { CareerDetailPage } from "@/pages/career-detail"
 import { CourseDetailPage } from "@/pages/course-detail"
 import { CourseResourcesPage } from "@/pages/course-resources"
+import { CourseSchedulePage } from "@/pages/course-schedule"
 import { DocumentEditorPage } from "@/pages/document-editor"
 import { DocumentsPage } from "@/pages/documents"
 import { TeamPage } from "@/pages/team"
@@ -29,6 +30,7 @@ export function App() {
             <Route path="/careers/:careerId" element={<CareerDetailPage />} />
             <Route path="/courses/:courseId" element={<CourseDetailPage />} />
             <Route path="/courses/:courseId/resources" element={<CourseResourcesPage />} />
+            <Route path="/courses/:courseId/schedule" element={<CourseSchedulePage />} />
             <Route path="/courses/:courseId/documents" element={<DocumentsPage />} />
             <Route
               path="/courses/:courseId/documents/:documentId"

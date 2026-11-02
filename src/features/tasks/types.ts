@@ -10,5 +10,5 @@ export interface Task {
 
 export interface TaskFormData {
   title: string
-  dueDate?: string
+  dueDate: string
 }
