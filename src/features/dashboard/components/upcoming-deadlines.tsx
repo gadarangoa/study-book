@@ -1,0 +1,57 @@
+import { Link } from "react-router"
+import { format, parseISO } from "date-fns"
+import { es } from "date-fns/locale"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { DueBadge } from "./due-badge"
+
+export interface DeadlineItem {
+  id: string
+  title: string
+  dueDate: string
+  days: number
+  courseId: string
+  courseName: string
+  careerName?: string
+}
+
+interface UpcomingDeadlinesProps {
+  items: DeadlineItem[]
+}
+
+export function UpcomingDeadlines({ items }: UpcomingDeadlinesProps) {
+  return (
+    <Card className="h-full">
+      <CardHeader>
+        <CardTitle className="text-base">Próximas entregas</CardTitle>
+      </CardHeader>
+      <CardContent>
+        {items.length === 0 ? (
+          <p className="text-sm text-muted-foreground">
+            No hay actividades pendientes. ¡Todo al día!
+          </p>
+        ) : (
+          <ul className="flex flex-col divide-y">
+            {items.map((item) => (
+              <li key={item.id}>
+                <Link
+                  to={`/courses/${item.courseId}/schedule`}
+                  className="flex items-center justify-between gap-3 py-2.5 transition-colors hover:bg-accent/50"
+                >
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-medium">{item.title}</p>
+                    <p className="truncate text-xs text-muted-foreground">
+                      {item.courseName}
+                      {item.careerName ? ` · ${item.careerName}` : ""} ·{" "}
+                      {format(parseISO(item.dueDate), "EEE d MMM", { locale: es })}
+                    </p>
+                  </div>
+                  <DueBadge days={item.days} />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </CardContent>
+    </Card>
+  )
+}
