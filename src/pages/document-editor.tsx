@@ -9,7 +9,7 @@ import { useTeamMembers } from "@/features/collaboration/hooks/use-team-members"
 import { ApaPageStyle } from "@/features/documents/components/apa-pdf-preview"
 import { ApaFormEditor } from "@/features/documents/components/apa-form-editor"
 import { APA_STATUS_LABELS_ES } from "@/features/documents/types"
-import { usePublishBreadcrumb } from "@/components/breadcrumb-context"
+import { usePublishDocument } from "@/components/breadcrumb-context"
 
 export function DocumentEditorPage() {
   const { courseId, documentId } = useParams<{
@@ -112,8 +112,7 @@ export function DocumentEditorPage() {
   const wrongCourse =
     document !== undefined && courseId !== undefined && document.courseId !== courseId
 
-  usePublishBreadcrumb("course", course)
-  usePublishBreadcrumb("document", wrongCourse ? null : document)
+  usePublishDocument(wrongCourse ? null : document)
 
   return (
     <div className="flex flex-col gap-4">

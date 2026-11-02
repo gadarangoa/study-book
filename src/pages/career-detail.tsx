@@ -9,7 +9,6 @@ import { CourseTagFilter } from "@/features/courses/components/course-tag-filter
 import { collectAllTags, matchesTags } from "@/features/courses/lib/tags"
 import { getAll } from "@/lib/db"
 import type { Career } from "@/features/careers/types"
-import { usePublishBreadcrumb } from "@/components/breadcrumb-context"
 
 export function CareerDetailPage() {
   const { careerId } = useParams<{ careerId: string }>()
@@ -17,7 +16,6 @@ export function CareerDetailPage() {
     useCourses(careerId ?? "")
   const [addOpen, setAddOpen] = useState(false)
   const [career, setCareer] = useState<Career | null>(null)
-  usePublishBreadcrumb("career", career)
   const [selectedTags, setSelectedTags] = useState<string[]>([])
 
   useEffect(() => {

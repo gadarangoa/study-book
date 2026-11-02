@@ -11,13 +11,11 @@ import { useAuth } from "@/features/auth"
 import { useTeamMembers } from "@/features/collaboration/hooks/use-team-members"
 import { AddMemberDialog } from "@/features/collaboration/components/add-member-dialog"
 import { TeamMemberList } from "@/features/collaboration/components/team-member-list"
-import { usePublishBreadcrumb } from "@/components/breadcrumb-context"
 
 export function TeamPage() {
   const { courseId } = useParams<{ courseId: string }>()
   const { user } = useAuth()
   const [course, setCourse] = useState<Course | null>(null)
-  usePublishBreadcrumb("course", course)
   const [draftTeamName, setDraftTeamName] = useState("")
   const {
     members,

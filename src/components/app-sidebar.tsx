@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react"
 import { Link, useLocation } from "react-router"
 import {
   BookOpenIcon,
@@ -17,26 +16,22 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { getAll } from "@/lib/db"
-import type { Career } from "@/features/careers/types"
-import type { Course } from "@/features/courses/types"
+import { useNavData } from "@/components/nav-data-context"
 
 export function AppSidebar() {
   const location = useLocation()
-  const [careers, setCareers] = useState<Career[]>([])
-  const [courses, setCourses] = useState<Course[]>([])
-
-  useEffect(() => {
-    getAll("careers").then(setCareers)
-    getAll("courses").then(setCourses)
-  }, [location.pathname])
+  const { careers, courses } = useNavData()
 
   return (
     <Sidebar>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" render={<Link to="/dashboard" />} tooltip="StudyBook">
+            <SidebarMenuButton
+              size="lg"
+              render={<Link to="/dashboard" />}
+              tooltip="StudyBook"
+            >
               <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                 <LibraryBigIcon className="size-4" />
               </div>

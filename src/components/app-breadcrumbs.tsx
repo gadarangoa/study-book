@@ -4,12 +4,15 @@ import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
 
 import { getById } from "@/lib/db"
 import { cn } from "@/lib/utils"
-import {
-  useBreadcrumbEntities,
-  type BreadcrumbCareer,
-} from "@/components/breadcrumb-context"
+import { usePublishedDocument } from "@/components/breadcrumb-context"
+import { useNavData } from "@/components/nav-data-context"
+import type { Course } from "@/features/courses/types"
 
-/** Route shapes the breadcrumb understands; keep in sync with App.tsx. */
+/**
+ * Route shapes the breadcrumb understands; keep in sync with App.tsx.
+ * (react-router's `useMatches` + route `handle` would avoid this copy, but it
+ * requires migrating from <BrowserRouter> to a data router.)
+ */
 const ROUTES = {
   career: "/careers/:careerId",
   course: "/courses/:courseId",
@@ -53,85 +56,86 @@ function useRouteParams() {
   return {}
 }
 
-// Career names rarely change; cache them for the session so moving between
-// a career and its courses doesn't re-read Firestore each time.
-const careerNameCache = new Map<string, string>()
-
 /**
- * Course pages don't load the career, so look it up here. A failure (e.g. a
- * collaborator without read access to the owner's career) only leaves the
- * career crumb with its generic label instead of breaking the rest.
+ * Resolves a course that isn't in the user's own list (e.g. a course shared
+ * with a collaborator). Stale responses are ignored by checking the id.
  */
-function useCareerName(careerId: string | undefined, published?: string) {
-  const [fetched, setFetched] = useState<BreadcrumbCareer | null>(null)
-
-  if (careerId && published !== undefined) {
-    careerNameCache.set(careerId, published)
-  }
-  const cached = careerId ? careerNameCache.get(careerId) : undefined
+function useSharedCourse(courseId: string | undefined, enabled: boolean) {
+  const [fetched, setFetched] = useState<Course | null>(null)
 
   useEffect(() => {
-    if (!careerId || published !== undefined || careerNameCache.has(careerId)) {
-      return undefined
-    }
+    if (!courseId || !enabled) return undefined
     let cancelled = false
-    getById("careers", careerId)
-      .then((career) => {
-        if (!career) return
-        careerNameCache.set(careerId, career.name)
-        if (!cancelled) setFetched({ id: careerId, name: career.name })
+    getById("courses", courseId)
+      .then((course) => {
+        if (!cancelled && course) setFetched(course)
       })
       .catch(() => {
-        // Career is optional context; keep the generic label.
+        // Keep the generic label; the page itself reports the error.
       })
     return () => {
       cancelled = true
     }
-  }, [careerId, published])
+  }, [courseId, enabled])
 
-  return (
-    published ??
-    cached ??
-    (fetched && fetched.id === careerId ? fetched.name : undefined)
-  )
+  return fetched && fetched.id === courseId ? fetched : undefined
+}
+
+/** Empty strings (e.g. a cleared title) count as missing. */
+function nonEmpty(value: string | undefined) {
+  return value && value.trim() ? value : undefined
 }
 
 export function AppBreadcrumbs() {
   const { careerId, courseId, section, documentId } = useRouteParams()
-  const entities = useBreadcrumbEntities()
+  const { careers, courses, isLoaded } = useNavData()
+  const publishedDocument = usePublishedDocument()
 
-  // Only trust published entities that belong to the current route.
-  const course =
-    courseId && entities.course?.id === courseId ? entities.course : undefined
+  const ownCourse = courseId
+    ? courses.find((c) => c.id === courseId)
+    : undefined
+  const sharedCourse = useSharedCourse(
+    courseId,
+    isLoaded && ownCourse === undefined
+  )
+  const course = ownCourse ?? sharedCourse
+
+  // Only show the career when it's one the user can open; a shared course's
+  // career belongs to its owner, so it's left out instead of linking to a
+  // page the collaborator can't read.
+  const routeCareerId = careerId ?? course?.careerId
+  const career = routeCareerId
+    ? careers.find((c) => c.id === routeCareerId)
+    : undefined
+
   const document =
     documentId &&
-    entities.document?.id === documentId &&
-    entities.document.courseId === courseId
-      ? entities.document
+    publishedDocument?.id === documentId &&
+    publishedDocument.courseId === courseId
+      ? publishedDocument
       : undefined
-
-  const routeCareerId = careerId ?? course?.careerId
-  const careerName = useCareerName(
-    routeCareerId,
-    routeCareerId && entities.career?.id === routeCareerId
-      ? entities.career.name
-      : undefined
-  )
 
   // Missing names (loading, not found or no access) fall back to a generic,
   // dimmed label so the crumb stays readable and navigable.
   const crumbs: Crumb[] = [{ label: "Dashboard", to: "/dashboard" }]
-  if (routeCareerId) {
+  if (careerId) {
+    const name = nonEmpty(career?.name)
     crumbs.push({
-      label: careerName ?? "Carrera",
-      pending: careerName === undefined,
-      to: `/careers/${routeCareerId}`,
+      label: name ?? "Carrera",
+      pending: !name,
+      to: `/careers/${careerId}`,
+    })
+  } else if (career) {
+    crumbs.push({
+      label: nonEmpty(career.name) ?? "Carrera",
+      to: `/careers/${career.id}`,
     })
   }
   if (courseId) {
+    const name = nonEmpty(course?.name)
     crumbs.push({
-      label: course?.name ?? "Curso",
-      pending: !course,
+      label: name ?? "Curso",
+      pending: !name,
       to: `/courses/${courseId}`,
     })
     if (section) {
@@ -141,7 +145,8 @@ export function AppBreadcrumbs() {
       })
     }
     if (documentId) {
-      crumbs.push({ label: document?.title ?? "Documento", pending: !document })
+      const title = nonEmpty(document?.title)
+      crumbs.push({ label: title ?? "Documento", pending: !title })
     }
   }
 
