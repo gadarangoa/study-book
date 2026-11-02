@@ -30,13 +30,13 @@ export function CourseLanding({
     <div className="flex flex-col gap-6">
       <div className="grid gap-4 sm:grid-cols-2">
         <FeatureCard
-          title="Team"
+          title="Equipo"
           description={
             course.teamName
-              ? `${course.teamName} • ${activeTeamMembers.length} member${activeTeamMembers.length !== 1 ? "s" : ""}`
+              ? `${course.teamName} • ${activeTeamMembers.length} integrante${activeTeamMembers.length !== 1 ? "s" : ""}`
               : activeTeamMembers.length === 0
-                ? "No team members yet"
-                : `${activeTeamMembers.length} member${activeTeamMembers.length !== 1 ? "s" : ""}`
+                ? "Aún no hay integrantes"
+                : `${activeTeamMembers.length} integrante${activeTeamMembers.length !== 1 ? "s" : ""}`
           }
           icon={UsersIcon}
           stats={activeTeamMembers.length > 0 ? `${activeTeamMembers.length}` : undefined}
@@ -56,15 +56,15 @@ export function CourseLanding({
           color="orange"
         />
         <FeatureCard
-          title="Resources"
-          description={resources.length === 0 ? "No resources yet" : `${notes.length} notes • ${links.length} links • ${pdfs.length} PDFs`}
+          title="Recursos"
+          description={resources.length === 0 ? "Aún no hay recursos" : `${notes.length} nota${notes.length !== 1 ? "s" : ""} • ${links.length} enlace${links.length !== 1 ? "s" : ""} • ${pdfs.length} PDF`}
           icon={BookOpenIcon}
           stats={resources.length > 0 ? `${resources.length}` : undefined}
           href={`/courses/${course.id}/resources`}
           color="green"
         />
         <FeatureCard
-          title="Schedule"
+          title="Actividades"
           description={
             tasks.length === 0
               ? "No hay actividades programadas"
