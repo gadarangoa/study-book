@@ -1,6 +1,8 @@
 import { Link } from "react-router"
 import { format, parseISO } from "date-fns"
 import { es } from "date-fns/locale"
+import { XIcon } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { DueBadge } from "./due-badge"
 
@@ -16,18 +18,38 @@ export interface DeadlineItem {
 
 interface UpcomingDeadlinesProps {
   items: DeadlineItem[]
+  /** Name of the course the list is filtered by, if any. */
+  filterLabel?: string
+  onClearFilter?: () => void
 }
 
-export function UpcomingDeadlines({ items }: UpcomingDeadlinesProps) {
+export function UpcomingDeadlines({
+  items,
+  filterLabel,
+  onClearFilter,
+}: UpcomingDeadlinesProps) {
   return (
     <Card className="h-full">
-      <CardHeader>
-        <CardTitle className="text-base">Próximas entregas</CardTitle>
+      <CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0">
+        <CardTitle className="min-w-0 truncate text-base">
+          Próximas entregas
+          {filterLabel && (
+            <span className="font-normal text-muted-foreground"> · {filterLabel}</span>
+          )}
+        </CardTitle>
+        {filterLabel && onClearFilter && (
+          <Button variant="ghost" size="sm" onClick={onClearFilter}>
+            <XIcon data-icon="inline-start" />
+            Ver todas
+          </Button>
+        )}
       </CardHeader>
       <CardContent>
         {items.length === 0 ? (
           <p className="text-sm text-muted-foreground">
-            No hay actividades pendientes. ¡Todo al día!
+            {filterLabel
+              ? "Este curso no tiene actividades pendientes."
+              : "No hay actividades pendientes. ¡Todo al día!"}
           </p>
         ) : (
           <ul className="flex flex-col divide-y">

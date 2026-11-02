@@ -25,6 +25,7 @@ export function DashboardPage() {
   const [addOpen, setAddOpen] = useState(false)
   const [selectedTags, setSelectedTags] = useState<string[]>([])
   const [careerFilter, setCareerFilter] = useState<string | null>(null)
+  const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null)
   const {
     courses: allCourses,
     tasks,
@@ -102,6 +103,18 @@ export function DashboardPage() {
     }
   }, [allCourses, tasks, documents, careerFilter, careerNameById])
 
+  // Only honour the course filter while that course is visible under the
+  // current career filter.
+  const selectedCourse = overview.courseCards.find(
+    (c) => c.id === selectedCourseId
+  )
+  const visibleDeadlines = selectedCourse
+    ? overview.deadlines.filter((d) => d.courseId === selectedCourse.id)
+    : overview.deadlines
+
+  const toggleCourse = (courseId: string) =>
+    setSelectedCourseId((prev) => (prev === courseId ? null : courseId))
+
   const allTags = useMemo(() => collectAllTags(allCourses), [allCourses])
 
   const filteredCourses = useMemo(
@@ -164,14 +177,22 @@ export function DashboardPage() {
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
         <div className="lg:max-h-[640px] lg:overflow-y-auto">
-          <UpcomingDeadlines items={overview.deadlines} />
+          <UpcomingDeadlines
+            items={visibleDeadlines}
+            filterLabel={selectedCourse?.name}
+            onClearFilter={() => setSelectedCourseId(null)}
+          />
         </div>
         <Card>
           <CardHeader>
             <CardTitle className="text-base">Avance por curso</CardTitle>
           </CardHeader>
           <CardContent>
-            <CourseProgressChart courses={overview.courseCards} />
+            <CourseProgressChart
+              courses={overview.courseCards}
+              selectedId={selectedCourse?.id ?? null}
+              onSelect={toggleCourse}
+            />
           </CardContent>
         </Card>
       </div>

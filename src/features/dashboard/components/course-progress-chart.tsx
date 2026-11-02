@@ -1,4 +1,4 @@
-import { Link } from "react-router"
+import { cn } from "@/lib/utils"
 import { DueBadge } from "./due-badge"
 
 export interface CourseOverview {
@@ -26,7 +26,18 @@ function endLabel(days?: number): string | undefined {
   return `Termina en ${days} día${days !== 1 ? "s" : ""}`
 }
 
-export function CourseProgressChart({ courses }: { courses: CourseOverview[] }) {
+interface CourseProgressChartProps {
+  courses: CourseOverview[]
+  /** Course currently used to filter the deadlines list, if any. */
+  selectedId?: string | null
+  onSelect?: (courseId: string) => void
+}
+
+export function CourseProgressChart({
+  courses,
+  selectedId,
+  onSelect,
+}: CourseProgressChartProps) {
   if (courses.length === 0) {
     return (
       <p className="text-sm text-muted-foreground">
@@ -57,20 +68,28 @@ export function CourseProgressChart({ courses }: { courses: CourseOverview[] }) 
             overdue: course.overdue,
           }
           const total = course.pending + course.completed
+          const isSelected = course.id === selectedId
           const tooltip = [
             `${course.completed} completadas · ${values.onTime} pendientes · ${course.overdue} vencidas`,
             endLabel(course.daysToEnd),
             `${course.documentCount} documento${course.documentCount !== 1 ? "s" : ""} APA`,
+            isSelected ? "Clic para ver todas las entregas" : "Clic para ver sus entregas",
           ]
             .filter(Boolean)
             .join("\n")
 
           return (
             <li key={course.id}>
-              <Link
-                to={`/courses/${course.id}`}
+              <button
+                type="button"
+                aria-pressed={isSelected}
+                onClick={() => onSelect?.(course.id)}
                 title={tooltip}
-                className="grid gap-1.5 p-1 transition-colors hover:bg-accent/50 sm:grid-cols-[10rem_minmax(0,1fr)_auto] sm:items-center sm:gap-3"
+                className={cn(
+                  "grid w-full gap-1.5 border border-transparent p-1 text-left transition-[background-color,opacity] hover:bg-accent/50 sm:grid-cols-[10rem_minmax(0,1fr)_auto] sm:items-center sm:gap-3",
+                  isSelected && "border-border bg-accent",
+                  selectedId && !isSelected && "opacity-50 hover:opacity-100"
+                )}
               >
                 <div className="min-w-0">
                   <p className="truncate text-sm font-medium">{course.name}</p>
@@ -110,7 +129,7 @@ export function CourseProgressChart({ courses }: { courses: CourseOverview[] }) 
                     <span className="text-xs text-muted-foreground">Sin pendientes</span>
                   )}
                 </div>
-              </Link>
+              </button>
             </li>
           )
         })}
