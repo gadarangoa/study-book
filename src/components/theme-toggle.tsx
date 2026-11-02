@@ -2,7 +2,12 @@ import * as React from "react"
 import { MoonIcon, SunIcon } from "lucide-react"
 
 import { useTheme } from "@/components/theme-provider"
-import { Switch } from "@/components/ui/switch"
+import { Button } from "@/components/ui/button"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 const COLOR_SCHEME_QUERY = "(prefers-color-scheme: dark)"
 
@@ -25,16 +30,23 @@ function useIsDark() {
 export function ThemeToggle() {
   const { setTheme } = useTheme()
   const isDark = useIsDark()
+  const label = isDark ? "Cambiar a modo claro" : "Cambiar a modo oscuro"
 
   return (
-    <label className="flex items-center gap-2 text-muted-foreground">
-      <SunIcon className="size-4" aria-hidden />
-      <Switch
-        checked={isDark}
-        onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
-        aria-label="Activar modo oscuro"
-      />
-      <MoonIcon className="size-4" aria-hidden />
-    </label>
+    <Tooltip>
+      <TooltipTrigger
+        render={
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            aria-label={label}
+            onClick={() => setTheme(isDark ? "light" : "dark")}
+          />
+        }
+      >
+        {isDark ? <SunIcon /> : <MoonIcon />}
+      </TooltipTrigger>
+      <TooltipContent>{label}</TooltipContent>
+    </Tooltip>
   )
 }

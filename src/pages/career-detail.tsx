@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react"
-import { useParams, Link } from "react-router"
+import { useParams } from "react-router"
 import { Button } from "@/components/ui/button"
-import { ArrowLeftIcon, PlusIcon } from "lucide-react"
+import { PlusIcon } from "lucide-react"
 import { useCourses } from "@/features/courses"
 import { CourseList } from "@/features/courses/components/course-list"
 import { CourseForm } from "@/features/courses/components/course-form"
@@ -49,10 +49,6 @@ export function CareerDetailPage() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon-sm" render={<Link to="/dashboard" />}>
-          <ArrowLeftIcon />
-          <span className="sr-only">Back to dashboard</span>
-        </Button>
         <div className="flex-1">
           <h1 className="text-2xl font-semibold">{career?.name ?? "Career"}</h1>
           {career?.description && (

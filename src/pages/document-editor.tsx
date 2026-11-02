@@ -2,7 +2,6 @@ import { Link, useParams } from "react-router"
 import { useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { ArrowLeftIcon } from "lucide-react"
 import { getById } from "@/lib/db"
 import type { Course } from "@/features/courses/types"
 import { useApaFormDocument } from "@/features/documents/hooks/useApaFormDocument"
@@ -115,14 +114,6 @@ export function DocumentEditorPage() {
   return (
     <div className="flex flex-col gap-4">
       <div className="no-print flex flex-wrap items-center gap-3">
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          render={<Link to={courseId ? `/courses/${courseId}` : "/dashboard"} />}
-        >
-          <ArrowLeftIcon />
-          <span className="sr-only">Volver al curso</span>
-        </Button>
         <div className="flex min-w-0 flex-1 flex-col gap-1">
           <div className="flex flex-wrap items-center gap-2">
             <h1 className="truncate text-xl font-semibold">

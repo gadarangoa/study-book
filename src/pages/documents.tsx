@@ -1,8 +1,8 @@
 import { useState } from "react"
-import { Link, useNavigate, useParams } from "react-router"
+import { useNavigate, useParams } from "react-router"
 import { useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { ArrowLeftIcon, PlusIcon } from "lucide-react"
+import { PlusIcon } from "lucide-react"
 import { getById } from "@/lib/db"
 import type { Course } from "@/features/courses/types"
 import { useApaDocuments } from "@/features/documents/hooks/useApaDocuments"
@@ -42,14 +42,6 @@ export function DocumentsPage() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap items-center gap-3">
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          render={<Link to={courseId ? `/courses/${courseId}` : "/dashboard"} />}
-        >
-          <ArrowLeftIcon />
-          <span className="sr-only">Volver al curso</span>
-        </Button>
         <div className="flex min-w-0 flex-1 flex-col gap-1">
           <h1 className="truncate text-xl font-semibold">Documentos</h1>
           {course && (
