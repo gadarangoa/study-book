@@ -77,12 +77,12 @@ export function UserMenu() {
       <DropdownMenuContent align="end" className="min-w-48">
         <DropdownMenuGroup>
           <DropdownMenuLabel className="truncate">{email}</DropdownMenuLabel>
-          {signOutError && (
-            <DropdownMenuLabel role="alert" className="text-destructive">
-              No se pudo cerrar sesión. Inténtalo de nuevo.
-            </DropdownMenuLabel>
-          )}
         </DropdownMenuGroup>
+        {signOutError && (
+          <div role="alert" className="px-2 pb-2 text-xs text-destructive">
+            No se pudo cerrar sesión. Inténtalo de nuevo.
+          </div>
+        )}
         <DropdownMenuSeparator />
         <DropdownMenuItem
           variant="destructive"

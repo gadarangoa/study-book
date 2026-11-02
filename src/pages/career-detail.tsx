@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { useParams } from "react-router"
 import { Button } from "@/components/ui/button"
 import { PlusIcon } from "lucide-react"
@@ -7,23 +7,16 @@ import { CourseList } from "@/features/courses/components/course-list"
 import { CourseForm } from "@/features/courses/components/course-form"
 import { CourseTagFilter } from "@/features/courses/components/course-tag-filter"
 import { collectAllTags, matchesTags } from "@/features/courses/lib/tags"
-import { getAll } from "@/lib/db"
-import type { Career } from "@/features/careers/types"
+import { useNavData } from "@/components/nav-data-context"
 
 export function CareerDetailPage() {
   const { careerId } = useParams<{ careerId: string }>()
   const { courses, isLoading, createCourse, updateCourse, deleteCourse } =
     useCourses(careerId ?? "")
   const [addOpen, setAddOpen] = useState(false)
-  const [career, setCareer] = useState<Career | null>(null)
+  const { careers } = useNavData()
+  const career = careers.find((c) => c.id === careerId) ?? null
   const [selectedTags, setSelectedTags] = useState<string[]>([])
-
-  useEffect(() => {
-    if (!careerId) return
-    getAll("careers").then((all) => {
-      setCareer(all.find((c) => c.id === careerId) ?? null)
-    })
-  }, [careerId])
 
   const allTags = useMemo(() => collectAllTags(courses), [courses])
 

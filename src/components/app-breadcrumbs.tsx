@@ -88,7 +88,7 @@ function nonEmpty(value: string | undefined) {
 
 export function AppBreadcrumbs() {
   const { careerId, courseId, section, documentId } = useRouteParams()
-  const { careers, courses, isLoaded } = useNavData()
+  const { careers, courses, coursesLoaded } = useNavData()
   const publishedDocument = usePublishedDocument()
 
   const ownCourse = courseId
@@ -96,7 +96,7 @@ export function AppBreadcrumbs() {
     : undefined
   const sharedCourse = useSharedCourse(
     courseId,
-    isLoaded && ownCourse === undefined
+    coursesLoaded && ownCourse === undefined
   )
   const course = ownCourse ?? sharedCourse
 
