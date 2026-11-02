@@ -8,10 +8,12 @@ import { useScheduleEntries } from "@/features/courses/hooks/use-schedule-entrie
 import { useResources } from "@/features/resources/hooks/use-resources"
 import { useTeamMembers } from "@/features/collaboration/hooks/use-team-members"
 import { useApaDocuments } from "@/features/documents/hooks/useApaDocuments"
+import { usePublishCourse } from "@/components/breadcrumb-context"
 
 export function CourseDetailPage() {
   const { courseId } = useParams<{ courseId: string }>()
   const [course, setCourse] = useState<Course | null>(null)
+  usePublishCourse(course)
 
   const { entries: scheduleEntries } = useScheduleEntries(courseId ?? "")
   const { resources } = useResources(courseId ?? "")

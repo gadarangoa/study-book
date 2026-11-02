@@ -1,11 +1,21 @@
 import { Fragment, useEffect, useState } from "react"
-import { Link, useLocation, useParams } from "react-router"
-import { ChevronRightIcon } from "lucide-react"
+import { Link, matchPath, useLocation } from "react-router"
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
 
 import { getById } from "@/lib/db"
 import { cn } from "@/lib/utils"
+import {
+  useBreadcrumbEntities,
+  type BreadcrumbCareer,
+} from "@/components/breadcrumb-context"
 
-type Crumb = { label: string; to?: string }
+/** Route shapes the breadcrumb understands; keep in sync with App.tsx. */
+const ROUTES = {
+  career: "/careers/:careerId",
+  course: "/courses/:courseId",
+  section: "/courses/:courseId/:section",
+  document: "/courses/:courseId/documents/:documentId",
+} as const
 
 const SECTION_LABELS: Record<string, string> = {
   resources: "Recursos",
@@ -13,88 +23,128 @@ const SECTION_LABELS: Record<string, string> = {
   team: "Equipo",
 }
 
-type Names = {
-  career?: { id: string; name: string }
-  course?: { id: string; name: string }
-  document?: string
+type Crumb = { label: string | null; to?: string }
+
+function useRouteParams() {
+  const { pathname } = useLocation()
+  const doc = matchPath(ROUTES.document, pathname)
+  if (doc) {
+    return {
+      courseId: doc.params.courseId,
+      section: "documents",
+      documentId: doc.params.documentId,
+    }
+  }
+  const section = matchPath(ROUTES.section, pathname)
+  if (
+    section &&
+    section.params.section &&
+    SECTION_LABELS[section.params.section]
+  ) {
+    return {
+      courseId: section.params.courseId,
+      section: section.params.section,
+    }
+  }
+  const course = matchPath(ROUTES.course, pathname)
+  if (course) return { courseId: course.params.courseId }
+  const career = matchPath(ROUTES.career, pathname)
+  if (career) return { careerId: career.params.careerId }
+  return {}
 }
 
-function useEntityNames(): Names {
-  const { careerId, courseId, documentId } = useParams()
-  const [names, setNames] = useState<Names>({})
+/**
+ * Course pages don't load the career, so look it up here. A failure (e.g. a
+ * collaborator without read access to the owner's career) just hides that
+ * crumb instead of breaking the rest.
+ */
+function useCareerLookup(careerId: string | undefined, known: boolean) {
+  const [fetched, setFetched] = useState<BreadcrumbCareer | null>(null)
 
   useEffect(() => {
+    if (!careerId || known) return undefined
     let cancelled = false
-
-    async function load() {
-      const next: Names = {}
-      if (courseId) {
-        const course = await getById("courses", courseId)
-        if (course) {
-          next.course = { id: courseId, name: course.name }
-          const career = await getById("careers", course.careerId)
-          if (career) next.career = { id: course.careerId, name: career.name }
-        }
-      } else if (careerId) {
-        const career = await getById("careers", careerId)
-        if (career) next.career = { id: careerId, name: career.name }
-      }
-      if (documentId) {
-        const doc = await getById("apaDocuments", documentId)
-        if (doc) next.document = doc.title
-      }
-      if (!cancelled) setNames(next)
-    }
-
-    load().catch(() => {
-      if (!cancelled) setNames({})
-    })
-
+    getById("careers", careerId)
+      .then((career) => {
+        if (!cancelled && career)
+          setFetched({ id: careerId, name: career.name })
+      })
+      .catch(() => {
+        // Career is optional context; ignore read errors.
+      })
     return () => {
       cancelled = true
     }
-  }, [careerId, courseId, documentId])
+  }, [careerId, known])
 
-  return names
+  return fetched && fetched.id === careerId ? fetched : null
 }
 
 export function AppBreadcrumbs() {
-  const { pathname } = useLocation()
-  const { courseId, documentId } = useParams()
-  const names = useEntityNames()
+  const { careerId, courseId, section, documentId } = useRouteParams()
+  const entities = useBreadcrumbEntities()
+
+  // Only trust published entities that belong to the current route.
+  const course =
+    courseId && entities.course?.id === courseId ? entities.course : undefined
+  const document =
+    documentId &&
+    entities.document?.id === documentId &&
+    entities.document.courseId === courseId
+      ? entities.document
+      : undefined
+
+  const careerIdForRoute = careerId ?? course?.careerId
+  const publishedCareer =
+    careerIdForRoute && entities.career?.id === careerIdForRoute
+      ? entities.career
+      : undefined
+  const fetchedCareer = useCareerLookup(
+    courseId ? course?.careerId : undefined,
+    publishedCareer !== undefined
+  )
+  const career = publishedCareer ?? fetchedCareer
 
   const crumbs: Crumb[] = [{ label: "Dashboard", to: "/dashboard" }]
-  if (names.career) {
-    crumbs.push({ label: names.career.name, to: `/careers/${names.career.id}` })
+  if (careerId) {
+    crumbs.push({ label: career?.name ?? null, to: `/careers/${careerId}` })
+  } else if (career) {
+    crumbs.push({ label: career.name, to: `/careers/${career.id}` })
   }
   if (courseId) {
-    crumbs.push({ label: names.course?.name ?? "…", to: `/courses/${courseId}` })
-    const section = pathname.split("/")[3]
-    if (section && SECTION_LABELS[section]) {
+    crumbs.push({ label: course?.name ?? null, to: `/courses/${courseId}` })
+    if (section) {
       crumbs.push({
         label: SECTION_LABELS[section],
         to: `/courses/${courseId}/${section}`,
       })
     }
     if (documentId) {
-      crumbs.push({ label: names.document ?? "…" })
+      crumbs.push({ label: document?.title ?? null })
     }
   }
 
   const last = crumbs.length - 1
+  const parent = last > 0 ? crumbs[last - 1] : undefined
 
   return (
-    <nav aria-label="breadcrumb" className="min-w-0">
+    <nav aria-label="breadcrumb" className="flex min-w-0 items-center gap-1">
+      {parent?.to && (
+        <Link
+          to={parent.to}
+          className="flex shrink-0 items-center rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground md:hidden"
+          aria-label={`Volver a ${parent.label ?? "nivel anterior"}`}
+        >
+          <ChevronLeftIcon className="size-4" />
+        </Link>
+      )}
       <ol className="flex min-w-0 items-center gap-1.5 text-sm text-muted-foreground">
         {crumbs.map((crumb, i) => {
           const isLast = i === last
           return (
-            <Fragment key={`${i}-${crumb.label}`}>
+            <Fragment key={`${i}-${crumb.to ?? "current"}`}>
               {i > 0 && (
-                <li
-                  aria-hidden
-                  className={cn("shrink-0", i < last && "hidden md:block")}
-                >
+                <li aria-hidden className="hidden shrink-0 md:block">
                   <ChevronRightIcon className="size-3.5" />
                 </li>
               )}
@@ -105,7 +155,12 @@ export function AppBreadcrumbs() {
                   !isLast && i > 0 && "max-w-40"
                 )}
               >
-                {isLast || !crumb.to ? (
+                {crumb.label === null ? (
+                  <span
+                    aria-hidden
+                    className="h-3.5 w-20 animate-pulse rounded bg-muted"
+                  />
+                ) : isLast || !crumb.to ? (
                   <span
                     aria-current={isLast ? "page" : undefined}
                     className="truncate font-medium text-foreground"

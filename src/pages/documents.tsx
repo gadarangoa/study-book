@@ -8,11 +8,13 @@ import type { Course } from "@/features/courses/types"
 import { useApaDocuments } from "@/features/documents/hooks/useApaDocuments"
 import { DocumentList } from "@/features/documents/components/document-list"
 import { DocumentCreateDialog } from "@/features/documents/components/document-create-dialog"
+import { usePublishCourse } from "@/components/breadcrumb-context"
 
 export function DocumentsPage() {
   const { courseId } = useParams<{ courseId: string }>()
   const navigate = useNavigate()
   const [course, setCourse] = useState<Course | null>(null)
+  usePublishCourse(course)
   const [isCreateOpen, setIsCreateOpen] = useState(false)
   const [isCreating, setIsCreating] = useState(false)
   const [actionError, setActionError] = useState<string | null>(null)
