@@ -1,7 +1,11 @@
 {
   "hosting": {
     "public": "dist",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
     "rewrites": [
       {
         "source": "**",
@@ -14,7 +18,9 @@
     "indexes": "firestore.indexes.json"
   },
   "auth": {
-    "authorizedDomains": ["localhost"],
+    "authorizedDomains": [
+      "localhost"
+    ],
     "providers": {
       "emailPassword": true
     }
