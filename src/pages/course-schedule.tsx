@@ -12,9 +12,14 @@ export function CourseSchedulePage() {
   const [formOpen, setFormOpen] = useState(false)
   const [editingTask, setEditingTask] = useState<Task | undefined>()
 
-  const { tasks, isLoading, createTask, updateTask, deleteTask } = useTasks(
-    courseId ?? ""
-  )
+  const {
+    tasks,
+    isLoading,
+    createTask,
+    updateTask,
+    toggleTaskStatus,
+    deleteTask,
+  } = useTasks(courseId ?? "")
 
   useEffect(() => {
     if (!courseId) return
@@ -61,6 +66,7 @@ export function CourseSchedulePage() {
         <TaskList
           tasks={tasks}
           onAdd={() => openForm()}
+          onToggle={toggleTaskStatus}
           onEdit={openForm}
           onDelete={deleteTask}
         />

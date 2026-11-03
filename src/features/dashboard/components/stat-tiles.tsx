@@ -56,7 +56,9 @@ export function StatTiles({
         label="Vencen en 7 días"
         value={dueThisWeek}
         icon={CalendarClockIcon}
-        tone={dueThisWeek > 0 ? "text-amber-600 dark:text-amber-400" : undefined}
+        tone={
+          dueThisWeek > 0 ? "text-amber-600 dark:text-amber-400" : undefined
+        }
       />
       <Tile label="Pendientes" value={pending} icon={ListTodoIcon} />
       <Tile label="Completadas" value={completed} icon={CheckCircle2Icon} />

@@ -1,7 +1,13 @@
 import { cn } from "@/lib/utils"
 import { DUE_VARIANT_CLASSES, dueLabel, dueVariant } from "../lib/days"
 
-export function DueBadge({ days, className }: { days: number; className?: string }) {
+export function DueBadge({
+  days,
+  className,
+}: {
+  days: number
+  className?: string
+}) {
   return (
     <span
       className={cn(

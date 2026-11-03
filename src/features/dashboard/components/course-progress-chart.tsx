@@ -73,7 +73,9 @@ export function CourseProgressChart({
             `${course.completed} completadas · ${values.onTime} pendientes · ${course.overdue} vencidas`,
             endLabel(course.daysToEnd),
             `${course.documentCount} documento${course.documentCount !== 1 ? "s" : ""} APA`,
-            isSelected ? "Clic para ver todas las entregas" : "Clic para ver sus entregas",
+            isSelected
+              ? "Clic para ver todas las entregas"
+              : "Clic para ver sus entregas",
           ]
             .filter(Boolean)
             .join("\n")
@@ -111,13 +113,15 @@ export function CourseProgressChart({
                           <div
                             key={s.key}
                             className={s.className}
-                            style={{ width: `${(values[s.key] / total) * 100}%` }}
+                            style={{
+                              width: `${(values[s.key] / total) * 100}%`,
+                            }}
                           />
                         ) : null
                       )}
                     </div>
                   </div>
-                  <span className="w-10 text-right text-xs tabular-nums text-muted-foreground">
+                  <span className="w-10 text-right text-xs text-muted-foreground tabular-nums">
                     {course.completed}/{total}
                   </span>
                 </div>
@@ -126,7 +130,9 @@ export function CourseProgressChart({
                   {course.nextTask ? (
                     <DueBadge days={course.nextTask.days} />
                   ) : (
-                    <span className="text-xs text-muted-foreground">Sin pendientes</span>
+                    <span className="text-xs text-muted-foreground">
+                      Sin pendientes
+                    </span>
                   )}
                 </div>
               </button>

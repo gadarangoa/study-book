@@ -31,6 +31,7 @@ export function DashboardPage() {
     tasks,
     documents,
     isLoading: isDataLoading,
+    completeTask,
   } = useDashboardData(careers)
 
   const careerNameById = useMemo(() => {
@@ -69,7 +70,9 @@ export function DashboardPage() {
     const courseCards: CourseOverview[] = visibleCourses
       .map((course) => {
         const courseTasks = visibleTasks.filter((t) => t.courseId === course.id)
-        const courseDeadlines = deadlines.filter((d) => d.courseId === course.id)
+        const courseDeadlines = deadlines.filter(
+          (d) => d.courseId === course.id
+        )
         const next =
           courseDeadlines.find((d) => d.days >= 0) ?? courseDeadlines[0]
         return {
@@ -80,7 +83,9 @@ export function DashboardPage() {
           completed: courseTasks.filter((t) => t.status === "complete").length,
           overdue: courseDeadlines.filter((d) => d.days < 0).length,
           nextTask: next ? { title: next.title, days: next.days } : undefined,
-          daysToEnd: course.endDate ? daysUntil(course.endDate, today) : undefined,
+          daysToEnd: course.endDate
+            ? daysUntil(course.endDate, today)
+            : undefined,
           documentCount: docCount.get(course.id) ?? 0,
         }
       })
@@ -181,6 +186,7 @@ export function DashboardPage() {
             items={visibleDeadlines}
             filterLabel={selectedCourse?.name}
             onClearFilter={() => setSelectedCourseId(null)}
+            onComplete={completeTask}
           />
         </div>
         <Card>
@@ -240,11 +246,11 @@ export function DashboardPage() {
                 <Link key={course.id} to={`/courses/${course.id}`}>
                   <Card className="transition-colors hover:bg-accent/50">
                     <CardHeader className="space-y-0 pb-2">
-                      <CardTitle className="text-sm truncate">
+                      <CardTitle className="truncate text-sm">
                         {course.name}
                       </CardTitle>
                       {careerNameById.get(course.careerId) && (
-                        <p className="text-xs text-muted-foreground truncate">
+                        <p className="truncate text-xs text-muted-foreground">
                           {careerNameById.get(course.careerId)}
                         </p>
                       )}
